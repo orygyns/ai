@@ -3,611 +3,567 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Platform Blueprint</title>
+<title>ORYGYNS AI — Product Blueprint</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --black:   #000000;
-    --ink:     #0E0E0E;
-    --card:    #141414;
-    --border:  #242424;
-    --border2: #333333;
-    --muted:   #666666;
-    --dim:     #999999;
-    --white:   #F4F4F4;
-    --pure:    #FFFFFF;
-    --mono:    'JetBrains Mono', monospace;
-    --sans:    'Space Grotesk', system-ui, sans-serif;
-  }
+:root {
+  --black:  #000000;
+  --ink:    #0C0C0C;
+  --card:   #111111;
+  --b1:     #1E1E1E;
+  --b2:     #2E2E2E;
+  --muted:  #585858;
+  --dim:    #888888;
+  --body:   #C8C8C8;
+  --white:  #F2F2F2;
+  --pure:   #FFFFFF;
+  --sky:    #6EC6E6;
+  --sky-lo: rgba(110,198,230,0.07);
+  --sky-ln: rgba(110,198,230,0.18);
+  --sans:   'Inter', system-ui, sans-serif;
+  --disp:   'Syne', sans-serif;
+  --mono:   'JetBrains Mono', monospace;
+}
 
-  html { background: var(--black); color: var(--white); font-family: var(--sans); font-size: 14px; line-height: 1.6; }
-  body { max-width: 860px; margin: 0 auto; padding: 0 20px 60px; }
+html { background: var(--black); color: var(--body); font-family: var(--sans); font-size: 14px; line-height: 1.6; scroll-behavior: smooth; }
+body { max-width: 920px; margin: 0 auto; padding: 0 24px 80px; }
 
-  /* ── Header ── */
-  header { padding: 36px 0 20px; border-bottom: 1px solid var(--border); margin-bottom: 0; }
-  .header-top { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; }
-  h1 { font-size: clamp(20px, 4vw, 30px); font-weight: 700; letter-spacing: -0.02em; color: var(--pure); }
-  .header-meta { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.06em; }
-  .header-sub { font-size: 13px; color: var(--muted); margin-top: 6px; }
+/* ─── HEADER ─────────────────────────────────────────────── */
+.site-header { padding: 40px 0 0; }
+.logo-row { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-bottom: 20px; border-bottom: 1px solid var(--b1); }
+.logo { font-family: var(--disp); font-size: 22px; font-weight: 800; letter-spacing: -0.02em; color: var(--pure); position: relative; display: inline-block; }
+.logo span { color: var(--sky); }
+.logo::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--sky); animation: trace 1.4s cubic-bezier(0.4,0,0.2,1) 0.3s forwards; }
+@keyframes trace { from { width: 0; opacity: 0; } to { width: 100%; opacity: 1; } }
+.logo-meta { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+.tagline { font-size: 13px; color: var(--muted); padding-top: 14px; padding-bottom: 4px; }
+.tagline strong { color: var(--body); font-weight: 500; }
 
-  /* ── Tabs ── */
-  nav { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 0; overflow-x: auto; }
-  nav button {
-    background: none; border: none; color: var(--muted); font-family: var(--sans);
-    font-size: 12px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase;
-    padding: 14px 18px; cursor: pointer; border-bottom: 2px solid transparent;
-    white-space: nowrap; transition: color 0.15s, border-color 0.15s; margin-bottom: -1px;
-  }
-  nav button.active { color: var(--pure); border-bottom-color: var(--pure); }
-  nav button:hover:not(.active) { color: var(--dim); }
+/* ─── TABS ───────────────────────────────────────────────── */
+nav.tabs { display: flex; gap: 0; border-bottom: 1px solid var(--b1); margin-bottom: 0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+nav.tabs button {
+  background: none; border: none; border-bottom: 2px solid transparent;
+  font-family: var(--sans); font-size: 12px; font-weight: 500;
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted);
+  padding: 14px 18px; cursor: pointer; white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s; margin-bottom: -1px;
+}
+nav.tabs button.on { color: var(--pure); border-bottom-color: var(--sky); }
+nav.tabs button:hover:not(.on) { color: var(--dim); }
 
-  /* ── Sections ── */
-  .tab { display: none; padding-top: 28px; }
-  .tab.active { display: block; }
+/* ─── PANELS ─────────────────────────────────────────────── */
+.panel { display: none; padding-top: 32px; }
+.panel.on { display: block; }
 
-  /* ── Typography ── */
-  .section-label {
-    font-family: var(--mono); font-size: 10px; font-weight: 600;
-    letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
-    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
-  }
-  h2 { font-size: 17px; font-weight: 700; color: var(--pure); margin-bottom: 6px; }
-  h3 { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
-  p { color: var(--muted); line-height: 1.65; margin-bottom: 10px; }
-  p:last-child { margin-bottom: 0; }
+/* ─── TYPE SCALE ─────────────────────────────────────────── */
+.eyebrow { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; padding-bottom: 9px; border-bottom: 1px solid var(--b1); }
+h2 { font-family: var(--disp); font-size: 20px; font-weight: 700; color: var(--pure); margin-bottom: 6px; letter-spacing: -0.01em; }
+h3 { font-family: var(--disp); font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 5px; }
+p { color: var(--dim); line-height: 1.7; margin-bottom: 10px; font-size: 13.5px; }
+p:last-child { margin-bottom: 0; }
+strong { color: var(--white); font-weight: 600; }
 
-  /* ── Blocks ── */
-  .block { border: 1px solid var(--border); padding: 18px; margin-bottom: 14px; }
-  .block-row { display: flex; gap: 20px; flex-wrap: wrap; }
-  .block-row .block { flex: 1; min-width: 200px; margin-bottom: 0; }
-  .block + .block { margin-top: 0; }
+/* ─── STATS STRIP ────────────────────────────────────────── */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--b1); border: 1px solid var(--b1); margin-bottom: 28px; }
+.stat { background: var(--ink); padding: 18px 16px; }
+.stat-n { font-family: var(--mono); font-size: 28px; font-weight: 600; line-height: 1; margin-bottom: 5px; color: var(--sky); }
+.stat-n.wh { color: var(--pure); }
+.stat-l { font-size: 11px; color: var(--muted); line-height: 1.4; }
 
-  /* ── Rule sections ── */
-  .spec-row {
-    display: grid; grid-template-columns: 140px 1fr; gap: 12px;
-    padding: 10px 0; border-bottom: 1px solid var(--border);
-    align-items: start;
-  }
-  .spec-row:first-of-type { border-top: 1px solid var(--border); }
-  .spec-key { font-family: var(--mono); font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; padding-top: 1px; }
-  .spec-val { font-size: 13px; color: var(--white); }
-  .spec-val small { color: var(--muted); font-size: 11px; display: block; margin-top: 2px; }
+/* ─── BLOCKS ─────────────────────────────────────────────── */
+.block { border: 1px solid var(--b1); padding: 20px; margin-bottom: 16px; }
+.block-sky { border-left: 2px solid var(--sky); background: var(--sky-lo); padding: 14px 16px; margin-bottom: 16px; font-size: 13px; color: var(--dim); line-height: 1.65; }
+.block-sky strong { color: var(--sky); }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+.two-col .block { margin-bottom: 0; }
 
-  /* ── Tables ── */
-  table { width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 12.5px; }
-  thead th { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; background: var(--card); }
-  tbody td { padding: 9px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
-  tbody tr:last-child td { border-bottom: none; }
-  tbody tr:hover td { background: var(--card); }
-  td.key { font-family: var(--mono); color: var(--dim); font-size: 12px; white-space: nowrap; }
-  td.val { color: var(--white); }
-  td.note { color: var(--muted); font-size: 12px; }
-  td.num { font-family: var(--mono); color: var(--pure); font-weight: 600; text-align: right; white-space: nowrap; }
-  td.good { color: var(--pure); font-weight: 600; }
-  td.bad  { color: var(--muted); }
-  .wide-key { grid-template-columns: 200px 1fr; }
+/* ─── TABLES ─────────────────────────────────────────────── */
+.tbl { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 13px; }
+.tbl th { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 8px 12px; border-bottom: 1px solid var(--b1); text-align: left; background: var(--ink); }
+.tbl td { padding: 9px 12px; border-bottom: 1px solid var(--b1); vertical-align: top; color: var(--dim); }
+.tbl tr:last-child td { border-bottom: none; }
+.tbl tr:hover td { background: var(--sky-lo); }
+.tbl .tc { color: var(--white); font-weight: 500; }
+.tbl .ts { color: var(--sky); font-family: var(--mono); font-size: 12px; font-weight: 600; }
+.tbl .tm { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.tbl .tg { color: #6DD6A0; font-weight: 600; }
+.tbl .tr { color: #E88; }
 
-  /* ── Code ── */
-  pre {
-    background: var(--card); border: 1px solid var(--border); padding: 14px 16px;
-    font-family: var(--mono); font-size: 12px; color: var(--dim); line-height: 1.7;
-    overflow-x: auto; margin-bottom: 14px; white-space: pre;
-  }
-  pre .c { color: var(--muted); } /* comment */
-  pre .k { color: var(--white); } /* keyword / important */
-  pre .s { color: #aaa; }         /* string */
-  pre .n { color: var(--pure); font-weight: 600; } /* number/important value */
+/* ─── SPEC ROWS ──────────────────────────────────────────── */
+.spec { border-top: 1px solid var(--b1); }
+.spec-r { display: grid; grid-template-columns: 160px 1fr; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--b1); align-items: start; }
+.spec-k { font-family: var(--mono); font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; padding-top: 1px; }
+.spec-v { font-size: 13.5px; color: var(--white); }
+.spec-v small { color: var(--muted); font-size: 12px; display: block; margin-top: 2px; }
 
-  /* ── Tags ── */
-  .tag {
-    display: inline-block; font-family: var(--mono); font-size: 10px; font-weight: 600;
-    letter-spacing: 0.06em; text-transform: uppercase;
-    border: 1px solid var(--border2); color: var(--dim); padding: 2px 7px;
-    margin: 2px 2px 2px 0; line-height: 1.6;
-  }
-  .tag.hi { border-color: var(--white); color: var(--white); }
-  .tag.lo { border-color: var(--border); color: var(--muted); }
+/* ─── FLOW ───────────────────────────────────────────────── */
+.flow { border: 1px solid var(--b1); margin-bottom: 20px; }
+.flow-r { display: grid; grid-template-columns: 28px 170px 1fr minmax(100px, auto); gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--b1); align-items: center; }
+.flow-r:last-child { border-bottom: none; }
+.flow-r:hover { background: var(--sky-lo); }
+.flow-i { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+.flow-n { font-size: 13px; font-weight: 600; color: var(--white); }
+.flow-d { font-size: 12px; color: var(--muted); }
+.flow-c { font-family: var(--mono); font-size: 11px; color: var(--dim); text-align: right; white-space: nowrap; }
+.fl-you { border-left: 2px solid var(--sky); }
+.fl-usr { border-left: 2px solid var(--b2); }
 
-  /* ── Checklist ── */
-  .checklist { margin: 0; padding: 0; list-style: none; }
-  .checklist li {
-    display: flex; align-items: flex-start; gap: 10px;
-    padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--dim);
-  }
-  .checklist li:first-child { border-top: 1px solid var(--border); }
-  .checklist li.done { color: var(--muted); text-decoration: line-through; }
-  .checklist input[type=checkbox] {
-    appearance: none; -webkit-appearance: none;
-    width: 14px; height: 14px; border: 1px solid var(--border2);
-    background: none; cursor: pointer; flex-shrink: 0; margin-top: 3px;
-    position: relative; transition: background 0.15s;
-  }
-  .checklist input[type=checkbox]:checked { background: var(--pure); border-color: var(--pure); }
-  .checklist input[type=checkbox]:checked::after {
-    content: ''; position: absolute; left: 3px; top: 1px;
-    width: 5px; height: 8px; border: 1.5px solid var(--black);
-    border-top: none; border-left: none; transform: rotate(40deg);
-  }
+/* ─── FEATURE GRID ───────────────────────────────────────── */
+.feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px; background: var(--b1); border: 1px solid var(--b1); margin-bottom: 20px; }
+.feat { background: var(--ink); padding: 18px; transition: background 0.15s; }
+.feat:hover { background: #141414; }
+.feat-tag { font-family: var(--mono); font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+.feat-tag.sky { color: var(--sky); }
+.feat h3 { font-size: 14px; margin-bottom: 6px; }
+.feat p { font-size: 12.5px; margin: 0; }
 
-  /* ── Progress bar ── */
-  .progress-wrap { margin-bottom: 18px; }
-  .progress-meta { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 6px; }
-  .progress-bar { height: 3px; background: var(--border); }
-  .progress-fill { height: 100%; background: var(--pure); transition: width 0.3s; }
+/* ─── MODE TABLE ─────────────────────────────────────────── */
+.mode-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--b1); border: 1px solid var(--b1); margin-bottom: 20px; }
+.mode { background: var(--ink); padding: 16px; }
+.mode-name { font-family: var(--disp); font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+.mode-model { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
+.mode-use { font-size: 12px; color: var(--muted); line-height: 1.55; }
+.mode.active-mode .mode-name { color: var(--sky); }
+.mode.active-mode { background: var(--sky-lo); border: 1px solid var(--sky-ln); }
 
-  /* ── Day headers ── */
-  .day-head {
-    display: flex; align-items: center; gap: 12px; margin-top: 24px; margin-bottom: 0;
-    padding-bottom: 8px; border-bottom: 1px solid var(--border2);
-  }
-  .day-head:first-of-type { margin-top: 0; }
-  .day-label { font-family: var(--mono); font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
-  .day-title { font-size: 14px; font-weight: 700; color: var(--pure); }
+/* ─── ROADMAP ────────────────────────────────────────────── */
+.phase { border-left: 2px solid var(--b2); padding-left: 20px; margin-bottom: 28px; }
+.phase.cur { border-left-color: var(--sky); }
+.phase-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+.phase-tag { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid var(--b2); color: var(--muted); padding: 2px 8px; }
+.phase-tag.sky { border-color: var(--sky-ln); color: var(--sky); }
+.phase-title { font-family: var(--disp); font-size: 16px; font-weight: 700; color: var(--white); }
+.phase-time { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.phase ul { list-style: none; padding: 0; }
+.phase ul li { font-size: 13px; color: var(--dim); padding: 5px 0; border-bottom: 1px solid var(--b1); display: flex; gap: 8px; }
+.phase ul li::before { content: '—'; color: var(--muted); flex-shrink: 0; }
+.phase ul li:last-child { border-bottom: none; }
 
-  /* ── Architecture flow ── */
-  .flow { border: 1px solid var(--border); margin-bottom: 14px; }
-  .flow-row {
-    display: grid; grid-template-columns: 24px 160px 1fr auto;
-    gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--border);
-    align-items: center;
-  }
-  .flow-row:last-child { border-bottom: none; }
-  .flow-n { font-family: var(--mono); font-size: 11px; color: var(--muted); }
-  .flow-name { font-size: 13px; font-weight: 600; color: var(--pure); }
-  .flow-desc { font-size: 12px; color: var(--muted); }
-  .flow-cost { font-family: var(--mono); font-size: 11px; color: var(--dim); white-space: nowrap; text-align: right; }
-  .flow-you { border-left: 2px solid var(--white); }
-  .flow-groq { border-left: 2px solid var(--muted); }
+/* ─── TAG PILL ───────────────────────────────────────────── */
+.pill { display: inline-block; font-family: var(--mono); font-size: 9px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; border: 1px solid var(--b2); color: var(--muted); padding: 2px 7px; margin: 2px 2px 2px 0; line-height: 1.7; }
+.pill.sky { border-color: var(--sky-ln); color: var(--sky); }
+.pill.wh  { border-color: #444; color: var(--dim); }
 
-  /* ── Stat strip ── */
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 14px; }
-  .stat { background: var(--black); padding: 16px; }
-  .stat-num { font-family: var(--mono); font-size: 26px; font-weight: 600; color: var(--pure); line-height: 1; margin-bottom: 4px; }
-  .stat-lbl { font-size: 11px; color: var(--muted); }
+/* ─── DIVIDER ────────────────────────────────────────────── */
+.gap { height: 28px; }
+hr.rule { border: none; border-top: 1px solid var(--b1); margin: 24px 0; }
 
-  /* ── Divider ── */
-  .gap { height: 28px; }
-  hr { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+/* ─── FOOTER ─────────────────────────────────────────────── */
+.foot { margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--b1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.foot span { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.06em; }
 
-  @media (max-width: 600px) {
-    .flow-row { grid-template-columns: 20px 1fr; }
-    .flow-cost, .flow-name { display: none; }
-    .flow-name { display: block; grid-column: 2; }
-    .spec-row { grid-template-columns: 1fr; gap: 2px; }
-  }
+/* ─── RESPONSIVE ─────────────────────────────────────────── */
+@media (max-width: 640px) {
+  body { padding: 0 16px 60px; }
+  .two-col { grid-template-columns: 1fr; }
+  .flow-r { grid-template-columns: 24px 1fr; }
+  .flow-c { display: none; }
+  .spec-r { grid-template-columns: 1fr; gap: 3px; }
+  .spec-k { padding-top: 8px; }
+  .mode-grid { grid-template-columns: 1fr 1fr; }
+  h2 { font-size: 18px; }
+  .stats { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 400px) {
+  .mode-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-top">
-    <h1>AI Platform Blueprint</h1>
-    <span class="header-meta">GROQ BYOK · NEAR-ZERO COST · V1.0</span>
+<!-- ═══════════════════════ HEADER ═══════════════════════ -->
+<header class="site-header">
+  <div class="logo-row">
+    <span class="logo">ORYGYNS <span>AI</span></span>
+    <span class="logo-meta">Product Blueprint · V1.0 · Confidential</span>
   </div>
-  <p class="header-sub">Groq Cloud as inference engine. Your middleware: cache + compress + route. User pays their own Groq key. Your cost: ~$0/mo.</p>
+  <p class="tagline">
+    <strong>The NotebookLM for engineering students.</strong>
+    Purpose-built study intelligence — PDF analysis, PYQ preparation, adaptive exam tools — running on Groq Cloud via student-owned API keys.
+  </p>
 </header>
 
-<nav>
-  <button class="active" onclick="switchTab('system',this)">System</button>
-  <button onclick="switchTab('tokens',this)">Token Killers</button>
-  <button onclick="switchTab('hosting',this)">Hosting</button>
-  <button onclick="switchTab('mobile',this)">Mobile</button>
-  <button onclick="switchTab('week',this)">This Week</button>
+<!-- ═══════════════════════ TABS ═════════════════════════ -->
+<nav class="tabs">
+  <button class="on" onclick="show('overview',this)">Overview</button>
+  <button onclick="show('features',this)">Features</button>
+  <button onclick="show('architecture',this)">Architecture</button>
+  <button onclick="show('economics',this)">Economics</button>
+  <button onclick="show('roadmap',this)">Roadmap</button>
 </nav>
 
-<!-- ═══════════════════════════════════════════════════════════ SYSTEM -->
-<div id="system" class="tab active">
+<!-- ═══════════════════════ OVERVIEW ═════════════════════ -->
+<section id="overview" class="panel on">
 
   <div class="stats">
-    <div class="stat"><div class="stat-num">$0</div><div class="stat-lbl">your monthly infra cost</div></div>
-    <div class="stat"><div class="stat-num">94%</div><div class="stat-lbl">token reduction vs raw</div></div>
-    <div class="stat"><div class="stat-num">$0.05</div><div class="stat-lbl">per 1M tokens (8B model)</div></div>
-    <div class="stat"><div class="stat-num">5 days</div><div class="stat-lbl">to working product</div></div>
+    <div class="stat"><div class="stat-n">1.5M+</div><div class="stat-l">engineering students enrolled across India's top technical universities</div></div>
+    <div class="stat"><div class="stat-n">$0</div><div class="stat-l">monthly infrastructure cost to you during BYOK phase</div></div>
+    <div class="stat"><div class="stat-n wh">94%</div><div class="stat-l">token reduction vs unoptimized LLM calls through our middleware</div></div>
+    <div class="stat"><div class="stat-n">7</div><div class="stat-l">core study modules shipping in V1 — no general-purpose AI bloat</div></div>
   </div>
 
-  <div class="section-label">Architecture — Request Flow</div>
-  <div class="flow">
-    <div class="flow-row flow-you">
-      <span class="flow-n">1</span>
-      <span class="flow-name">Semantic Cache</span>
-      <span class="flow-desc">Embed query → vector similarity search. Score ≥ 0.92 → return cached answer. No Groq call.</span>
-      <span class="flow-cost">$0.00 · YOU HOST</span>
+  <div class="eyebrow">Problem &amp; Opportunity</div>
+  <div class="two-col">
+    <div class="block">
+      <h3>What students do today</h3>
+      <p>Students paste notes into ChatGPT, get generic responses optimized for no one, then sift through irrelevant output. There is no understanding of their syllabus, no PYQ context, no exam format awareness. Generic AI costs ₹1,600+/month. Most students never pay — and get nothing.</p>
     </div>
-    <div class="flow-row flow-you">
-      <span class="flow-n">2</span>
-      <span class="flow-name">LLMLingua-2</span>
-      <span class="flow-desc">Compress prompt 4–10× before it reaches Groq. Runs on CPU. Open source (Microsoft).</span>
-      <span class="flow-cost">$0.00 · YOU HOST</span>
-    </div>
-    <div class="flow-row flow-you">
-      <span class="flow-n">3</span>
-      <span class="flow-name">History Compactor</span>
-      <span class="flow-desc">After 5 turns, summarize history → 50-token summary. Replaces ~400 tokens of raw context.</span>
-      <span class="flow-cost">~$0.000002 · YOU HOST</span>
-    </div>
-    <div class="flow-row flow-you">
-      <span class="flow-n">4</span>
-      <span class="flow-name">Simple Router</span>
-      <span class="flow-desc">If compressed tokens &lt; 60 → 8B. If ≥ 60 or code/math keywords → 70B. Nothing else.</span>
-      <span class="flow-cost">$0.00 · YOU HOST</span>
-    </div>
-    <div class="flow-row flow-groq">
-      <span class="flow-n">5</span>
-      <span class="flow-name">Groq: 8B (80%)</span>
-      <span class="flow-desc">llama-3.1-8b-instant. Simple Q&amp;A, summaries, short tasks. 500–1000 TPS.</span>
-      <span class="flow-cost">$0.05/M · USER'S KEY</span>
-    </div>
-    <div class="flow-row flow-groq">
-      <span class="flow-n">6</span>
-      <span class="flow-name">Groq: 70B (20%)</span>
-      <span class="flow-desc">llama-3.3-70b-versatile. Complex reasoning, code, long-form. GPT-4 quality.</span>
-      <span class="flow-cost">$0.59/$0.79/M · USER'S KEY</span>
-    </div>
-    <div class="flow-row flow-you">
-      <span class="flow-n">7</span>
-      <span class="flow-name">Cache Write</span>
-      <span class="flow-desc">Async: store (vector, response) in pgvector. Every future similar query is free.</span>
-      <span class="flow-cost">Async · $0.00</span>
+    <div class="block">
+      <h3>What ORYGYNS AI does</h3>
+      <p>A focused study layer purpose-built for exam preparation. PDF intelligence that reads their actual notes. A PYQ repository that surfaces historically important questions. Revision tools calibrated to 2-mark, 5-mark, and 10-mark formats. Free to use with their own Groq key — which costs them near nothing.</p>
     </div>
   </div>
-  <p style="font-size:11px; color: var(--muted); margin-bottom: 20px;">
-    Left border: <span style="color:var(--white)">white</span> = you host &nbsp;|&nbsp; <span style="color:var(--muted)">grey</span> = Groq Cloud (user's key pays) &nbsp;|&nbsp; No fallback. No other providers.
-  </p>
 
-  <div class="section-label">5-Component Summary</div>
-  <table>
-    <thead><tr><th>#</th><th>Component</th><th>What it does</th><th>Your cost</th><th>Tech</th></tr></thead>
+  <div class="eyebrow">Positioning</div>
+  <div class="block-sky">
+    <strong>ORYGYNS AI sits at the intersection of three things no single product currently offers:</strong>
+    general AI study chat (ChatGPT) + document intelligence (NotebookLM) + exam-specific preparation tools (none exist at scale). Our moat is the PYQ repository, the domain-tuned prompt system, and the compounding semantic cache — which gets cheaper and smarter with every student interaction.
+  </div>
+
+  <div class="eyebrow">Core Principles</div>
+  <table class="tbl">
+    <thead><tr><th>Principle</th><th>What it means in practice</th></tr></thead>
     <tbody>
-      <tr><td class="key">01</td><td class="val">Semantic Cache</td><td class="note">Answer repeated/similar queries for free</td><td class="num">$0</td><td class="note">FAISS + pgvector</td></tr>
-      <tr><td class="key">02</td><td class="val">LLMLingua-2</td><td class="note">Compress every prompt 4–10× before Groq</td><td class="num">$0</td><td class="note">CPU · pip install</td></tr>
-      <tr><td class="key">03</td><td class="val">History Compactor</td><td class="note">Summarize old turns, trim context tokens</td><td class="num">~$0</td><td class="note">One Groq 8B call</td></tr>
-      <tr><td class="key">04</td><td class="val">Output Cap</td><td class="note">max_tokens=200, stop sequences, temp=0.3</td><td class="num">$0</td><td class="note">API params only</td></tr>
-      <tr><td class="key">05</td><td class="val">Simple Router</td><td class="note">8B vs 70B. 5 lines of Python. No ML.</td><td class="num">$0</td><td class="note">if/else logic</td></tr>
+      <tr><td class="tc">Student-first design</td><td>UI decisions always favour clarity for a student, not feature density. Inspired by Claude's interface.</td></tr>
+      <tr><td class="tc">BYOK model</td><td>Students use their own Groq API key. Your infrastructure cost stays near zero at any scale.</td></tr>
+      <tr><td class="tc">Aggressive token optimization</td><td>LLMLingua-2 compression + semantic cache + history compaction = 94% token reduction.</td></tr>
+      <tr><td class="tc">Exam-aware responses</td><td>System prompts calibrated for 2-mark, 5-mark, 10-mark formats. Not general answers.</td></tr>
+      <tr><td class="tc">Transparent usage</td><td>Live token usage meter. Warnings at 25%, 50%, 75%, 90%, 95%, 99%. No silent overages.</td></tr>
+      <tr><td class="tc">PDF over raw prompts</td><td>RAG chunking — never send full documents to the model. Relevant sections only.</td></tr>
     </tbody>
   </table>
 
-  <div class="section-label">Monthly Cost — You vs User</div>
-  <table>
+  <div class="eyebrow">Target Market</div>
+  <div class="spec">
+    <div class="spec-r"><span class="spec-k">Primary</span><span class="spec-v">SRM Institute of Science and Technology students — engineering undergraduates.<small>Initial launch focus. Known syllabus structure, PYQ access, campus network.</small></span></div>
+    <div class="spec-r"><span class="spec-k">Secondary</span><span class="spec-v">All engineering college students across India — VIT, BITS, Anna University, and affiliates.<small>Phase 2 expansion once product-market fit is established at SRM.</small></span></div>
+    <div class="spec-r"><span class="spec-k">Long-term</span><span class="spec-v">Any Indian college student preparing for semester exams, placements, or competitive entrance exams.</span></div>
+    <div class="spec-r"><span class="spec-k">Differentiation</span><span class="spec-v">No competitor combines AI chat + PDF intelligence + verified PYQ repository in one free product.</span></div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════ FEATURES ═════════════════════ -->
+<section id="features" class="panel">
+
+  <div class="eyebrow">V1 Feature Modules</div>
+  <div class="feat-grid">
+    <div class="feat">
+      <div class="feat-tag sky">Core</div>
+      <h3>AI Study Chat</h3>
+      <p>Ask any academic question, get concept explanations, generate study notes, request first-year or expert-level answers. Powered by Groq's 8B/70B models with exam-aware prompts.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-tag sky">Core</div>
+      <h3>PDF Intelligence</h3>
+      <p>Upload notes, textbooks, PPTs, lab manuals. Chat with documents, extract key points, generate chapter summaries. RAG pipeline — only relevant chunks sent to model, never full files.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-tag sky">Unique</div>
+      <h3>PYQ Repository</h3>
+      <p>Admin-verified previous year questions. Topic-wise and subject-wise search. Pattern recognition across years. PYQ-based mock tests. Disclaimer: frequency-based importance, not guaranteed prediction.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-tag">Prep</div>
+      <h3>Exam Prep Tools</h3>
+      <p>Generate 2-mark, 5-mark, 10-mark questions. Viva questions. Quick revision sheets. One-page summaries. Output format matches actual exam structure — not generic Q&amp;A.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-tag">Revision</div>
+      <h3>Flashcard Generator</h3>
+      <p>Convert uploaded notes or chat context into Question → Answer flashcard decks. Built for last-minute revision and memory retention. Exportable for offline use.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-tag">Assessment</div>
+      <h3>Quiz Generator</h3>
+      <p>Generate MCQs, short-answer, and subject/topic quizzes at Easy, Medium, or Hard difficulty. Students can test themselves directly in the platform. Instant grading.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-tag">UX</div>
+      <h3>Prompt Assistant</h3>
+      <p>One-click ready-made prompts for common tasks: Summarize Notes, Exam Prep, Quick Revision, Flashcards, Concept Explanation. Reduces friction for students new to AI tools.</p>
+    </div>
+    <div class="feat" style="background:#0D0D0D; border: 1px dashed var(--b2);">
+      <div class="feat-tag">V2</div>
+      <h3>Coding Mode</h3>
+      <p>Dedicated coding assistant for DSA, debugging, code explanation, and placement preparation. Larger reasoning model (120B class). Separate interface. V2 launch.</p>
+    </div>
+  </div>
+
+  <div class="eyebrow">AI Quality Modes</div>
+  <div class="mode-grid">
+    <div class="mode">
+      <div class="mode-name">Low</div>
+      <div class="mode-model">llama-3.1-8b-instant</div>
+      <div class="mode-use">Fastest. Least tokens. Best for definitions, quick summaries, short explanations.</div>
+    </div>
+    <div class="mode active-mode">
+      <div class="mode-name">Medium</div>
+      <div class="mode-model">Auto-routed</div>
+      <div class="mode-use">Default mode. Balanced quality and speed. Handles most student tasks efficiently.</div>
+    </div>
+    <div class="mode">
+      <div class="mode-name">High</div>
+      <div class="mode-model">llama-3.3-70b-versatile</div>
+      <div class="mode-use">Better reasoning. Long-form answers. Complex concepts, research, nuanced questions.</div>
+    </div>
+    <div class="mode">
+      <div class="mode-name">Max</div>
+      <div class="mode-model">Best available</div>
+      <div class="mode-use">Highest reasoning. Deep analysis, advanced academic queries, difficult problem sets.</div>
+    </div>
+  </div>
+  <p style="font-size:12px">Medium is the default. The router automatically uses 8B (80% of queries) unless complexity signals require 70B. Students can override at any time.</p>
+
+</section>
+
+<!-- ═══════════════════════ ARCHITECTURE ═════════════════════ -->
+<section id="architecture" class="panel">
+
+  <div class="eyebrow">Request Pipeline</div>
+  <div class="flow">
+    <div class="flow-r fl-you">
+      <span class="flow-i">01</span>
+      <span class="flow-n">Semantic Cache</span>
+      <span class="flow-d">Query embedded via all-MiniLM-L6-v2 (22MB, CPU). Cosine similarity ≥ 0.92 → return cached answer. No Groq call.</span>
+      <span class="flow-c">$0.00 · you host</span>
+    </div>
+    <div class="flow-r fl-you">
+      <span class="flow-i">02</span>
+      <span class="flow-n">LLMLingua-2</span>
+      <span class="flow-d">Compress prompt 4–10× via Microsoft's open-source CPU model before it reaches Groq. Preserves meaning.</span>
+      <span class="flow-c">$0.00 · you host</span>
+    </div>
+    <div class="flow-r fl-you">
+      <span class="flow-i">03</span>
+      <span class="flow-n">History Compactor</span>
+      <span class="flow-d">After 5 turns, summarize history to a 50-token digest. Replaces 300–500 tokens of raw context.</span>
+      <span class="flow-c">~$0.000002</span>
+    </div>
+    <div class="flow-r fl-you">
+      <span class="flow-i">04</span>
+      <span class="flow-n">Simple Router</span>
+      <span class="flow-d">Token count + keyword check. &lt;60 tokens or simple task → 8B. ≥60 or code/math keywords → 70B.</span>
+      <span class="flow-c">$0.00 · you host</span>
+    </div>
+    <div class="flow-r fl-usr">
+      <span class="flow-i">05</span>
+      <span class="flow-n">Groq: 8B (80%)</span>
+      <span class="flow-d">llama-3.1-8b-instant. Fast definitions, summaries, short-form prep. 500–1000 TPS. max_tokens=200.</span>
+      <span class="flow-c">$0.05/M · user key</span>
+    </div>
+    <div class="flow-r fl-usr">
+      <span class="flow-i">06</span>
+      <span class="flow-n">Groq: 70B (20%)</span>
+      <span class="flow-d">llama-3.3-70b-versatile. Complex explanations, research, high-quality study content.</span>
+      <span class="flow-c">$0.59/M · user key</span>
+    </div>
+    <div class="flow-r fl-you">
+      <span class="flow-i">07</span>
+      <span class="flow-n">Cache Write</span>
+      <span class="flow-d">Response vector stored async in pgvector. Future identical queries answered instantly for free.</span>
+      <span class="flow-c">Async · $0.00</span>
+    </div>
+  </div>
+  <p style="font-size:12px; margin-bottom:24px;"><span style="color:var(--sky)">─</span> Sky = you host &nbsp;|&nbsp; <span style="color:var(--muted)">─</span> Grey = Groq Cloud (student's API key pays). No fallback providers.</p>
+
+  <div class="eyebrow">PDF Intelligence Pipeline</div>
+  <table class="tbl">
+    <thead><tr><th>Stage</th><th>What happens</th><th>Tool</th></tr></thead>
+    <tbody>
+      <tr><td class="tc">Upload</td><td>Student uploads PDF (notes, textbook, PPT export, lab manual)</td><td class="tm">FastAPI multipart</td></tr>
+      <tr><td class="tc">Parse</td><td>Extract raw text, preserve page structure and section headers</td><td class="tm">PyMuPDF (fitz)</td></tr>
+      <tr><td class="tc">Chunk</td><td>Split into ~400-token overlapping chunks. Preserves semantic boundaries.</td><td class="tm">LangChain TextSplitter</td></tr>
+      <tr><td class="tc">Embed</td><td>Each chunk embedded via all-MiniLM-L6-v2 and stored in pgvector</td><td class="tm">sentence-transformers</td></tr>
+      <tr><td class="tc">Retrieve</td><td>At query time, top-5 relevant chunks retrieved via cosine similarity</td><td class="tm">pgvector + Supabase</td></tr>
+      <tr><td class="tc">Inject</td><td>Only retrieved chunks sent to Groq — never the full document</td><td class="tm">Context assembly</td></tr>
+    </tbody>
+  </table>
+
+  <div class="eyebrow">Tech Stack</div>
+  <table class="tbl">
+    <thead><tr><th>Layer</th><th>Tool</th><th>Hosting</th><th>Cost</th></tr></thead>
+    <tbody>
+      <tr><td class="tc">Frontend</td><td>Next.js + Tailwind CSS</td><td>Vercel</td><td class="tg">$0/mo</td></tr>
+      <tr><td class="tc">PWA</td><td>next-pwa (manifest + service worker)</td><td>Same as frontend</td><td class="tg">$0/mo</td></tr>
+      <tr><td class="tc">Backend API</td><td>FastAPI + Uvicorn (Python)</td><td>Render (free tier)</td><td class="tg">$0 → $7/mo</td></tr>
+      <tr><td class="tc">Database</td><td>PostgreSQL + pgvector extension</td><td>Supabase (free)</td><td class="tg">$0/mo</td></tr>
+      <tr><td class="tc">Hot Cache</td><td>Redis (serverless)</td><td>Upstash (free)</td><td class="tg">$0/mo</td></tr>
+      <tr><td class="tc">Embeddings</td><td>all-MiniLM-L6-v2 (22MB, CPU)</td><td>Runs on Render</td><td class="tg">$0/mo</td></tr>
+      <tr><td class="tc">Compression</td><td>LLMLingua-2 (Microsoft open-source)</td><td>Runs on Render</td><td class="tg">$0/mo</td></tr>
+      <tr><td class="tc">Inference</td><td>Groq Cloud — 8B + 70B Llama models</td><td>Groq (student key)</td><td class="tm">Student pays ~$0.006/mo</td></tr>
+      <tr><td class="tc">PDF parsing</td><td>PyMuPDF</td><td>Runs on Render</td><td class="tg">$0/mo</td></tr>
+    </tbody>
+  </table>
+
+</section>
+
+<!-- ═══════════════════════ ECONOMICS ═════════════════════ -->
+<section id="economics" class="panel">
+
+  <div class="eyebrow">Token Optimization — Cumulative Effect</div>
+  <table class="tbl">
+    <thead><tr><th>Optimization Layer</th><th>Avg tokens/query</th><th>Cost / 1K queries</th><th>Saving</th></tr></thead>
+    <tbody>
+      <tr><td class="tc">Baseline (no optimization)</td><td class="ts">500</td><td class="tm">$0.033</td><td class="tm">—</td></tr>
+      <tr><td class="tc">+ Semantic cache (40% hit rate)</td><td class="ts">300</td><td class="tm">$0.020</td><td class="tg">↓ 40%</td></tr>
+      <tr><td class="tc">+ LLMLingua-2 (5× compression)</td><td class="ts">60</td><td class="tm">$0.004</td><td class="tg">↓ 88%</td></tr>
+      <tr><td class="tc">+ History compaction</td><td class="ts">40</td><td class="tm">$0.0027</td><td class="tg">↓ 92%</td></tr>
+      <tr><td class="tc">+ max_tokens=200 + stop sequences</td><td class="ts">30</td><td class="tm">$0.0020</td><td class="tg">↓ 94%</td></tr>
+    </tbody>
+  </table>
+
+  <div class="block-sky">
+    <strong>Student cost reality:</strong> 100 queries/day × $0.0020/1K = $0.0002/day = <strong>~₹0.50/month</strong> in Groq credits. For most students on Groq's free tier (30 RPM), cost is literally zero until heavy usage.
+  </div>
+
+  <div class="eyebrow">Monthly Infrastructure Cost</div>
+  <table class="tbl">
     <thead><tr><th>Service</th><th>Role</th><th>Who pays</th><th>Cost</th></tr></thead>
     <tbody>
-      <tr><td class="val">Vercel</td><td class="note">Frontend + PWA</td><td class="note">You</td><td class="num good">$0</td></tr>
-      <tr><td class="val">Render (free)</td><td class="note">FastAPI backend</td><td class="note">You</td><td class="num good">$0</td></tr>
-      <tr><td class="val">Supabase (free)</td><td class="note">PostgreSQL + pgvector</td><td class="note">You</td><td class="num good">$0</td></tr>
-      <tr><td class="val">Upstash (free)</td><td class="note">Redis hot cache</td><td class="note">You</td><td class="num good">$0</td></tr>
-      <tr><td class="val">Groq Cloud</td><td class="note">Inference (8B + 70B)</td><td class="note" style="color:var(--white)">User's key</td><td class="num" style="color:var(--dim)">~$0.006/mo/user</td></tr>
-      <tr style="border-top: 1px solid var(--border2)"><td class="val" style="color:var(--pure); font-weight:700">YOUR TOTAL</td><td></td><td></td><td class="num" style="font-size:16px">$0 / mo</td></tr>
+      <tr><td class="tc">Vercel</td><td>Frontend + PWA hosting</td><td>You</td><td class="tg">$0/mo</td></tr>
+      <tr><td class="tc">Render (free tier)</td><td>FastAPI backend + all CPU models</td><td>You</td><td class="tg">$0/mo</td></tr>
+      <tr><td class="tc">Supabase (free tier)</td><td>PostgreSQL + pgvector cache</td><td>You</td><td class="tg">$0/mo</td></tr>
+      <tr><td class="tc">Upstash (free tier)</td><td>Redis hot cache (10K cmd/day)</td><td>You</td><td class="tg">$0/mo</td></tr>
+      <tr><td class="tc">Groq Cloud</td><td>All LLM inference</td><td>Student (BYOK)</td><td class="tm">~₹0.50/student/mo</td></tr>
+      <tr style="border-top: 1px solid var(--b2)"><td class="tc" style="color:var(--pure); font-weight:700; font-family:var(--disp); font-size:14px;">YOUR TOTAL</td><td></td><td></td><td class="ts" style="font-size:16px; text-align:left; padding-left:12px;">$0 / month</td></tr>
     </tbody>
   </table>
 
-</div>
-
-<!-- ═══════════════════════════════════════════════════════════ TOKENS -->
-<div id="tokens" class="tab">
-
-  <div class="section-label">Cumulative Token Reduction</div>
-  <table>
-    <thead><tr><th>Stage</th><th>Avg tokens/query</th><th>Cost / 1K queries</th><th>Cumulative saving</th></tr></thead>
-    <tbody>
-      <tr><td class="note">No optimization</td><td class="num" style="color:var(--dim)">500</td><td class="num" style="color:var(--dim)">$0.033</td><td class="note">—</td></tr>
-      <tr><td class="note">+ Semantic cache (40% hit rate)</td><td class="num">300</td><td class="num">$0.020</td><td class="num good">40%</td></tr>
-      <tr><td class="note">+ LLMLingua-2 (5× compression)</td><td class="num">60</td><td class="num">$0.004</td><td class="num good">88%</td></tr>
-      <tr><td class="note">+ History compaction</td><td class="num">40</td><td class="num">$0.0027</td><td class="num good">92%</td></tr>
-      <tr><td class="note">+ max_tokens=200 cap</td><td class="num">30</td><td class="num">$0.0020</td><td class="num good">94%</td></tr>
-    </tbody>
-  </table>
-  <p style="font-size:12px">100 queries/day × $0.0020/1K = <strong style="color:var(--pure)">~$0.006/user/month</strong>. Effectively free.</p>
-
-  <div class="gap"></div>
-  <div class="section-label">Implementation — Copy These</div>
-
-  <h3 style="margin-bottom:8px">1 — Semantic Cache (FAISS + pgvector)</h3>
-  <pre><span class="c"># Install</span>
-pip install sentence-transformers faiss-cpu psycopg2-binary
-
-<span class="c"># Embed + search</span>
-<span class="k">from</span> sentence_transformers <span class="k">import</span> SentenceTransformer
-model = SentenceTransformer(<span class="s">"all-MiniLM-L6-v2"</span>)   <span class="c"># 22MB, CPU only</span>
-
-<span class="k">def</span> cache_lookup(query, threshold=<span class="n">0.92</span>):
-    vec = model.encode(query).tolist()
-    <span class="c"># pgvector cosine similarity query</span>
-    row = db.fetchone(<span class="s">"SELECT response FROM cache ORDER BY embedding &lt;=&gt; %s LIMIT 1"</span>, [vec])
-    <span class="k">if</span> row <span class="k">and</span> cosine_sim(vec, row.embedding) >= threshold:
-        <span class="k">return</span> row.response   <span class="c"># cache hit → $0.00</span>
-    <span class="k">return</span> <span class="k">None</span></pre>
-
-  <h3 style="margin-bottom:8px">2 — LLMLingua-2 Compression</h3>
-  <pre><span class="c"># Install</span>
-pip install llmlingua
-
-<span class="k">from</span> llmlingua <span class="k">import</span> PromptCompressor
-compressor = PromptCompressor(
-    <span class="s">"microsoft/llmlingua-2-xlm-roberta-large-meetingbank"</span>,
-    use_llmlingua2=<span class="k">True</span>
-)
-
-compressed = compressor.compress_prompt(prompt, rate=<span class="n">0.33</span>)[<span class="s">"compressed_prompt"</span>]
-<span class="c"># rate=0.33 → keeps 33% of tokens (3× compression). Use 0.2 for 5×.</span></pre>
-
-  <h3 style="margin-bottom:8px">3 — History Compactor</h3>
-  <pre><span class="k">def</span> compact_history(history, groq_client):
-    <span class="k">if</span> len(history) <= <span class="n">5</span>: <span class="k">return</span> history
-    old = history[:-<span class="n">2</span>]   <span class="c"># everything except last 2 turns</span>
-    summary = groq_client.chat.completions.create(
-        model=<span class="s">"llama-3.1-8b-instant"</span>,
-        messages=[{<span class="s">"role"</span>:<span class="s">"user"</span>, <span class="s">"content"</span>: <span class="s">f"Summarize in 2 sentences: {old}"</span>}],
-        max_tokens=<span class="n">60</span>
-    ).choices[0].message.content
-    <span class="k">return</span> [{<span class="s">"role"</span>:<span class="s">"system"</span>, <span class="s">"content"</span>: <span class="s">f"Prior context: {summary}"</span>}] + history[-<span class="n">2</span>:]</pre>
-
-  <h3 style="margin-bottom:8px">4 — Router + Capped Groq Call</h3>
-  <pre>COMPLEX = [<span class="s">"code"</span>, <span class="s">"debug"</span>, <span class="s">"function"</span>, <span class="s">"math"</span>, <span class="s">"solve"</span>, <span class="s">"analyze"</span>, <span class="s">"compare"</span>]
-
-<span class="k">def</span> pick_model(query):
-    <span class="k">if</span> len(query.split()) > <span class="n">60</span> <span class="k">or</span> any(k <span class="k">in</span> query.lower() <span class="k">for</span> k <span class="k">in</span> COMPLEX):
-        <span class="k">return</span> <span class="s">"llama-3.3-70b-versatile"</span>   <span class="c"># ~20% of queries</span>
-    <span class="k">return</span> <span class="s">"llama-3.1-8b-instant"</span>           <span class="c"># ~80% of queries</span>
-
-response = groq_client.chat.completions.create(
-    model=pick_model(compressed_query),
-    messages=history,
-    max_tokens=<span class="n">200</span>,
-    stop=[<span class="s">"###"</span>, <span class="s">"\n\n\n"</span>],
-    temperature=<span class="n">0.3</span>
-)</pre>
-
-</div>
-
-<!-- ═══════════════════════════════════════════════════════════ HOSTING -->
-<div id="hosting" class="tab">
-
-  <div class="section-label">Free Stack — $0/month Total</div>
-  <table>
-    <thead><tr><th>Service</th><th>Role</th><th>Free tier</th><th>Paid (when needed)</th><th>Note</th></tr></thead>
-    <tbody>
-      <tr>
-        <td class="val">Vercel</td>
-        <td class="note">Frontend + PWA</td>
-        <td class="good">Unlimited · no CC</td>
-        <td class="note">$20/mo (Pro)</td>
-        <td class="note">Best for Next.js. Auto-deploy from GitHub.</td>
-      </tr>
-      <tr>
-        <td class="val">Render</td>
-        <td class="note">FastAPI backend</td>
-        <td class="good">512MB · no CC</td>
-        <td class="note">$7/mo (no cold start)</td>
-        <td class="note">Only host with permanent free tier in 2026. Cold starts on free.</td>
-      </tr>
-      <tr>
-        <td class="val">Supabase</td>
-        <td class="note">PostgreSQL + pgvector</td>
-        <td class="good">500MB · no CC</td>
-        <td class="note">$25/mo (Pro)</td>
-        <td class="note">pgvector built-in. Handles vectors + relational data in one DB.</td>
-      </tr>
-      <tr>
-        <td class="val">Upstash</td>
-        <td class="note">Redis hot cache</td>
-        <td class="good">10K cmd/day · no CC</td>
-        <td class="note">$10/mo (Pro)</td>
-        <td class="note">Serverless Redis. 10K = ~5K daily queries before upgrade.</td>
-      </tr>
-      <tr>
-        <td class="val">Render Cron</td>
-        <td class="note">Async jobs</td>
-        <td class="good">Free with Render</td>
-        <td class="note">Included</td>
-        <td class="note">Schedule cache cleanup, history compaction. No Celery needed early on.</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <p style="font-size:12px; margin-bottom:20px;">
-    <strong style="color:var(--white)">⚠ Fly.io:</strong> <span style="color:var(--muted)">No free tier since 2024. Requires credit card. Use Render instead for free hosting.</span>
-  </p>
-
-  <div class="section-label">Paid Alternatives (When You Scale)</div>
-  <table>
-    <thead><tr><th>Option</th><th>Cost</th><th>Best for</th></tr></thead>
-    <tbody>
-      <tr><td class="val">Railway</td><td class="num">$5/mo</td><td class="note">Best DX after free stage. Includes PostgreSQL + Redis. No cold starts.</td></tr>
-      <tr><td class="val">Fly.io</td><td class="num">~$5–10/mo</td><td class="note">Global edge deployment. Better if users are worldwide.</td></tr>
-      <tr><td class="val">Hetzner + Coolify</td><td class="num">€4.51/mo</td><td class="note">Cheapest paid option. Self-hosted. Good for GDPR / EU users.</td></tr>
-      <tr><td class="val">Cloudflare Workers</td><td class="num">$0 (100K req/day)</td><td class="note">Edge router layer only. 10ms global latency. No persistent storage.</td></tr>
-    </tbody>
-  </table>
-
-  <div class="section-label">Security — Non-Negotiable</div>
-  <ul class="checklist" id="sec-list">
-    <li><input type="checkbox"> AES-256-GCM encrypt every Groq key in Supabase. Never log plaintext keys.</li>
-    <li><input type="checkbox"> Frontend only receives your platform session token — never the Groq key.</li>
-    <li><input type="checkbox"> Rate limit: 60 requests/min per user via Upstash Redis sliding window.</li>
-    <li><input type="checkbox"> Enable Supabase Row Level Security — users can only read their own data.</li>
-    <li><input type="checkbox"> HTTPS enforced everywhere (Vercel + Render handle TLS automatically).</li>
-    <li><input type="checkbox"> Prompt users to rotate Groq key every 90 days — show a dashboard banner.</li>
-  </ul>
-
-</div>
-
-<!-- ═══════════════════════════════════════════════════════════ MOBILE -->
-<div id="mobile" class="tab">
-
-  <div class="section-label">Strategy — PWA First, Native Later</div>
-
-  <div class="spec-row">
-    <span class="spec-key">Approach</span>
-    <span class="spec-val">Progressive Web App (PWA). Same codebase as your website. Users install from browser — no App Store needed.</span>
-  </div>
-  <div class="spec-row">
-    <span class="spec-key">Cost</span>
-    <span class="spec-val">$0. No Apple Developer account ($99/yr) or Google Play ($25 one-time) until you choose to go native.</span>
-  </div>
-  <div class="spec-row">
-    <span class="spec-key">Install</span>
-    <span class="spec-val">Android Chrome: automatic "Add to Home Screen" prompt. iOS Safari: Share → Add to Home Screen.</span>
-  </div>
-  <div class="spec-row">
-    <span class="spec-key">When to go native</span>
-    <span class="spec-val">500+ users requesting it, or revenue &gt; $100/mo. Wrap with Capacitor.js — one command turns your Next.js app into an iOS/Android bundle.</span>
+  <div class="eyebrow">BYOK Model — How It Works</div>
+  <div class="spec">
+    <div class="spec-r"><span class="spec-k">Student signs up</span><span class="spec-v">Creates a Groq account at console.groq.com — free, no credit card, 30 RPM.<small>Takes 2 minutes. You link to Groq's key page in your onboarding flow.</small></span></div>
+    <div class="spec-r"><span class="spec-k">Key storage</span><span class="spec-v">Student pastes Groq key once. Stored AES-256-GCM encrypted in Supabase. Never logged in plaintext. Displayed masked.</span></div>
+    <div class="spec-r"><span class="spec-k">Inference billing</span><span class="spec-v">Every Groq API call uses the student's own key. Groq bills the student directly. You are never in the billing chain.</span></div>
+    <div class="spec-r"><span class="spec-k">Your exposure</span><span class="spec-v">Zero. If Groq pricing changes or a student runs out of credits — nothing changes for you. You still pay $0.</span></div>
   </div>
 
   <div class="gap"></div>
-  <div class="section-label">3 Files to Enable PWA</div>
-
-  <h3 style="margin-bottom:8px">manifest.json</h3>
-  <pre>{
-  <span class="s">"name"</span>: <span class="s">"YourAI"</span>,
-  <span class="s">"short_name"</span>: <span class="s">"YourAI"</span>,
-  <span class="s">"display"</span>: <span class="s">"standalone"</span>,
-  <span class="s">"theme_color"</span>: <span class="s">"#000000"</span>,
-  <span class="s">"background_color"</span>: <span class="s">"#000000"</span>,
-  <span class="s">"start_url"</span>: <span class="s">"/"</span>,
-  <span class="s">"icons"</span>: [
-    { <span class="s">"src"</span>: <span class="s">"/icon-192.png"</span>, <span class="s">"sizes"</span>: <span class="s">"192x192"</span>, <span class="s">"type"</span>: <span class="s">"image/png"</span> },
-    { <span class="s">"src"</span>: <span class="s">"/icon-512.png"</span>, <span class="s">"sizes"</span>: <span class="s">"512x512"</span>, <span class="s">"type"</span>: <span class="s">"image/png"</span> }
-  ]
-}</pre>
-
-  <h3 style="margin-bottom:8px">next.config.js (auto service worker via next-pwa)</h3>
-  <pre>npm install next-pwa
-
-<span class="c">// next.config.js</span>
-<span class="k">const</span> withPWA = require(<span class="s">"next-pwa"</span>)({ dest: <span class="s">"public"</span>, disable: process.env.NODE_ENV === <span class="s">"development"</span> });
-module.exports = withPWA({});</pre>
-
-  <h3 style="margin-bottom:8px">&lt;head&gt; tags</h3>
-  <pre>&lt;link rel=<span class="s">"manifest"</span> href=<span class="s">"/manifest.json"</span> /&gt;
-&lt;meta name=<span class="s">"theme-color"</span> content=<span class="s">"#000000"</span> /&gt;
-&lt;meta name=<span class="s">"apple-mobile-web-app-capable"</span> content=<span class="s">"yes"</span> /&gt;
-&lt;link rel=<span class="s">"apple-touch-icon"</span> href=<span class="s">"/icon-192.png"</span> /&gt;</pre>
-
-  <div class="section-label">PWA vs Native — Feature Comparison</div>
-  <table>
-    <thead><tr><th>Feature</th><th>PWA (now)</th><th>Native (later)</th></tr></thead>
+  <div class="eyebrow">Monetization Path (V2 Onward)</div>
+  <table class="tbl">
+    <thead><tr><th>Tier</th><th>Price</th><th>What they get</th></tr></thead>
     <tbody>
-      <tr><td class="note">Home screen icon</td><td class="good">✓ Yes</td><td class="good">✓ Yes</td></tr>
-      <tr><td class="note">Works offline</td><td class="good">✓ Yes</td><td class="good">✓ Yes</td></tr>
-      <tr><td class="note">Push notifications</td><td class="note">Android full · iOS limited</td><td class="good">✓ Full</td></tr>
-      <tr><td class="note">App Store listing</td><td class="bad">✗ No</td><td class="good">✓ Yes</td></tr>
-      <tr><td class="note">Camera / microphone</td><td class="good">✓ Browser API</td><td class="good">✓ Native API</td></tr>
-      <tr><td class="note">Cost to ship</td><td class="good">$0</td><td class="bad">$99/yr + $25 one-time</td></tr>
-      <tr><td class="note">Update process</td><td class="good">Instant (redeploy)</td><td class="bad">App Store review (1–3 days)</td></tr>
-      <tr><td class="note">Separate codebase</td><td class="good">No — same as web</td><td class="bad">React Native or Capacitor.js</td></tr>
+      <tr><td class="tc">Free</td><td class="tm">₹0</td><td>BYOK Groq key, all V1 features, basic PDF (5 uploads/mo), semantic cache</td></tr>
+      <tr><td class="tc">Student Pro</td><td class="tm">₹99–149/mo</td><td>Managed key (no setup), unlimited PDFs, extended history, priority routing, PYQ analytics</td></tr>
+      <tr><td class="tc">College License</td><td class="tm">₹50K–2L/yr</td><td>Deployed for entire department or university — custom PYQ repository, admin dashboard, branded UI</td></tr>
     </tbody>
   </table>
 
-</div>
+</section>
 
-<!-- ═══════════════════════════════════════════════════════════ THIS WEEK -->
-<div id="week" class="tab">
+<!-- ═══════════════════════ ROADMAP ═════════════════════ -->
+<section id="roadmap" class="panel">
 
-  <div class="progress-wrap">
-    <div class="progress-meta">
-      <span>PROGRESS</span>
-      <span id="prog-label">0 / 25 tasks</span>
+  <div class="eyebrow">Build Phases — V1 to V2</div>
+
+  <div class="phase cur">
+    <div class="phase-head">
+      <span class="phase-tag sky">Month 1–2</span>
+      <span class="phase-title">Core Foundation</span>
+      <span class="phase-time">Current priority</span>
     </div>
-    <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    <ul>
+      <li>FastAPI backend on Render — BYOK Groq key flow with AES-256 encryption</li>
+      <li>AI Study Chat with 8B/70B routing, max_tokens cap, stop sequences</li>
+      <li>Next.js frontend on Vercel — dark UI, mobile responsive, Claude-inspired layout</li>
+      <li>Semantic cache layer — FAISS + pgvector, 0.92 cosine threshold</li>
+      <li>LLMLingua-2 prompt compression integrated in middleware pipeline</li>
+      <li>Token usage dashboard — live meter, warnings at 25/50/75/90/95/99/100%</li>
+    </ul>
   </div>
 
-  <div class="day-head">
-    <span class="day-label">Day 1</span>
-    <span class="day-title">Infrastructure Up</span>
-  </div>
-  <ul class="checklist">
-    <li><input type="checkbox" onchange="updateProgress()"> Create Supabase project → enable pgvector extension (Settings → Database → Extensions)</li>
-    <li><input type="checkbox" onchange="updateProgress()"> Create Render account → connect GitHub → deploy hello-world FastAPI app</li>
-    <li><input type="checkbox" onchange="updateProgress()"> Create Vercel account → connect GitHub → deploy Next.js starter</li>
-    <li><input type="checkbox" onchange="updateProgress()"> Create Upstash account → create Redis DB → copy REST URL + token</li>
-    <li><input type="checkbox" onchange="updateProgress()"> Verify: FastAPI returns <code style="font-family:var(--mono); font-size:11px; color:var(--dim)">{"status":"ok"}</code> at your Render URL</li>
-  </ul>
-
-  <div class="day-head">
-    <span class="day-label">Day 2</span>
-    <span class="day-title">Groq + BYOK Working</span>
-  </div>
-  <ul class="checklist">
-    <li><input type="checkbox" onchange="updateProgress()"> <code style="font-family:var(--mono);font-size:11px;color:var(--dim)">pip install groq</code> → test direct call to llama-3.1-8b-instant in a script</li>
-    <li><input type="checkbox" onchange="updateProgress()"> Build <code style="font-family:var(--mono);font-size:11px;color:var(--dim)">/chat</code> endpoint: accept {message, groq_key} → call Groq → return response</li>
-    <li><input type="checkbox" onchange="updateProgress()"> AES-256 encrypt the groq_key → store in Supabase on first use</li>
-    <li><input type="checkbox" onchange="updateProgress()"> Add 5-line router: token count + keyword check → 8B vs 70B</li>
-    <li><input type="checkbox" onchange="updateProgress()"> Add max_tokens=200 and stop sequences to every Groq call</li>
-  </ul>
-
-  <div class="day-head">
-    <span class="day-label">Day 3</span>
-    <span class="day-title">Semantic Cache Live</span>
-  </div>
-  <ul class="checklist">
-    <li><input type="checkbox" onchange="updateProgress()"> <code style="font-family:var(--mono);font-size:11px;color:var(--dim)">pip install sentence-transformers faiss-cpu</code> → load all-MiniLM-L6-v2</li>
-    <li><input type="checkbox" onchange="updateProgress()"> On every response: embed query → store vector in Supabase pgvector</li>
-    <li><input type="checkbox" onchange="updateProgress()"> On every new query: embed → cosine search → return if score ≥ 0.92</li>
-    <li><input type="checkbox" onchange="updateProgress()"> Log [CACHE HIT] vs [GROQ CALL] — watch hit rate grow with repeated queries</li>
-    <li><input type="checkbox" onchange="updateProgress()"> Test with 10 similar questions → confirm cache returns hits</li>
-  </ul>
-
-  <div class="day-head">
-    <span class="day-label">Day 4</span>
-    <span class="day-title">LLMLingua + Compaction</span>
-  </div>
-  <ul class="checklist">
-    <li><input type="checkbox" onchange="updateProgress()"> <code style="font-family:var(--mono);font-size:11px;color:var(--dim)">pip install llmlingua</code> → downloads ~250MB model, runs on CPU</li>
-    <li><input type="checkbox" onchange="updateProgress()"> Wrap every Groq call: compress_prompt(query, rate=0.33) before sending</li>
-    <li><input type="checkbox" onchange="updateProgress()"> Log original vs compressed token count → verify 3–5× reduction</li>
-    <li><input type="checkbox" onchange="updateProgress()"> Add history compactor: if len(history) &gt; 5, summarize with 8B into 60 tokens</li>
-    <li><input type="checkbox" onchange="updateProgress()"> Run 20-query test → check token logs, verify cumulative savings</li>
-  </ul>
-
-  <div class="day-head">
-    <span class="day-label">Day 5</span>
-    <span class="day-title">Frontend + PWA</span>
-  </div>
-  <ul class="checklist">
-    <li><input type="checkbox" onchange="updateProgress()"> <code style="font-family:var(--mono);font-size:11px;color:var(--dim)">npm install next-pwa</code> → configure in next.config.js</li>
-    <li><input type="checkbox" onchange="updateProgress()"> Add manifest.json + apple-touch-icon + theme-color to &lt;head&gt;</li>
-    <li><input type="checkbox" onchange="updateProgress()"> Build chat UI: Groq key setup screen + message list + input</li>
-    <li><input type="checkbox" onchange="updateProgress()"> Add per-message token counter: "X tokens used · $Y saved vs GPT-4"</li>
-    <li><input type="checkbox" onchange="updateProgress()"> Test on mobile: visit URL in Chrome → Add to Home Screen → confirm app opens</li>
-  </ul>
-
-  <div class="gap"></div>
-  <div style="border: 1px solid var(--border); padding: 16px; font-size: 13px;">
-    <div class="section-label" style="margin-bottom:10px">End of Week 1 — What You Have</div>
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 6px 20px;">
-      <div style="color:var(--muted)">✓ Live URL, desktop + mobile</div>
-      <div style="color:var(--muted)">✓ BYOK Groq key setup</div>
-      <div style="color:var(--muted)">✓ Semantic cache (hit rate ~10%, grows)</div>
-      <div style="color:var(--muted)">✓ LLMLingua cutting 3–5× per prompt</div>
-      <div style="color:var(--muted)">✓ PWA installable on any phone</div>
-      <div style="color:var(--muted)">✓ Your monthly cost: $0</div>
+  <div class="phase cur">
+    <div class="phase-head">
+      <span class="phase-tag sky">Month 2–3</span>
+      <span class="phase-title">PDF Intelligence</span>
     </div>
+    <ul>
+      <li>PDF upload endpoint — PyMuPDF parsing, chunk splitting, pgvector embedding</li>
+      <li>Chat-with-PDF — RAG retrieval, top-5 chunks injected into context</li>
+      <li>Summarize PDF, extract key points, generate revision notes from document</li>
+      <li>History compactor — 5-turn summarization to compressed context digest</li>
+      <li>Prompt Assistant — 5 one-click ready-made academic prompt templates</li>
+    </ul>
   </div>
 
-</div>
+  <div class="phase">
+    <div class="phase-head">
+      <span class="phase-tag">Month 3–4</span>
+      <span class="phase-title">Exam Tools + PYQ</span>
+    </div>
+    <ul>
+      <li>PYQ Repository — admin upload UI, subject/topic tagging, verified question bank</li>
+      <li>PYQ search — topic-wise, subject-wise, pattern frequency analysis</li>
+      <li>Exam prep tools — 2-mark, 5-mark, 10-mark question generation from material</li>
+      <li>Flashcard generator — Question → Answer pairs from notes or chat context</li>
+      <li>Quiz generator — MCQ + short-answer at Easy/Medium/Hard difficulty</li>
+    </ul>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head">
+      <span class="phase-tag">Month 5–6</span>
+      <span class="phase-title">Polish + SRM Launch</span>
+    </div>
+    <ul>
+      <li>PWA configuration — manifest.json + next-pwa service worker, installable on iOS/Android</li>
+      <li>AI Quality Mode selector — Low / Medium / High / Max in UI</li>
+      <li>SRM campus launch — student community rollout, feedback collection</li>
+      <li>DistilBERT fine-tuned complexity classifier to replace rule-based router</li>
+      <li>PYQ-based mock test mode — timed, scored, with answer explanations</li>
+    </ul>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head">
+      <span class="phase-tag">V2 · 12–18 months</span>
+      <span class="phase-title">Coding Mode + Expansion</span>
+    </div>
+    <ul>
+      <li>Coding Mode — dedicated DSA, debugging, code explanation interface</li>
+      <li>Larger reasoning model integration (120B class or equivalent at Groq speeds)</li>
+      <li>Multi-university expansion — VIT, BITS, Anna University affiliates</li>
+      <li>Student Pro tier launch — managed Groq keys, unlimited PDFs, priority routing</li>
+      <li>College License product — institution-level deployment, custom PYQ banks</li>
+    </ul>
+  </div>
+
+  <hr class="rule">
+
+  <div class="eyebrow">Long-Term Vision</div>
+  <div class="block-sky">
+    <strong>ORYGYNS AI becomes the primary AI study companion for India's engineering students</strong> — not by being a better general-purpose chatbot, but by being the only AI that understands their exact syllabus, their university's PYQ history, and the structure of their semester exams. The moat compounds: every student interaction improves the cache, every admin-uploaded PYQ deepens the repository, and every campus launch expands the network. General AI cannot replicate a specialized, compounding, domain-specific product.
+  </div>
+
+  <table class="tbl" style="margin-top:20px;">
+    <thead><tr><th>Milestone</th><th>Target</th><th>Signal</th></tr></thead>
+    <tbody>
+      <tr><td class="tc">MVP live</td><td class="tm">Month 2</td><td>Study Chat + BYOK + Cache running at a real URL</td></tr>
+      <tr><td class="tc">100 active users</td><td class="tm">Month 3–4</td><td>PDF + PYQ shipped, word-of-mouth at SRM</td></tr>
+      <tr><td class="tc">1,000 active users</td><td class="tm">Month 6–8</td><td>Campus launch, PWA installed on phones</td></tr>
+      <tr><td class="tc">First revenue</td><td class="tm">Month 8–10</td><td>Student Pro tier, managed key offering</td></tr>
+      <tr><td class="tc">10,000 active users</td><td class="tm">Month 12–18</td><td>Multi-university, first College License deal</td></tr>
+    </tbody>
+  </table>
+
+</section>
+
+<!-- ═══════════════════════ FOOTER ═════════════════════════ -->
+<footer class="foot">
+  <span>ORYGYNS AI · Product Blueprint V1.0 · Confidential</span>
+  <span>Built on Groq · Deployed free · Scales without funding</span>
+</footer>
 
 <script>
-  function switchTab(id, btn) {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    btn.classList.add('active');
-  }
-
-  function updateProgress() {
-    const boxes = document.querySelectorAll('#week input[type=checkbox]');
-    const done  = [...boxes].filter(b => b.checked).length;
-    const total = boxes.length;
-    document.getElementById('prog-label').textContent = done + ' / ' + total + ' tasks';
-    document.getElementById('prog-fill').style.width = (done / total * 100) + '%';
-    boxes.forEach(box => {
-      const li = box.closest('li');
-      li.classList.toggle('done', box.checked);
-    });
+  function show(id, btn) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+    document.querySelectorAll('nav.tabs button').forEach(b => b.classList.remove('on'));
+    document.getElementById(id).classList.add('on');
+    btn.classList.add('on');
   }
 </script>
-
 </body>
 </html>
