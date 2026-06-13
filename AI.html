@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Platform Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black:   #000000;
+    --ink:     #0E0E0E;
+    --card:    #141414;
+    --border:  #242424;
+    --border2: #333333;
+    --muted:   #666666;
+    --dim:     #999999;
+    --white:   #F4F4F4;
+    --pure:    #FFFFFF;
+    --mono:    'JetBrains Mono', monospace;
+    --sans:    'Space Grotesk', system-ui, sans-serif;
+  }
+
+  html { background: var(--black); color: var(--white); font-family: var(--sans); font-size: 14px; line-height: 1.6; }
+  body { max-width: 860px; margin: 0 auto; padding: 0 20px 60px; }
+
+  /* ── Header ── */
+  header { padding: 36px 0 20px; border-bottom: 1px solid var(--border); margin-bottom: 0; }
+  .header-top { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; }
+  h1 { font-size: clamp(20px, 4vw, 30px); font-weight: 700; letter-spacing: -0.02em; color: var(--pure); }
+  .header-meta { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.06em; }
+  .header-sub { font-size: 13px; color: var(--muted); margin-top: 6px; }
+
+  /* ── Tabs ── */
+  nav { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 0; overflow-x: auto; }
+  nav button {
+    background: none; border: none; color: var(--muted); font-family: var(--sans);
+    font-size: 12px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase;
+    padding: 14px 18px; cursor: pointer; border-bottom: 2px solid transparent;
+    white-space: nowrap; transition: color 0.15s, border-color 0.15s; margin-bottom: -1px;
+  }
+  nav button.active { color: var(--pure); border-bottom-color: var(--pure); }
+  nav button:hover:not(.active) { color: var(--dim); }
+
+  /* ── Sections ── */
+  .tab { display: none; padding-top: 28px; }
+  .tab.active { display: block; }
+
+  /* ── Typography ── */
+  .section-label {
+    font-family: var(--mono); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
+  }
+  h2 { font-size: 17px; font-weight: 700; color: var(--pure); margin-bottom: 6px; }
+  h3 { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+  p { color: var(--muted); line-height: 1.65; margin-bottom: 10px; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ── Blocks ── */
+  .block { border: 1px solid var(--border); padding: 18px; margin-bottom: 14px; }
+  .block-row { display: flex; gap: 20px; flex-wrap: wrap; }
+  .block-row .block { flex: 1; min-width: 200px; margin-bottom: 0; }
+  .block + .block { margin-top: 0; }
+
+  /* ── Rule sections ── */
+  .spec-row {
+    display: grid; grid-template-columns: 140px 1fr; gap: 12px;
+    padding: 10px 0; border-bottom: 1px solid var(--border);
+    align-items: start;
+  }
+  .spec-row:first-of-type { border-top: 1px solid var(--border); }
+  .spec-key { font-family: var(--mono); font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; padding-top: 1px; }
+  .spec-val { font-size: 13px; color: var(--white); }
+  .spec-val small { color: var(--muted); font-size: 11px; display: block; margin-top: 2px; }
+
+  /* ── Tables ── */
+  table { width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 12.5px; }
+  thead th { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; background: var(--card); }
+  tbody td { padding: 9px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: var(--card); }
+  td.key { font-family: var(--mono); color: var(--dim); font-size: 12px; white-space: nowrap; }
+  td.val { color: var(--white); }
+  td.note { color: var(--muted); font-size: 12px; }
+  td.num { font-family: var(--mono); color: var(--pure); font-weight: 600; text-align: right; white-space: nowrap; }
+  td.good { color: var(--pure); font-weight: 600; }
+  td.bad  { color: var(--muted); }
+  .wide-key { grid-template-columns: 200px 1fr; }
+
+  /* ── Code ── */
+  pre {
+    background: var(--card); border: 1px solid var(--border); padding: 14px 16px;
+    font-family: var(--mono); font-size: 12px; color: var(--dim); line-height: 1.7;
+    overflow-x: auto; margin-bottom: 14px; white-space: pre;
+  }
+  pre .c { color: var(--muted); } /* comment */
+  pre .k { color: var(--white); } /* keyword / important */
+  pre .s { color: #aaa; }         /* string */
+  pre .n { color: var(--pure); font-weight: 600; } /* number/important value */
+
+  /* ── Tags ── */
+  .tag {
+    display: inline-block; font-family: var(--mono); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    border: 1px solid var(--border2); color: var(--dim); padding: 2px 7px;
+    margin: 2px 2px 2px 0; line-height: 1.6;
+  }
+  .tag.hi { border-color: var(--white); color: var(--white); }
+  .tag.lo { border-color: var(--border); color: var(--muted); }
+
+  /* ── Checklist ── */
+  .checklist { margin: 0; padding: 0; list-style: none; }
+  .checklist li {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--dim);
+  }
+  .checklist li:first-child { border-top: 1px solid var(--border); }
+  .checklist li.done { color: var(--muted); text-decoration: line-through; }
+  .checklist input[type=checkbox] {
+    appearance: none; -webkit-appearance: none;
+    width: 14px; height: 14px; border: 1px solid var(--border2);
+    background: none; cursor: pointer; flex-shrink: 0; margin-top: 3px;
+    position: relative; transition: background 0.15s;
+  }
+  .checklist input[type=checkbox]:checked { background: var(--pure); border-color: var(--pure); }
+  .checklist input[type=checkbox]:checked::after {
+    content: ''; position: absolute; left: 3px; top: 1px;
+    width: 5px; height: 8px; border: 1.5px solid var(--black);
+    border-top: none; border-left: none; transform: rotate(40deg);
+  }
+
+  /* ── Progress bar ── */
+  .progress-wrap { margin-bottom: 18px; }
+  .progress-meta { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+  .progress-bar { height: 3px; background: var(--border); }
+  .progress-fill { height: 100%; background: var(--pure); transition: width 0.3s; }
+
+  /* ── Day headers ── */
+  .day-head {
+    display: flex; align-items: center; gap: 12px; margin-top: 24px; margin-bottom: 0;
+    padding-bottom: 8px; border-bottom: 1px solid var(--border2);
+  }
+  .day-head:first-of-type { margin-top: 0; }
+  .day-label { font-family: var(--mono); font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+  .day-title { font-size: 14px; font-weight: 700; color: var(--pure); }
+
+  /* ── Architecture flow ── */
+  .flow { border: 1px solid var(--border); margin-bottom: 14px; }
+  .flow-row {
+    display: grid; grid-template-columns: 24px 160px 1fr auto;
+    gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--border);
+    align-items: center;
+  }
+  .flow-row:last-child { border-bottom: none; }
+  .flow-n { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .flow-name { font-size: 13px; font-weight: 600; color: var(--pure); }
+  .flow-desc { font-size: 12px; color: var(--muted); }
+  .flow-cost { font-family: var(--mono); font-size: 11px; color: var(--dim); white-space: nowrap; text-align: right; }
+  .flow-you { border-left: 2px solid var(--white); }
+  .flow-groq { border-left: 2px solid var(--muted); }
+
+  /* ── Stat strip ── */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 14px; }
+  .stat { background: var(--black); padding: 16px; }
+  .stat-num { font-family: var(--mono); font-size: 26px; font-weight: 600; color: var(--pure); line-height: 1; margin-bottom: 4px; }
+  .stat-lbl { font-size: 11px; color: var(--muted); }
+
+  /* ── Divider ── */
+  .gap { height: 28px; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+  @media (max-width: 600px) {
+    .flow-row { grid-template-columns: 20px 1fr; }
+    .flow-cost, .flow-name { display: none; }
+    .flow-name { display: block; grid-column: 2; }
+    .spec-row { grid-template-columns: 1fr; gap: 2px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <h1>AI Platform Blueprint</h1>
+    <span class="header-meta">GROQ BYOK · NEAR-ZERO COST · V1.0</span>
+  </div>
+  <p class="header-sub">Groq Cloud as inference engine. Your middleware: cache + compress + route. User pays their own Groq key. Your cost: ~$0/mo.</p>
+</header>
+
+<nav>
+  <button class="active" onclick="switchTab('system',this)">System</button>
+  <button onclick="switchTab('tokens',this)">Token Killers</button>
+  <button onclick="switchTab('hosting',this)">Hosting</button>
+  <button onclick="switchTab('mobile',this)">Mobile</button>
+  <button onclick="switchTab('week',this)">This Week</button>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════ SYSTEM -->
+<div id="system" class="tab active">
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num">$0</div><div class="stat-lbl">your monthly infra cost</div></div>
+    <div class="stat"><div class="stat-num">94%</div><div class="stat-lbl">token reduction vs raw</div></div>
+    <div class="stat"><div class="stat-num">$0.05</div><div class="stat-lbl">per 1M tokens (8B model)</div></div>
+    <div class="stat"><div class="stat-num">5 days</div><div class="stat-lbl">to working product</div></div>
+  </div>
+
+  <div class="section-label">Architecture — Request Flow</div>
+  <div class="flow">
+    <div class="flow-row flow-you">
+      <span class="flow-n">1</span>
+      <span class="flow-name">Semantic Cache</span>
+      <span class="flow-desc">Embed query → vector similarity search. Score ≥ 0.92 → return cached answer. No Groq call.</span>
+      <span class="flow-cost">$0.00 · YOU HOST</span>
+    </div>
+    <div class="flow-row flow-you">
+      <span class="flow-n">2</span>
+      <span class="flow-name">LLMLingua-2</span>
+      <span class="flow-desc">Compress prompt 4–10× before it reaches Groq. Runs on CPU. Open source (Microsoft).</span>
+      <span class="flow-cost">$0.00 · YOU HOST</span>
+    </div>
+    <div class="flow-row flow-you">
+      <span class="flow-n">3</span>
+      <span class="flow-name">History Compactor</span>
+      <span class="flow-desc">After 5 turns, summarize history → 50-token summary. Replaces ~400 tokens of raw context.</span>
+      <span class="flow-cost">~$0.000002 · YOU HOST</span>
+    </div>
+    <div class="flow-row flow-you">
+      <span class="flow-n">4</span>
+      <span class="flow-name">Simple Router</span>
+      <span class="flow-desc">If compressed tokens &lt; 60 → 8B. If ≥ 60 or code/math keywords → 70B. Nothing else.</span>
+      <span class="flow-cost">$0.00 · YOU HOST</span>
+    </div>
+    <div class="flow-row flow-groq">
+      <span class="flow-n">5</span>
+      <span class="flow-name">Groq: 8B (80%)</span>
+      <span class="flow-desc">llama-3.1-8b-instant. Simple Q&amp;A, summaries, short tasks. 500–1000 TPS.</span>
+      <span class="flow-cost">$0.05/M · USER'S KEY</span>
+    </div>
+    <div class="flow-row flow-groq">
+      <span class="flow-n">6</span>
+      <span class="flow-name">Groq: 70B (20%)</span>
+      <span class="flow-desc">llama-3.3-70b-versatile. Complex reasoning, code, long-form. GPT-4 quality.</span>
+      <span class="flow-cost">$0.59/$0.79/M · USER'S KEY</span>
+    </div>
+    <div class="flow-row flow-you">
+      <span class="flow-n">7</span>
+      <span class="flow-name">Cache Write</span>
+      <span class="flow-desc">Async: store (vector, response) in pgvector. Every future similar query is free.</span>
+      <span class="flow-cost">Async · $0.00</span>
+    </div>
+  </div>
+  <p style="font-size:11px; color: var(--muted); margin-bottom: 20px;">
+    Left border: <span style="color:var(--white)">white</span> = you host &nbsp;|&nbsp; <span style="color:var(--muted)">grey</span> = Groq Cloud (user's key pays) &nbsp;|&nbsp; No fallback. No other providers.
+  </p>
+
+  <div class="section-label">5-Component Summary</div>
+  <table>
+    <thead><tr><th>#</th><th>Component</th><th>What it does</th><th>Your cost</th><th>Tech</th></tr></thead>
+    <tbody>
+      <tr><td class="key">01</td><td class="val">Semantic Cache</td><td class="note">Answer repeated/similar queries for free</td><td class="num">$0</td><td class="note">FAISS + pgvector</td></tr>
+      <tr><td class="key">02</td><td class="val">LLMLingua-2</td><td class="note">Compress every prompt 4–10× before Groq</td><td class="num">$0</td><td class="note">CPU · pip install</td></tr>
+      <tr><td class="key">03</td><td class="val">History Compactor</td><td class="note">Summarize old turns, trim context tokens</td><td class="num">~$0</td><td class="note">One Groq 8B call</td></tr>
+      <tr><td class="key">04</td><td class="val">Output Cap</td><td class="note">max_tokens=200, stop sequences, temp=0.3</td><td class="num">$0</td><td class="note">API params only</td></tr>
+      <tr><td class="key">05</td><td class="val">Simple Router</td><td class="note">8B vs 70B. 5 lines of Python. No ML.</td><td class="num">$0</td><td class="note">if/else logic</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-label">Monthly Cost — You vs User</div>
+  <table>
+    <thead><tr><th>Service</th><th>Role</th><th>Who pays</th><th>Cost</th></tr></thead>
+    <tbody>
+      <tr><td class="val">Vercel</td><td class="note">Frontend + PWA</td><td class="note">You</td><td class="num good">$0</td></tr>
+      <tr><td class="val">Render (free)</td><td class="note">FastAPI backend</td><td class="note">You</td><td class="num good">$0</td></tr>
+      <tr><td class="val">Supabase (free)</td><td class="note">PostgreSQL + pgvector</td><td class="note">You</td><td class="num good">$0</td></tr>
+      <tr><td class="val">Upstash (free)</td><td class="note">Redis hot cache</td><td class="note">You</td><td class="num good">$0</td></tr>
+      <tr><td class="val">Groq Cloud</td><td class="note">Inference (8B + 70B)</td><td class="note" style="color:var(--white)">User's key</td><td class="num" style="color:var(--dim)">~$0.006/mo/user</td></tr>
+      <tr style="border-top: 1px solid var(--border2)"><td class="val" style="color:var(--pure); font-weight:700">YOUR TOTAL</td><td></td><td></td><td class="num" style="font-size:16px">$0 / mo</td></tr>
+    </tbody>
+  </table>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ TOKENS -->
+<div id="tokens" class="tab">
+
+  <div class="section-label">Cumulative Token Reduction</div>
+  <table>
+    <thead><tr><th>Stage</th><th>Avg tokens/query</th><th>Cost / 1K queries</th><th>Cumulative saving</th></tr></thead>
+    <tbody>
+      <tr><td class="note">No optimization</td><td class="num" style="color:var(--dim)">500</td><td class="num" style="color:var(--dim)">$0.033</td><td class="note">—</td></tr>
+      <tr><td class="note">+ Semantic cache (40% hit rate)</td><td class="num">300</td><td class="num">$0.020</td><td class="num good">40%</td></tr>
+      <tr><td class="note">+ LLMLingua-2 (5× compression)</td><td class="num">60</td><td class="num">$0.004</td><td class="num good">88%</td></tr>
+      <tr><td class="note">+ History compaction</td><td class="num">40</td><td class="num">$0.0027</td><td class="num good">92%</td></tr>
+      <tr><td class="note">+ max_tokens=200 cap</td><td class="num">30</td><td class="num">$0.0020</td><td class="num good">94%</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:12px">100 queries/day × $0.0020/1K = <strong style="color:var(--pure)">~$0.006/user/month</strong>. Effectively free.</p>
+
+  <div class="gap"></div>
+  <div class="section-label">Implementation — Copy These</div>
+
+  <h3 style="margin-bottom:8px">1 — Semantic Cache (FAISS + pgvector)</h3>
+  <pre><span class="c"># Install</span>
+pip install sentence-transformers faiss-cpu psycopg2-binary
+
+<span class="c"># Embed + search</span>
+<span class="k">from</span> sentence_transformers <span class="k">import</span> SentenceTransformer
+model = SentenceTransformer(<span class="s">"all-MiniLM-L6-v2"</span>)   <span class="c"># 22MB, CPU only</span>
+
+<span class="k">def</span> cache_lookup(query, threshold=<span class="n">0.92</span>):
+    vec = model.encode(query).tolist()
+    <span class="c"># pgvector cosine similarity query</span>
+    row = db.fetchone(<span class="s">"SELECT response FROM cache ORDER BY embedding &lt;=&gt; %s LIMIT 1"</span>, [vec])
+    <span class="k">if</span> row <span class="k">and</span> cosine_sim(vec, row.embedding) >= threshold:
+        <span class="k">return</span> row.response   <span class="c"># cache hit → $0.00</span>
+    <span class="k">return</span> <span class="k">None</span></pre>
+
+  <h3 style="margin-bottom:8px">2 — LLMLingua-2 Compression</h3>
+  <pre><span class="c"># Install</span>
+pip install llmlingua
+
+<span class="k">from</span> llmlingua <span class="k">import</span> PromptCompressor
+compressor = PromptCompressor(
+    <span class="s">"microsoft/llmlingua-2-xlm-roberta-large-meetingbank"</span>,
+    use_llmlingua2=<span class="k">True</span>
+)
+
+compressed = compressor.compress_prompt(prompt, rate=<span class="n">0.33</span>)[<span class="s">"compressed_prompt"</span>]
+<span class="c"># rate=0.33 → keeps 33% of tokens (3× compression). Use 0.2 for 5×.</span></pre>
+
+  <h3 style="margin-bottom:8px">3 — History Compactor</h3>
+  <pre><span class="k">def</span> compact_history(history, groq_client):
+    <span class="k">if</span> len(history) <= <span class="n">5</span>: <span class="k">return</span> history
+    old = history[:-<span class="n">2</span>]   <span class="c"># everything except last 2 turns</span>
+    summary = groq_client.chat.completions.create(
+        model=<span class="s">"llama-3.1-8b-instant"</span>,
+        messages=[{<span class="s">"role"</span>:<span class="s">"user"</span>, <span class="s">"content"</span>: <span class="s">f"Summarize in 2 sentences: {old}"</span>}],
+        max_tokens=<span class="n">60</span>
+    ).choices[0].message.content
+    <span class="k">return</span> [{<span class="s">"role"</span>:<span class="s">"system"</span>, <span class="s">"content"</span>: <span class="s">f"Prior context: {summary}"</span>}] + history[-<span class="n">2</span>:]</pre>
+
+  <h3 style="margin-bottom:8px">4 — Router + Capped Groq Call</h3>
+  <pre>COMPLEX = [<span class="s">"code"</span>, <span class="s">"debug"</span>, <span class="s">"function"</span>, <span class="s">"math"</span>, <span class="s">"solve"</span>, <span class="s">"analyze"</span>, <span class="s">"compare"</span>]
+
+<span class="k">def</span> pick_model(query):
+    <span class="k">if</span> len(query.split()) > <span class="n">60</span> <span class="k">or</span> any(k <span class="k">in</span> query.lower() <span class="k">for</span> k <span class="k">in</span> COMPLEX):
+        <span class="k">return</span> <span class="s">"llama-3.3-70b-versatile"</span>   <span class="c"># ~20% of queries</span>
+    <span class="k">return</span> <span class="s">"llama-3.1-8b-instant"</span>           <span class="c"># ~80% of queries</span>
+
+response = groq_client.chat.completions.create(
+    model=pick_model(compressed_query),
+    messages=history,
+    max_tokens=<span class="n">200</span>,
+    stop=[<span class="s">"###"</span>, <span class="s">"\n\n\n"</span>],
+    temperature=<span class="n">0.3</span>
+)</pre>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ HOSTING -->
+<div id="hosting" class="tab">
+
+  <div class="section-label">Free Stack — $0/month Total</div>
+  <table>
+    <thead><tr><th>Service</th><th>Role</th><th>Free tier</th><th>Paid (when needed)</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="val">Vercel</td>
+        <td class="note">Frontend + PWA</td>
+        <td class="good">Unlimited · no CC</td>
+        <td class="note">$20/mo (Pro)</td>
+        <td class="note">Best for Next.js. Auto-deploy from GitHub.</td>
+      </tr>
+      <tr>
+        <td class="val">Render</td>
+        <td class="note">FastAPI backend</td>
+        <td class="good">512MB · no CC</td>
+        <td class="note">$7/mo (no cold start)</td>
+        <td class="note">Only host with permanent free tier in 2026. Cold starts on free.</td>
+      </tr>
+      <tr>
+        <td class="val">Supabase</td>
+        <td class="note">PostgreSQL + pgvector</td>
+        <td class="good">500MB · no CC</td>
+        <td class="note">$25/mo (Pro)</td>
+        <td class="note">pgvector built-in. Handles vectors + relational data in one DB.</td>
+      </tr>
+      <tr>
+        <td class="val">Upstash</td>
+        <td class="note">Redis hot cache</td>
+        <td class="good">10K cmd/day · no CC</td>
+        <td class="note">$10/mo (Pro)</td>
+        <td class="note">Serverless Redis. 10K = ~5K daily queries before upgrade.</td>
+      </tr>
+      <tr>
+        <td class="val">Render Cron</td>
+        <td class="note">Async jobs</td>
+        <td class="good">Free with Render</td>
+        <td class="note">Included</td>
+        <td class="note">Schedule cache cleanup, history compaction. No Celery needed early on.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="font-size:12px; margin-bottom:20px;">
+    <strong style="color:var(--white)">⚠ Fly.io:</strong> <span style="color:var(--muted)">No free tier since 2024. Requires credit card. Use Render instead for free hosting.</span>
+  </p>
+
+  <div class="section-label">Paid Alternatives (When You Scale)</div>
+  <table>
+    <thead><tr><th>Option</th><th>Cost</th><th>Best for</th></tr></thead>
+    <tbody>
+      <tr><td class="val">Railway</td><td class="num">$5/mo</td><td class="note">Best DX after free stage. Includes PostgreSQL + Redis. No cold starts.</td></tr>
+      <tr><td class="val">Fly.io</td><td class="num">~$5–10/mo</td><td class="note">Global edge deployment. Better if users are worldwide.</td></tr>
+      <tr><td class="val">Hetzner + Coolify</td><td class="num">€4.51/mo</td><td class="note">Cheapest paid option. Self-hosted. Good for GDPR / EU users.</td></tr>
+      <tr><td class="val">Cloudflare Workers</td><td class="num">$0 (100K req/day)</td><td class="note">Edge router layer only. 10ms global latency. No persistent storage.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-label">Security — Non-Negotiable</div>
+  <ul class="checklist" id="sec-list">
+    <li><input type="checkbox"> AES-256-GCM encrypt every Groq key in Supabase. Never log plaintext keys.</li>
+    <li><input type="checkbox"> Frontend only receives your platform session token — never the Groq key.</li>
+    <li><input type="checkbox"> Rate limit: 60 requests/min per user via Upstash Redis sliding window.</li>
+    <li><input type="checkbox"> Enable Supabase Row Level Security — users can only read their own data.</li>
+    <li><input type="checkbox"> HTTPS enforced everywhere (Vercel + Render handle TLS automatically).</li>
+    <li><input type="checkbox"> Prompt users to rotate Groq key every 90 days — show a dashboard banner.</li>
+  </ul>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ MOBILE -->
+<div id="mobile" class="tab">
+
+  <div class="section-label">Strategy — PWA First, Native Later</div>
+
+  <div class="spec-row">
+    <span class="spec-key">Approach</span>
+    <span class="spec-val">Progressive Web App (PWA). Same codebase as your website. Users install from browser — no App Store needed.</span>
+  </div>
+  <div class="spec-row">
+    <span class="spec-key">Cost</span>
+    <span class="spec-val">$0. No Apple Developer account ($99/yr) or Google Play ($25 one-time) until you choose to go native.</span>
+  </div>
+  <div class="spec-row">
+    <span class="spec-key">Install</span>
+    <span class="spec-val">Android Chrome: automatic "Add to Home Screen" prompt. iOS Safari: Share → Add to Home Screen.</span>
+  </div>
+  <div class="spec-row">
+    <span class="spec-key">When to go native</span>
+    <span class="spec-val">500+ users requesting it, or revenue &gt; $100/mo. Wrap with Capacitor.js — one command turns your Next.js app into an iOS/Android bundle.</span>
+  </div>
+
+  <div class="gap"></div>
+  <div class="section-label">3 Files to Enable PWA</div>
+
+  <h3 style="margin-bottom:8px">manifest.json</h3>
+  <pre>{
+  <span class="s">"name"</span>: <span class="s">"YourAI"</span>,
+  <span class="s">"short_name"</span>: <span class="s">"YourAI"</span>,
+  <span class="s">"display"</span>: <span class="s">"standalone"</span>,
+  <span class="s">"theme_color"</span>: <span class="s">"#000000"</span>,
+  <span class="s">"background_color"</span>: <span class="s">"#000000"</span>,
+  <span class="s">"start_url"</span>: <span class="s">"/"</span>,
+  <span class="s">"icons"</span>: [
+    { <span class="s">"src"</span>: <span class="s">"/icon-192.png"</span>, <span class="s">"sizes"</span>: <span class="s">"192x192"</span>, <span class="s">"type"</span>: <span class="s">"image/png"</span> },
+    { <span class="s">"src"</span>: <span class="s">"/icon-512.png"</span>, <span class="s">"sizes"</span>: <span class="s">"512x512"</span>, <span class="s">"type"</span>: <span class="s">"image/png"</span> }
+  ]
+}</pre>
+
+  <h3 style="margin-bottom:8px">next.config.js (auto service worker via next-pwa)</h3>
+  <pre>npm install next-pwa
+
+<span class="c">// next.config.js</span>
+<span class="k">const</span> withPWA = require(<span class="s">"next-pwa"</span>)({ dest: <span class="s">"public"</span>, disable: process.env.NODE_ENV === <span class="s">"development"</span> });
+module.exports = withPWA({});</pre>
+
+  <h3 style="margin-bottom:8px">&lt;head&gt; tags</h3>
+  <pre>&lt;link rel=<span class="s">"manifest"</span> href=<span class="s">"/manifest.json"</span> /&gt;
+&lt;meta name=<span class="s">"theme-color"</span> content=<span class="s">"#000000"</span> /&gt;
+&lt;meta name=<span class="s">"apple-mobile-web-app-capable"</span> content=<span class="s">"yes"</span> /&gt;
+&lt;link rel=<span class="s">"apple-touch-icon"</span> href=<span class="s">"/icon-192.png"</span> /&gt;</pre>
+
+  <div class="section-label">PWA vs Native — Feature Comparison</div>
+  <table>
+    <thead><tr><th>Feature</th><th>PWA (now)</th><th>Native (later)</th></tr></thead>
+    <tbody>
+      <tr><td class="note">Home screen icon</td><td class="good">✓ Yes</td><td class="good">✓ Yes</td></tr>
+      <tr><td class="note">Works offline</td><td class="good">✓ Yes</td><td class="good">✓ Yes</td></tr>
+      <tr><td class="note">Push notifications</td><td class="note">Android full · iOS limited</td><td class="good">✓ Full</td></tr>
+      <tr><td class="note">App Store listing</td><td class="bad">✗ No</td><td class="good">✓ Yes</td></tr>
+      <tr><td class="note">Camera / microphone</td><td class="good">✓ Browser API</td><td class="good">✓ Native API</td></tr>
+      <tr><td class="note">Cost to ship</td><td class="good">$0</td><td class="bad">$99/yr + $25 one-time</td></tr>
+      <tr><td class="note">Update process</td><td class="good">Instant (redeploy)</td><td class="bad">App Store review (1–3 days)</td></tr>
+      <tr><td class="note">Separate codebase</td><td class="good">No — same as web</td><td class="bad">React Native or Capacitor.js</td></tr>
+    </tbody>
+  </table>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ THIS WEEK -->
+<div id="week" class="tab">
+
+  <div class="progress-wrap">
+    <div class="progress-meta">
+      <span>PROGRESS</span>
+      <span id="prog-label">0 / 25 tasks</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+
+  <div class="day-head">
+    <span class="day-label">Day 1</span>
+    <span class="day-title">Infrastructure Up</span>
+  </div>
+  <ul class="checklist">
+    <li><input type="checkbox" onchange="updateProgress()"> Create Supabase project → enable pgvector extension (Settings → Database → Extensions)</li>
+    <li><input type="checkbox" onchange="updateProgress()"> Create Render account → connect GitHub → deploy hello-world FastAPI app</li>
+    <li><input type="checkbox" onchange="updateProgress()"> Create Vercel account → connect GitHub → deploy Next.js starter</li>
+    <li><input type="checkbox" onchange="updateProgress()"> Create Upstash account → create Redis DB → copy REST URL + token</li>
+    <li><input type="checkbox" onchange="updateProgress()"> Verify: FastAPI returns <code style="font-family:var(--mono); font-size:11px; color:var(--dim)">{"status":"ok"}</code> at your Render URL</li>
+  </ul>
+
+  <div class="day-head">
+    <span class="day-label">Day 2</span>
+    <span class="day-title">Groq + BYOK Working</span>
+  </div>
+  <ul class="checklist">
+    <li><input type="checkbox" onchange="updateProgress()"> <code style="font-family:var(--mono);font-size:11px;color:var(--dim)">pip install groq</code> → test direct call to llama-3.1-8b-instant in a script</li>
+    <li><input type="checkbox" onchange="updateProgress()"> Build <code style="font-family:var(--mono);font-size:11px;color:var(--dim)">/chat</code> endpoint: accept {message, groq_key} → call Groq → return response</li>
+    <li><input type="checkbox" onchange="updateProgress()"> AES-256 encrypt the groq_key → store in Supabase on first use</li>
+    <li><input type="checkbox" onchange="updateProgress()"> Add 5-line router: token count + keyword check → 8B vs 70B</li>
+    <li><input type="checkbox" onchange="updateProgress()"> Add max_tokens=200 and stop sequences to every Groq call</li>
+  </ul>
+
+  <div class="day-head">
+    <span class="day-label">Day 3</span>
+    <span class="day-title">Semantic Cache Live</span>
+  </div>
+  <ul class="checklist">
+    <li><input type="checkbox" onchange="updateProgress()"> <code style="font-family:var(--mono);font-size:11px;color:var(--dim)">pip install sentence-transformers faiss-cpu</code> → load all-MiniLM-L6-v2</li>
+    <li><input type="checkbox" onchange="updateProgress()"> On every response: embed query → store vector in Supabase pgvector</li>
+    <li><input type="checkbox" onchange="updateProgress()"> On every new query: embed → cosine search → return if score ≥ 0.92</li>
+    <li><input type="checkbox" onchange="updateProgress()"> Log [CACHE HIT] vs [GROQ CALL] — watch hit rate grow with repeated queries</li>
+    <li><input type="checkbox" onchange="updateProgress()"> Test with 10 similar questions → confirm cache returns hits</li>
+  </ul>
+
+  <div class="day-head">
+    <span class="day-label">Day 4</span>
+    <span class="day-title">LLMLingua + Compaction</span>
+  </div>
+  <ul class="checklist">
+    <li><input type="checkbox" onchange="updateProgress()"> <code style="font-family:var(--mono);font-size:11px;color:var(--dim)">pip install llmlingua</code> → downloads ~250MB model, runs on CPU</li>
+    <li><input type="checkbox" onchange="updateProgress()"> Wrap every Groq call: compress_prompt(query, rate=0.33) before sending</li>
+    <li><input type="checkbox" onchange="updateProgress()"> Log original vs compressed token count → verify 3–5× reduction</li>
+    <li><input type="checkbox" onchange="updateProgress()"> Add history compactor: if len(history) &gt; 5, summarize with 8B into 60 tokens</li>
+    <li><input type="checkbox" onchange="updateProgress()"> Run 20-query test → check token logs, verify cumulative savings</li>
+  </ul>
+
+  <div class="day-head">
+    <span class="day-label">Day 5</span>
+    <span class="day-title">Frontend + PWA</span>
+  </div>
+  <ul class="checklist">
+    <li><input type="checkbox" onchange="updateProgress()"> <code style="font-family:var(--mono);font-size:11px;color:var(--dim)">npm install next-pwa</code> → configure in next.config.js</li>
+    <li><input type="checkbox" onchange="updateProgress()"> Add manifest.json + apple-touch-icon + theme-color to &lt;head&gt;</li>
+    <li><input type="checkbox" onchange="updateProgress()"> Build chat UI: Groq key setup screen + message list + input</li>
+    <li><input type="checkbox" onchange="updateProgress()"> Add per-message token counter: "X tokens used · $Y saved vs GPT-4"</li>
+    <li><input type="checkbox" onchange="updateProgress()"> Test on mobile: visit URL in Chrome → Add to Home Screen → confirm app opens</li>
+  </ul>
+
+  <div class="gap"></div>
+  <div style="border: 1px solid var(--border); padding: 16px; font-size: 13px;">
+    <div class="section-label" style="margin-bottom:10px">End of Week 1 — What You Have</div>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 6px 20px;">
+      <div style="color:var(--muted)">✓ Live URL, desktop + mobile</div>
+      <div style="color:var(--muted)">✓ BYOK Groq key setup</div>
+      <div style="color:var(--muted)">✓ Semantic cache (hit rate ~10%, grows)</div>
+      <div style="color:var(--muted)">✓ LLMLingua cutting 3–5× per prompt</div>
+      <div style="color:var(--muted)">✓ PWA installable on any phone</div>
+      <div style="color:var(--muted)">✓ Your monthly cost: $0</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function switchTab(id, btn) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function updateProgress() {
+    const boxes = document.querySelectorAll('#week input[type=checkbox]');
+    const done  = [...boxes].filter(b => b.checked).length;
+    const total = boxes.length;
+    document.getElementById('prog-label').textContent = done + ' / ' + total + ' tasks';
+    document.getElementById('prog-fill').style.width = (done / total * 100) + '%';
+    boxes.forEach(box => {
+      const li = box.closest('li');
+      li.classList.toggle('done', box.checked);
+    });
+  }
+</script>
+
+</body>
+</html>
