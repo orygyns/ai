@@ -3,567 +3,1933 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ORYGYNS AI — Product Blueprint</title>
+<title>ORYGYNS AI — Blueprint V3.0</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:56px}
+body{background:#000;color:#F2F2F2;font-family:'Inter',sans-serif;font-size:14px;line-height:1.65;min-height:100vh}
+h1,h2,h3,h4,h5{font-family:'Syne',sans-serif;letter-spacing:-0.02em}
+.mono{font-family:'JetBrains Mono',monospace}
 
-:root {
-  --black:  #000000;
-  --ink:    #0C0C0C;
-  --card:   #111111;
-  --b1:     #1E1E1E;
-  --b2:     #2E2E2E;
-  --muted:  #585858;
-  --dim:    #888888;
-  --body:   #C8C8C8;
-  --white:  #F2F2F2;
-  --pure:   #FFFFFF;
-  --sky:    #6EC6E6;
-  --sky-lo: rgba(110,198,230,0.07);
-  --sky-ln: rgba(110,198,230,0.18);
-  --sans:   'Inter', system-ui, sans-serif;
-  --disp:   'Syne', sans-serif;
-  --mono:   'JetBrains Mono', monospace;
+/* ── TOPBAR ── */
+.topbar{
+  position:sticky;top:0;z-index:200;
+  background:rgba(0,0,0,0.92);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid #1E1E1E;
+  padding:0 28px;
+  display:flex;align-items:center;gap:12px;
+  height:52px;
+}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:#6EC6E6;letter-spacing:-0.03em;white-space:nowrap}
+.topbar-sep{color:#1E1E1E;font-size:16px;user-select:none}
+.topbar-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:#555}
+.badge-sm{
+  background:#0C0C0C;border:1px solid #1E1E1E;border-radius:4px;
+  padding:3px 9px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#555;
+}
+.badge-sm.live{color:#6EC6E6;border-color:rgba(110,198,230,0.2);background:rgba(110,198,230,0.06)}
+
+/* nav tabs */
+.topbar-nav{display:flex;gap:2px;margin-left:12px}
+.nav-tab{
+  background:transparent;border:none;cursor:pointer;
+  padding:5px 12px;border-radius:5px;
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:400;
+  color:#555;transition:all 0.15s;
+}
+.nav-tab:hover{color:#aaa;background:#0C0C0C}
+.nav-tab.active{color:#F2F2F2;background:#111;font-weight:500}
+
+/* copy btn */
+.copy-btn{
+  margin-left:auto;
+  background:#6EC6E6;color:#000;border:none;
+  border-radius:6px;padding:7px 16px;
+  font-family:'Syne',sans-serif;font-weight:700;font-size:12px;
+  cursor:pointer;transition:all 0.2s;white-space:nowrap;
+  display:flex;align-items:center;gap:7px;
+}
+.copy-btn:hover{background:#7DD3FC;transform:translateY(-1px);box-shadow:0 4px 20px rgba(110,198,230,0.25)}
+.copy-btn.done{background:#22c55e}
+.copy-icon{font-size:14px}
+
+/* ── LAYOUT ── */
+.container{max-width:980px;margin:0 auto;padding:48px 28px 120px}
+
+/* ── HERO ── */
+.hero{text-align:center;padding:56px 0 44px}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(110,198,230,0.07);
+  border:1px solid rgba(110,198,230,0.18);
+  border-radius:20px;padding:5px 16px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:#6EC6E6;
+  margin-bottom:20px;
+}
+.hero-dot{width:6px;height:6px;border-radius:50%;background:#6EC6E6;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero-title{
+  font-family:'Syne',sans-serif;font-size:56px;font-weight:800;
+  letter-spacing:-0.04em;line-height:1.05;
+  background:linear-gradient(145deg,#F2F2F2 50%,#6EC6E6);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:14px;
+}
+.hero-sub{font-size:15px;color:#666;max-width:520px;margin:0 auto 28px;line-height:1.8}
+.hero-chips{display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
+.chip{
+  background:#0C0C0C;border:1px solid #1E1E1E;border-radius:20px;
+  padding:4px 14px;font-size:11px;color:#888;font-family:'JetBrains Mono',monospace;
 }
 
-html { background: var(--black); color: var(--body); font-family: var(--sans); font-size: 14px; line-height: 1.6; scroll-behavior: smooth; }
-body { max-width: 920px; margin: 0 auto; padding: 0 24px 80px; }
-
-/* ─── HEADER ─────────────────────────────────────────────── */
-.site-header { padding: 40px 0 0; }
-.logo-row { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-bottom: 20px; border-bottom: 1px solid var(--b1); }
-.logo { font-family: var(--disp); font-size: 22px; font-weight: 800; letter-spacing: -0.02em; color: var(--pure); position: relative; display: inline-block; }
-.logo span { color: var(--sky); }
-.logo::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--sky); animation: trace 1.4s cubic-bezier(0.4,0,0.2,1) 0.3s forwards; }
-@keyframes trace { from { width: 0; opacity: 0; } to { width: 100%; opacity: 1; } }
-.logo-meta { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
-.tagline { font-size: 13px; color: var(--muted); padding-top: 14px; padding-bottom: 4px; }
-.tagline strong { color: var(--body); font-weight: 500; }
-
-/* ─── TABS ───────────────────────────────────────────────── */
-nav.tabs { display: flex; gap: 0; border-bottom: 1px solid var(--b1); margin-bottom: 0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-nav.tabs button {
-  background: none; border: none; border-bottom: 2px solid transparent;
-  font-family: var(--sans); font-size: 12px; font-weight: 500;
-  letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted);
-  padding: 14px 18px; cursor: pointer; white-space: nowrap;
-  transition: color 0.15s, border-color 0.15s; margin-bottom: -1px;
+/* ── SECTIONS ── */
+.section{margin-bottom:56px;scroll-margin-top:64px}
+.section-label{
+  display:flex;align-items:center;gap:14px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;
+  letter-spacing:0.12em;text-transform:uppercase;color:#6EC6E6;
+  margin-bottom:22px;
 }
-nav.tabs button.on { color: var(--pure); border-bottom-color: var(--sky); }
-nav.tabs button:hover:not(.on) { color: var(--dim); }
+.section-label::after{content:'';flex:1;height:1px;background:#1E1E1E}
+.section-title{font-size:26px;font-weight:700;color:#F2F2F2;margin-bottom:8px}
+.section-desc{font-size:13px;color:#666;margin-bottom:22px;line-height:1.8;max-width:680px}
 
-/* ─── PANELS ─────────────────────────────────────────────── */
-.panel { display: none; padding-top: 32px; }
-.panel.on { display: block; }
-
-/* ─── TYPE SCALE ─────────────────────────────────────────── */
-.eyebrow { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; padding-bottom: 9px; border-bottom: 1px solid var(--b1); }
-h2 { font-family: var(--disp); font-size: 20px; font-weight: 700; color: var(--pure); margin-bottom: 6px; letter-spacing: -0.01em; }
-h3 { font-family: var(--disp); font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 5px; }
-p { color: var(--dim); line-height: 1.7; margin-bottom: 10px; font-size: 13.5px; }
-p:last-child { margin-bottom: 0; }
-strong { color: var(--white); font-weight: 600; }
-
-/* ─── STATS STRIP ────────────────────────────────────────── */
-.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--b1); border: 1px solid var(--b1); margin-bottom: 28px; }
-.stat { background: var(--ink); padding: 18px 16px; }
-.stat-n { font-family: var(--mono); font-size: 28px; font-weight: 600; line-height: 1; margin-bottom: 5px; color: var(--sky); }
-.stat-n.wh { color: var(--pure); }
-.stat-l { font-size: 11px; color: var(--muted); line-height: 1.4; }
-
-/* ─── BLOCKS ─────────────────────────────────────────────── */
-.block { border: 1px solid var(--b1); padding: 20px; margin-bottom: 16px; }
-.block-sky { border-left: 2px solid var(--sky); background: var(--sky-lo); padding: 14px 16px; margin-bottom: 16px; font-size: 13px; color: var(--dim); line-height: 1.65; }
-.block-sky strong { color: var(--sky); }
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
-.two-col .block { margin-bottom: 0; }
-
-/* ─── TABLES ─────────────────────────────────────────────── */
-.tbl { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 13px; }
-.tbl th { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 8px 12px; border-bottom: 1px solid var(--b1); text-align: left; background: var(--ink); }
-.tbl td { padding: 9px 12px; border-bottom: 1px solid var(--b1); vertical-align: top; color: var(--dim); }
-.tbl tr:last-child td { border-bottom: none; }
-.tbl tr:hover td { background: var(--sky-lo); }
-.tbl .tc { color: var(--white); font-weight: 500; }
-.tbl .ts { color: var(--sky); font-family: var(--mono); font-size: 12px; font-weight: 600; }
-.tbl .tm { font-family: var(--mono); font-size: 11px; color: var(--muted); }
-.tbl .tg { color: #6DD6A0; font-weight: 600; }
-.tbl .tr { color: #E88; }
-
-/* ─── SPEC ROWS ──────────────────────────────────────────── */
-.spec { border-top: 1px solid var(--b1); }
-.spec-r { display: grid; grid-template-columns: 160px 1fr; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--b1); align-items: start; }
-.spec-k { font-family: var(--mono); font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; padding-top: 1px; }
-.spec-v { font-size: 13.5px; color: var(--white); }
-.spec-v small { color: var(--muted); font-size: 12px; display: block; margin-top: 2px; }
-
-/* ─── FLOW ───────────────────────────────────────────────── */
-.flow { border: 1px solid var(--b1); margin-bottom: 20px; }
-.flow-r { display: grid; grid-template-columns: 28px 170px 1fr minmax(100px, auto); gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--b1); align-items: center; }
-.flow-r:last-child { border-bottom: none; }
-.flow-r:hover { background: var(--sky-lo); }
-.flow-i { font-family: var(--mono); font-size: 10px; color: var(--muted); }
-.flow-n { font-size: 13px; font-weight: 600; color: var(--white); }
-.flow-d { font-size: 12px; color: var(--muted); }
-.flow-c { font-family: var(--mono); font-size: 11px; color: var(--dim); text-align: right; white-space: nowrap; }
-.fl-you { border-left: 2px solid var(--sky); }
-.fl-usr { border-left: 2px solid var(--b2); }
-
-/* ─── FEATURE GRID ───────────────────────────────────────── */
-.feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px; background: var(--b1); border: 1px solid var(--b1); margin-bottom: 20px; }
-.feat { background: var(--ink); padding: 18px; transition: background 0.15s; }
-.feat:hover { background: #141414; }
-.feat-tag { font-family: var(--mono); font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
-.feat-tag.sky { color: var(--sky); }
-.feat h3 { font-size: 14px; margin-bottom: 6px; }
-.feat p { font-size: 12.5px; margin: 0; }
-
-/* ─── MODE TABLE ─────────────────────────────────────────── */
-.mode-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--b1); border: 1px solid var(--b1); margin-bottom: 20px; }
-.mode { background: var(--ink); padding: 16px; }
-.mode-name { font-family: var(--disp); font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
-.mode-model { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
-.mode-use { font-size: 12px; color: var(--muted); line-height: 1.55; }
-.mode.active-mode .mode-name { color: var(--sky); }
-.mode.active-mode { background: var(--sky-lo); border: 1px solid var(--sky-ln); }
-
-/* ─── ROADMAP ────────────────────────────────────────────── */
-.phase { border-left: 2px solid var(--b2); padding-left: 20px; margin-bottom: 28px; }
-.phase.cur { border-left-color: var(--sky); }
-.phase-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
-.phase-tag { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid var(--b2); color: var(--muted); padding: 2px 8px; }
-.phase-tag.sky { border-color: var(--sky-ln); color: var(--sky); }
-.phase-title { font-family: var(--disp); font-size: 16px; font-weight: 700; color: var(--white); }
-.phase-time { font-family: var(--mono); font-size: 11px; color: var(--muted); }
-.phase ul { list-style: none; padding: 0; }
-.phase ul li { font-size: 13px; color: var(--dim); padding: 5px 0; border-bottom: 1px solid var(--b1); display: flex; gap: 8px; }
-.phase ul li::before { content: '—'; color: var(--muted); flex-shrink: 0; }
-.phase ul li:last-child { border-bottom: none; }
-
-/* ─── TAG PILL ───────────────────────────────────────────── */
-.pill { display: inline-block; font-family: var(--mono); font-size: 9px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; border: 1px solid var(--b2); color: var(--muted); padding: 2px 7px; margin: 2px 2px 2px 0; line-height: 1.7; }
-.pill.sky { border-color: var(--sky-ln); color: var(--sky); }
-.pill.wh  { border-color: #444; color: var(--dim); }
-
-/* ─── DIVIDER ────────────────────────────────────────────── */
-.gap { height: 28px; }
-hr.rule { border: none; border-top: 1px solid var(--b1); margin: 24px 0; }
-
-/* ─── FOOTER ─────────────────────────────────────────────── */
-.foot { margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--b1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
-.foot span { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.06em; }
-
-/* ─── RESPONSIVE ─────────────────────────────────────────── */
-@media (max-width: 640px) {
-  body { padding: 0 16px 60px; }
-  .two-col { grid-template-columns: 1fr; }
-  .flow-r { grid-template-columns: 24px 1fr; }
-  .flow-c { display: none; }
-  .spec-r { grid-template-columns: 1fr; gap: 3px; }
-  .spec-k { padding-top: 8px; }
-  .mode-grid { grid-template-columns: 1fr 1fr; }
-  h2 { font-size: 18px; }
-  .stats { grid-template-columns: 1fr 1fr; }
+/* ── CARDS ── */
+.card{
+  background:#0C0C0C;border:1px solid #1E1E1E;border-radius:10px;
+  padding:20px;transition:border-color 0.2s;
 }
-@media (max-width: 400px) {
-  .mode-grid { grid-template-columns: 1fr; }
+.card:hover{border-color:rgba(110,198,230,0.14)}
+.card+.card{margin-top:10px}
+.card-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:#F2F2F2;margin-bottom:10px}
+.card-body{font-size:13px;color:#666;line-height:1.7}
+.card.accent{border-color:rgba(110,198,230,0.2);border-left:3px solid #6EC6E6}
+.card.center{text-align:center}
+.card.green{border-color:rgba(34,197,94,0.2);border-left:3px solid rgba(34,197,94,0.5)}
+.card.red{border-color:rgba(248,113,113,0.15)}
+
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}
+
+/* ── CALLOUT ── */
+.callout{
+  background:rgba(110,198,230,0.05);
+  border:1px solid rgba(110,198,230,0.14);
+  border-left:3px solid #6EC6E6;border-radius:8px;
+  padding:16px 20px;font-size:13px;color:#aaa;line-height:1.75;
+  margin-bottom:20px;
+}
+
+/* ── FEATURE LIST ── */
+.flist{list-style:none}
+.flist li{
+  display:flex;align-items:flex-start;gap:8px;
+  padding:6px 0;border-bottom:1px solid #111;
+  font-size:12.5px;color:#888;
+}
+.flist li:last-child{border-bottom:none}
+.flist li::before{content:'→';color:#6EC6E6;font-size:11px;margin-top:2px;flex-shrink:0}
+
+/* ── TAGS ── */
+.tag{
+  display:inline-block;
+  background:#111;border:1px solid #1E1E1E;border-radius:4px;
+  padding:3px 9px;font-family:'JetBrains Mono',monospace;font-size:10.5px;
+  color:#666;margin:3px 3px 3px 0;
+}
+.tag.b{color:#6EC6E6;border-color:rgba(110,198,230,0.18);background:rgba(110,198,230,0.06)}
+.tag.g{color:#22c55e;border-color:rgba(34,197,94,0.18);background:rgba(34,197,94,0.06)}
+.tag.r{color:#f87171;border-color:rgba(248,113,113,0.18);background:rgba(248,113,113,0.06)}
+.tag.y{color:#fbbf24;border-color:rgba(251,191,36,0.18);background:rgba(251,191,36,0.06)}
+
+/* ── SWATCH ── */
+.swatch-row{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid #111}
+.swatch-row:last-child{border-bottom:none}
+.swatch{width:34px;height:34px;border-radius:6px;border:1px solid #1E1E1E;flex-shrink:0}
+.swatch-name{font-size:12px;font-weight:500;color:#F2F2F2}
+.swatch-hex{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#666;margin-top:2px}
+.swatch-role{margin-left:auto;font-size:10px;color:#444;flex-shrink:0}
+
+/* ── QUALITY TIERS ── */
+.qtier{
+  background:#0C0C0C;border:1px solid #1E1E1E;border-radius:10px;
+  padding:20px 14px;text-align:center;
+}
+.qtier.default{border-color:rgba(110,198,230,0.25)}
+.qtier-label{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:#888;letter-spacing:0.08em;margin-bottom:10px}
+.qtier-value{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:#6EC6E6;line-height:1}
+.qtier-sub{font-size:11px;color:#555;margin-top:8px;line-height:1.6}
+
+/* ── SCREEN ITEM ── */
+.screen-item{display:flex;gap:14px;align-items:flex-start;padding:11px 0;border-bottom:1px solid #0E0E0E}
+.screen-item:last-child{border-bottom:none}
+.screen-id{
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:#6EC6E6;
+  background:rgba(110,198,230,0.07);border:1px solid rgba(110,198,230,0.14);
+  border-radius:4px;padding:3px 9px;flex-shrink:0;margin-top:1px;white-space:nowrap;
+}
+.screen-name{font-size:13px;font-weight:500;color:#F2F2F2;margin-bottom:3px}
+.screen-desc{font-size:11.5px;color:#555;line-height:1.6}
+
+/* ── DOMAIN ROW ── */
+.domain-row{
+  display:flex;align-items:center;gap:14px;
+  background:#0C0C0C;border:1px solid #1E1E1E;border-radius:8px;
+  padding:14px 18px;margin-bottom:8px;
+}
+.domain-url{font-family:'JetBrains Mono',monospace;font-size:12px;color:#6EC6E6;min-width:160px}
+.domain-role{font-size:13px;font-weight:500;color:#F2F2F2;min-width:200px}
+.domain-note{font-size:12px;color:#666;flex:1}
+
+/* ── INPUT MOCKUP ── */
+.input-mock{
+  display:flex;align-items:center;gap:10px;
+  background:#0D0D0D;border:1px solid #1E1E1E;border-radius:12px;
+  padding:12px 18px;margin-top:14px;
+}
+.input-mock-placeholder{flex:1;font-size:13px;color:#333;font-style:italic}
+.input-mock-action{
+  font-size:11px;color:#555;
+  background:#111;border:1px solid #1E1E1E;border-radius:5px;
+  padding:4px 10px;white-space:nowrap;
+}
+.input-mock-send{
+  background:#6EC6E6;color:#000;border-radius:7px;
+  padding:6px 14px;font-size:12px;font-weight:700;
+  font-family:'Syne',sans-serif;
+}
+
+/* ── SIDEBAR MOCKUP ── */
+.sidebar-mock{
+  background:#0C0C0C;border:1px solid #1E1E1E;border-radius:10px;
+  padding:16px;font-size:12px;
+}
+.sidebar-item{
+  display:flex;align-items:center;gap:8px;
+  padding:7px 8px;border-radius:6px;color:#888;cursor:default;
+  margin-bottom:2px;
+}
+.sidebar-item:hover{background:#111;color:#F2F2F2}
+.sidebar-item.active{background:rgba(110,198,230,0.08);color:#6EC6E6;border-left:3px solid #6EC6E6;padding-left:5px}
+.sidebar-item.new-item{color:#6EC6E6}
+.sidebar-divider{border:none;border-top:1px solid #1A1A1A;margin:8px 0}
+.sidebar-group{font-size:9px;color:#444;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:6px 8px 2px}
+.sidebar-icon{font-size:12px;width:16px;text-align:center}
+
+/* ── TECH ITEM ── */
+.tech-item{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #111}
+.tech-item:last-child{border-bottom:none}
+.tech-layer{font-family:'JetBrains Mono',monospace;font-size:10px;color:#6EC6E6;min-width:80px;margin-top:2px}
+.tech-tools{font-size:12.5px;color:#aaa;flex:1}
+.tech-host{font-family:'JetBrains Mono',monospace;font-size:10px;color:#444;margin-top:3px}
+
+/* ── SCREEN WIREFRAME ── */
+.wireframe{
+  background:#080808;border:1px solid #1A1A1A;border-radius:10px;
+  overflow:hidden;margin-top:14px;font-size:11px;
+}
+.wf-topbar{
+  background:#0C0C0C;border-bottom:1px solid #1A1A1A;
+  padding:9px 14px;display:flex;align-items:center;gap:8px;
+}
+.wf-logo{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;color:#6EC6E6}
+.wf-body{display:flex;min-height:200px}
+.wf-sidebar{width:120px;border-right:1px solid #1A1A1A;padding:10px;flex-shrink:0;background:#0C0C0C}
+.wf-main{flex:1;padding:14px;display:flex;flex-direction:column}
+.wf-sidebar-item{font-size:10px;color:#555;padding:4px 5px;border-radius:4px;margin-bottom:2px}
+.wf-sidebar-item.a{color:#6EC6E6;background:rgba(110,198,230,0.07);border-left:2px solid #6EC6E6;padding-left:3px}
+.wf-sidebar-item.muted{color:#333}
+.wf-group{font-size:8px;color:#333;text-transform:uppercase;letter-spacing:0.08em;padding:5px 5px 2px}
+.wf-msg-user{
+  align-self:flex-end;
+  background:#111;border:1px solid #1E1E1E;border-radius:8px 8px 2px 8px;
+  padding:7px 10px;font-size:11px;color:#888;max-width:70%;margin-bottom:8px;
+}
+.wf-msg-ai{
+  align-self:flex-start;
+  background:#0C0C0C;border:1px solid #1A1A1A;border-radius:2px 8px 8px 8px;
+  padding:8px 10px;font-size:11px;color:#666;max-width:80%;margin-bottom:8px;
+}
+.wf-cursor{display:inline-block;width:2px;height:11px;background:#6EC6E6;animation:blink 1s step-end infinite;vertical-align:middle;margin-left:2px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.wf-input-bar{
+  background:#0C0C0C;border-top:1px solid #1A1A1A;
+  padding:10px 14px;display:flex;align-items:center;gap:8px;
+}
+.wf-input{
+  flex:1;background:#111;border:1px solid #1E1E1E;border-radius:8px;
+  padding:6px 10px;font-size:10px;color:#444;font-style:italic;
+}
+.wf-btn{background:#111;border:1px solid #1E1E1E;border-radius:5px;padding:5px 10px;font-size:10px;color:#555}
+.wf-send{background:#6EC6E6;border:none;border-radius:5px;padding:5px 10px;font-size:10px;color:#000;font-weight:700}
+.wf-overlay{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  border-radius:10px;
+}
+.wf-overlay-card{
+  background:#0C0C0C;border:1px solid rgba(110,198,230,0.2);border-radius:10px;
+  padding:20px 24px;text-align:center;width:220px;
+}
+.wf-panel-sources{width:90px;border-right:1px solid #1A1A1A;padding:8px;background:#0A0A0A;flex-shrink:0}
+.wf-panel-notes{width:80px;border-left:1px solid #1A1A1A;padding:8px;background:#0A0A0A;flex-shrink:0}
+.wf-panel-title{font-size:8px;text-transform:uppercase;letter-spacing:0.1em;color:#444;margin-bottom:6px}
+.wf-source-card{background:#111;border:1px solid #1E1E1E;border-radius:4px;padding:5px;margin-bottom:4px;font-size:9px;color:#555}
+.wf-note-item{background:#111;border-radius:4px;padding:4px;margin-bottom:3px;font-size:9px;color:#555;border-left:2px solid rgba(110,198,230,0.3)}
+.wf-three-panel{display:flex;min-height:210px}
+.relative{position:relative}
+
+/* ── AUTH MOCKUP ── */
+.auth-mock{
+  background:#080808;border:1px solid #1A1A1A;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;min-height:280px;
+}
+.auth-card{
+  background:#0C0C0C;border:1px solid #1E1E1E;border-radius:10px;
+  padding:24px 28px;width:100%;max-width:280px;
+}
+.auth-logo{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#6EC6E6;text-align:center;margin-bottom:4px}
+.auth-sub{font-size:11px;color:#555;text-align:center;margin-bottom:20px}
+.auth-input{
+  width:100%;background:#111;border:1px solid #1E1E1E;border-radius:6px;
+  padding:8px 12px;font-size:11px;color:#888;margin-bottom:8px;
+}
+.auth-btn{
+  width:100%;background:#6EC6E6;color:#000;border:none;border-radius:6px;
+  padding:9px;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;
+  cursor:pointer;margin-top:6px;
+}
+.auth-divider{display:flex;align-items:center;gap:10px;margin:12px 0}
+.auth-divider span{font-size:10px;color:#444}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:#1A1A1A}
+.oauth-row{display:flex;gap:8px}
+.oauth-btn{
+  flex:1;background:#111;border:1px solid #1E1E1E;border-radius:6px;
+  padding:7px;font-size:10px;color:#666;text-align:center;
+}
+.auth-link{font-size:10px;color:#555;text-align:center;margin-top:12px}
+.auth-link span{color:#6EC6E6}
+
+/* ── PROFILE MOCKUP ── */
+.prof-mock{
+  background:#080808;border:1px solid #1A1A1A;border-radius:10px;
+  padding:20px;
+}
+.prof-avatar-row{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.prof-avatar{
+  width:52px;height:52px;border-radius:50%;
+  background:rgba(110,198,230,0.1);border:2px solid rgba(110,198,230,0.2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#6EC6E6;flex-shrink:0;
+}
+.prof-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#F2F2F2}
+.prof-email{font-size:11px;color:#555;margin-top:2px}
+.prof-stat-row{display:flex;gap:8px;margin-bottom:16px}
+.prof-stat{
+  flex:1;background:#0C0C0C;border:1px solid #1E1E1E;border-radius:8px;
+  padding:10px;text-align:center;
+}
+.prof-stat-val{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#6EC6E6}
+.prof-stat-lbl{font-size:9px;color:#555;margin-top:2px;text-transform:uppercase;letter-spacing:0.06em}
+.key-row{
+  background:#111;border:1px solid #1E1E1E;border-radius:8px;
+  padding:10px 14px;display:flex;align-items:center;gap:10px;margin-bottom:8px;
+}
+.key-label{font-size:10px;color:#555;min-width:60px}
+.key-val{font-family:'JetBrains Mono',monospace;font-size:11px;color:#6EC6E6;flex:1}
+.key-unhide{font-size:10px;color:#555;background:#0C0C0C;border:1px solid #1A1A1A;border-radius:4px;padding:3px 8px;cursor:pointer}
+.sec-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.sec-pill{font-size:10px;padding:4px 10px;border-radius:20px;border:1px solid}
+.sec-pill.ok{color:#22c55e;border-color:rgba(34,197,94,0.2);background:rgba(34,197,94,0.06)}
+.prof-btn-row{display:flex;gap:6px;flex-wrap:wrap}
+.prof-btn{
+  background:#111;border:1px solid #1E1E1E;border-radius:6px;
+  padding:6px 12px;font-size:10px;color:#888;cursor:pointer;
+}
+.prof-btn.primary{color:#6EC6E6;border-color:rgba(110,198,230,0.2)}
+.prof-btn.danger{color:#f87171;border-color:rgba(248,113,113,0.15)}
+
+/* ── ADMIN MOCKUP ── */
+.admin-mock{background:#080808;border:1px solid #1A1A1A;border-radius:10px;overflow:hidden}
+.admin-topbar{background:#0C0C0C;border-bottom:1px solid #1A1A1A;padding:10px 14px;display:flex;align-items:center;gap:8px}
+.admin-content{padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat-card{background:#0C0C0C;border:1px solid #1E1E1E;border-radius:8px;padding:12px}
+.stat-num{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:#6EC6E6}
+.stat-lbl{font-size:10px;color:#555;margin-top:2px}
+.chart-bar{display:flex;align-items:flex-end;gap:4px;height:40px;padding-top:4px}
+.bar{background:rgba(110,198,230,0.3);border-radius:2px 2px 0 0;flex:1}
+.bar.hi{background:#6EC6E6}
+.health-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.h-pill{font-size:9px;padding:3px 8px;border-radius:10px}
+.h-pill.ok{background:rgba(34,197,94,0.1);color:#22c55e;border:1px solid rgba(34,197,94,0.15)}
+.h-pill.warn{background:rgba(251,191,36,0.1);color:#fbbf24;border:1px solid rgba(251,191,36,0.15)}
+
+/* ── EXPLORE SECTION ── */
+.explore-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
+.service-card{
+  background:#0C0C0C;border:1px solid #1E1E1E;border-radius:10px;
+  padding:18px;transition:border-color 0.2s;
+}
+.service-card:hover{border-color:rgba(110,198,230,0.2)}
+.service-icon{font-size:20px;margin-bottom:10px}
+.service-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:#F2F2F2;margin-bottom:6px}
+.service-desc{font-size:11.5px;color:#666;line-height:1.6;margin-bottom:12px}
+.service-btns{display:flex;gap:6px}
+.service-btn-p{
+  background:#6EC6E6;color:#000;border:none;border-radius:5px;
+  padding:5px 12px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;cursor:pointer;
+}
+.service-btn-s{
+  background:transparent;color:#6EC6E6;border:1px solid rgba(110,198,230,0.2);border-radius:5px;
+  padding:5px 12px;font-size:10px;cursor:pointer;
+}
+.lead-form{
+  background:#0C0C0C;border:1px solid #1E1E1E;border-radius:10px;
+  padding:20px;margin-top:10px;
+}
+
+/* ── STEP ROW ── */
+.step-row{display:flex;gap:14px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #0E0E0E}
+.step-row:last-child{border-bottom:none}
+.step-num{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:#6EC6E6;
+  background:rgba(110,198,230,0.07);border:1px solid rgba(110,198,230,0.14);
+  border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:1px;
+}
+.step-content{flex:1}
+.step-title{font-size:13px;font-weight:500;color:#F2F2F2;margin-bottom:3px}
+.step-desc{font-size:11.5px;color:#555;line-height:1.6}
+
+/* ── BYOK ── */
+.byok-flow{display:flex;align-items:center;gap:0;margin:14px 0;overflow-x:auto;padding-bottom:4px}
+.byok-step{
+  background:#0C0C0C;border:1px solid #1E1E1E;border-radius:8px;
+  padding:10px 14px;font-size:11px;color:#888;white-space:nowrap;flex-shrink:0;text-align:center;
+}
+.byok-step.hi{color:#6EC6E6;border-color:rgba(110,198,230,0.2)}
+.byok-arrow{color:#333;font-size:16px;margin:0 6px;flex-shrink:0}
+
+/* ── FINAL CTA ── */
+.final-card{
+  background:#0C0C0C;border:1px solid rgba(110,198,230,0.15);
+  border-radius:14px;padding:40px;text-align:center;
+}
+.final-title{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:#F2F2F2;margin-bottom:12px}
+.final-tagline{font-family:'JetBrains Mono',monospace;font-size:13px;color:#6EC6E6;margin-bottom:24px}
+.final-desc{font-size:13px;color:#666;max-width:520px;margin:20px auto 0;line-height:1.9}
+
+/* ── RESPONSIVE ── */
+@media(max-width:680px){
+  .g2,.g3,.g4,.explore-grid{grid-template-columns:1fr}
+  .hero-title{font-size:36px}
+  .topbar-nav{display:none}
+  .domain-row{flex-direction:column;align-items:flex-start}
+  .wf-panel-sources,.wf-panel-notes{display:none}
 }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════ HEADER ═══════════════════════ -->
-<header class="site-header">
-  <div class="logo-row">
-    <span class="logo">ORYGYNS <span>AI</span></span>
-    <span class="logo-meta">Product Blueprint · V1.0 · Confidential</span>
-  </div>
-  <p class="tagline">
-    <strong>The NotebookLM for engineering students.</strong>
-    Purpose-built study intelligence — PDF analysis, PYQ preparation, adaptive exam tools — running on Groq Cloud via student-owned API keys.
-  </p>
-</header>
+<!-- ══ TOPBAR ══ -->
+<div class="topbar">
+  <span class="logo">ORYGYNS</span>
+  <span class="topbar-sep">·</span>
+  <nav class="topbar-nav">
+    <button class="nav-tab active" onclick="scrollToId('vision')">Vision</button>
+    <button class="nav-tab" onclick="scrollToId('design')">Design</button>
+    <button class="nav-tab" onclick="scrollToId('tech')">Tech</button>
+    <button class="nav-tab" onclick="scrollToId('features')">Features</button>
+    <button class="nav-tab" onclick="scrollToId('byok')">BYOK</button>
+    <button class="nav-tab" onclick="scrollToId('screens')">Screens</button>
+    <button class="nav-tab" onclick="scrollToId('explore')">Explore</button>
+  </nav>
+  <span class="badge-sm">V3.0</span>
+  <span class="badge-sm live">Groq-Powered</span>
+  <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">
+    <span class="copy-icon">⊕</span> Copy Build Prompt
+  </button>
+</div>
 
-<!-- ═══════════════════════ TABS ═════════════════════════ -->
-<nav class="tabs">
-  <button class="on" onclick="show('overview',this)">Overview</button>
-  <button onclick="show('features',this)">Features</button>
-  <button onclick="show('architecture',this)">Architecture</button>
-  <button onclick="show('economics',this)">Economics</button>
-  <button onclick="show('roadmap',this)">Roadmap</button>
-</nav>
+<!-- ══ MAIN ══ -->
+<div class="container">
 
-<!-- ═══════════════════════ OVERVIEW ═════════════════════ -->
-<section id="overview" class="panel on">
-
-  <div class="stats">
-    <div class="stat"><div class="stat-n">1.5M+</div><div class="stat-l">engineering students enrolled across India's top technical universities</div></div>
-    <div class="stat"><div class="stat-n">$0</div><div class="stat-l">monthly infrastructure cost to you during BYOK phase</div></div>
-    <div class="stat"><div class="stat-n wh">94%</div><div class="stat-l">token reduction vs unoptimized LLM calls through our middleware</div></div>
-    <div class="stat"><div class="stat-n">7</div><div class="stat-l">core study modules shipping in V1 — no general-purpose AI bloat</div></div>
-  </div>
-
-  <div class="eyebrow">Problem &amp; Opportunity</div>
-  <div class="two-col">
-    <div class="block">
-      <h3>What students do today</h3>
-      <p>Students paste notes into ChatGPT, get generic responses optimized for no one, then sift through irrelevant output. There is no understanding of their syllabus, no PYQ context, no exam format awareness. Generic AI costs ₹1,600+/month. Most students never pay — and get nothing.</p>
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">
+      <span class="hero-dot"></span>
+      ORYGYNS AI Blueprint V3.0
+      <span style="color:#1E1E1E">·</span>
+      orygyns.ai
     </div>
-    <div class="block">
-      <h3>What ORYGYNS AI does</h3>
-      <p>A focused study layer purpose-built for exam preparation. PDF intelligence that reads their actual notes. A PYQ repository that surfaces historically important questions. Revision tools calibrated to 2-mark, 5-mark, and 10-mark formats. Free to use with their own Groq key — which costs them near nothing.</p>
-    </div>
-  </div>
-
-  <div class="eyebrow">Positioning</div>
-  <div class="block-sky">
-    <strong>ORYGYNS AI sits at the intersection of three things no single product currently offers:</strong>
-    general AI study chat (ChatGPT) + document intelligence (NotebookLM) + exam-specific preparation tools (none exist at scale). Our moat is the PYQ repository, the domain-tuned prompt system, and the compounding semantic cache — which gets cheaper and smarter with every student interaction.
-  </div>
-
-  <div class="eyebrow">Core Principles</div>
-  <table class="tbl">
-    <thead><tr><th>Principle</th><th>What it means in practice</th></tr></thead>
-    <tbody>
-      <tr><td class="tc">Student-first design</td><td>UI decisions always favour clarity for a student, not feature density. Inspired by Claude's interface.</td></tr>
-      <tr><td class="tc">BYOK model</td><td>Students use their own Groq API key. Your infrastructure cost stays near zero at any scale.</td></tr>
-      <tr><td class="tc">Aggressive token optimization</td><td>LLMLingua-2 compression + semantic cache + history compaction = 94% token reduction.</td></tr>
-      <tr><td class="tc">Exam-aware responses</td><td>System prompts calibrated for 2-mark, 5-mark, 10-mark formats. Not general answers.</td></tr>
-      <tr><td class="tc">Transparent usage</td><td>Live token usage meter. Warnings at 25%, 50%, 75%, 90%, 95%, 99%. No silent overages.</td></tr>
-      <tr><td class="tc">PDF over raw prompts</td><td>RAG chunking — never send full documents to the model. Relevant sections only.</td></tr>
-    </tbody>
-  </table>
-
-  <div class="eyebrow">Target Market</div>
-  <div class="spec">
-    <div class="spec-r"><span class="spec-k">Primary</span><span class="spec-v">SRM Institute of Science and Technology students — engineering undergraduates.<small>Initial launch focus. Known syllabus structure, PYQ access, campus network.</small></span></div>
-    <div class="spec-r"><span class="spec-k">Secondary</span><span class="spec-v">All engineering college students across India — VIT, BITS, Anna University, and affiliates.<small>Phase 2 expansion once product-market fit is established at SRM.</small></span></div>
-    <div class="spec-r"><span class="spec-k">Long-term</span><span class="spec-v">Any Indian college student preparing for semester exams, placements, or competitive entrance exams.</span></div>
-    <div class="spec-r"><span class="spec-k">Differentiation</span><span class="spec-v">No competitor combines AI chat + PDF intelligence + verified PYQ repository in one free product.</span></div>
-  </div>
-
-</section>
-
-<!-- ═══════════════════════ FEATURES ═════════════════════ -->
-<section id="features" class="panel">
-
-  <div class="eyebrow">V1 Feature Modules</div>
-  <div class="feat-grid">
-    <div class="feat">
-      <div class="feat-tag sky">Core</div>
-      <h3>AI Study Chat</h3>
-      <p>Ask any academic question, get concept explanations, generate study notes, request first-year or expert-level answers. Powered by Groq's 8B/70B models with exam-aware prompts.</p>
-    </div>
-    <div class="feat">
-      <div class="feat-tag sky">Core</div>
-      <h3>PDF Intelligence</h3>
-      <p>Upload notes, textbooks, PPTs, lab manuals. Chat with documents, extract key points, generate chapter summaries. RAG pipeline — only relevant chunks sent to model, never full files.</p>
-    </div>
-    <div class="feat">
-      <div class="feat-tag sky">Unique</div>
-      <h3>PYQ Repository</h3>
-      <p>Admin-verified previous year questions. Topic-wise and subject-wise search. Pattern recognition across years. PYQ-based mock tests. Disclaimer: frequency-based importance, not guaranteed prediction.</p>
-    </div>
-    <div class="feat">
-      <div class="feat-tag">Prep</div>
-      <h3>Exam Prep Tools</h3>
-      <p>Generate 2-mark, 5-mark, 10-mark questions. Viva questions. Quick revision sheets. One-page summaries. Output format matches actual exam structure — not generic Q&amp;A.</p>
-    </div>
-    <div class="feat">
-      <div class="feat-tag">Revision</div>
-      <h3>Flashcard Generator</h3>
-      <p>Convert uploaded notes or chat context into Question → Answer flashcard decks. Built for last-minute revision and memory retention. Exportable for offline use.</p>
-    </div>
-    <div class="feat">
-      <div class="feat-tag">Assessment</div>
-      <h3>Quiz Generator</h3>
-      <p>Generate MCQs, short-answer, and subject/topic quizzes at Easy, Medium, or Hard difficulty. Students can test themselves directly in the platform. Instant grading.</p>
-    </div>
-    <div class="feat">
-      <div class="feat-tag">UX</div>
-      <h3>Prompt Assistant</h3>
-      <p>One-click ready-made prompts for common tasks: Summarize Notes, Exam Prep, Quick Revision, Flashcards, Concept Explanation. Reduces friction for students new to AI tools.</p>
-    </div>
-    <div class="feat" style="background:#0D0D0D; border: 1px dashed var(--b2);">
-      <div class="feat-tag">V2</div>
-      <h3>Coding Mode</h3>
-      <p>Dedicated coding assistant for DSA, debugging, code explanation, and placement preparation. Larger reasoning model (120B class). Separate interface. V2 launch.</p>
+    <h1 class="hero-title">The Free AI<br>Operating System</h1>
+    <p class="hero-sub">Powered entirely by Groq. Users bring their own API key and get a Claude-quality AI workspace with no subscriptions, no locked models, and no restrictions — ever.</p>
+    <div class="hero-chips">
+      <span class="chip">BYOK Architecture</span>
+      <span class="chip">Claude-Inspired UX</span>
+      <span class="chip">NotebookLM Workspaces</span>
+      <span class="chip">LLMLingua-2 Compression</span>
+      <span class="chip">RAG + pgvector</span>
+      <span class="chip">orygyns.in Integrated</span>
     </div>
   </div>
 
-  <div class="eyebrow">AI Quality Modes</div>
-  <div class="mode-grid">
-    <div class="mode">
-      <div class="mode-name">Low</div>
-      <div class="mode-model">llama-3.1-8b-instant</div>
-      <div class="mode-use">Fastest. Least tokens. Best for definitions, quick summaries, short explanations.</div>
+  <!-- ══ 01 · VISION ══ -->
+  <div class="section" id="vision">
+    <div class="section-label">01 — Core Vision</div>
+    <div class="callout" style="font-size:14px">
+      <strong style="color:#F2F2F2">The deal is simple:</strong> ORYGYNS AI provides the premium workspace. Users bring a free Groq API key. That's it. No subscriptions, no premium tiers, no billing — ever. Users pay Groq directly for their usage. ORYGYNS is permanently free.
     </div>
-    <div class="mode active-mode">
-      <div class="mode-name">Medium</div>
-      <div class="mode-model">Auto-routed</div>
-      <div class="mode-use">Default mode. Balanced quality and speed. Handles most student tasks efficiently.</div>
-    </div>
-    <div class="mode">
-      <div class="mode-name">High</div>
-      <div class="mode-model">llama-3.3-70b-versatile</div>
-      <div class="mode-use">Better reasoning. Long-form answers. Complex concepts, research, nuanced questions.</div>
-    </div>
-    <div class="mode">
-      <div class="mode-name">Max</div>
-      <div class="mode-model">Best available</div>
-      <div class="mode-use">Highest reasoning. Deep analysis, advanced academic queries, difficult problem sets.</div>
-    </div>
-  </div>
-  <p style="font-size:12px">Medium is the default. The router automatically uses 8B (80% of queries) unless complexity signals require 70B. Students can override at any time.</p>
-
-</section>
-
-<!-- ═══════════════════════ ARCHITECTURE ═════════════════════ -->
-<section id="architecture" class="panel">
-
-  <div class="eyebrow">Request Pipeline</div>
-  <div class="flow">
-    <div class="flow-r fl-you">
-      <span class="flow-i">01</span>
-      <span class="flow-n">Semantic Cache</span>
-      <span class="flow-d">Query embedded via all-MiniLM-L6-v2 (22MB, CPU). Cosine similarity ≥ 0.92 → return cached answer. No Groq call.</span>
-      <span class="flow-c">$0.00 · you host</span>
-    </div>
-    <div class="flow-r fl-you">
-      <span class="flow-i">02</span>
-      <span class="flow-n">LLMLingua-2</span>
-      <span class="flow-d">Compress prompt 4–10× via Microsoft's open-source CPU model before it reaches Groq. Preserves meaning.</span>
-      <span class="flow-c">$0.00 · you host</span>
-    </div>
-    <div class="flow-r fl-you">
-      <span class="flow-i">03</span>
-      <span class="flow-n">History Compactor</span>
-      <span class="flow-d">After 5 turns, summarize history to a 50-token digest. Replaces 300–500 tokens of raw context.</span>
-      <span class="flow-c">~$0.000002</span>
-    </div>
-    <div class="flow-r fl-you">
-      <span class="flow-i">04</span>
-      <span class="flow-n">Simple Router</span>
-      <span class="flow-d">Token count + keyword check. &lt;60 tokens or simple task → 8B. ≥60 or code/math keywords → 70B.</span>
-      <span class="flow-c">$0.00 · you host</span>
-    </div>
-    <div class="flow-r fl-usr">
-      <span class="flow-i">05</span>
-      <span class="flow-n">Groq: 8B (80%)</span>
-      <span class="flow-d">llama-3.1-8b-instant. Fast definitions, summaries, short-form prep. 500–1000 TPS. max_tokens=200.</span>
-      <span class="flow-c">$0.05/M · user key</span>
-    </div>
-    <div class="flow-r fl-usr">
-      <span class="flow-i">06</span>
-      <span class="flow-n">Groq: 70B (20%)</span>
-      <span class="flow-d">llama-3.3-70b-versatile. Complex explanations, research, high-quality study content.</span>
-      <span class="flow-c">$0.59/M · user key</span>
-    </div>
-    <div class="flow-r fl-you">
-      <span class="flow-i">07</span>
-      <span class="flow-n">Cache Write</span>
-      <span class="flow-d">Response vector stored async in pgvector. Future identical queries answered instantly for free.</span>
-      <span class="flow-c">Async · $0.00</span>
+    <div class="g3">
+      <div class="card">
+        <div class="card-title">✦ ORYGYNS Provides</div>
+        <ul class="flist">
+          <li>Premium AI Workspace</li>
+          <li>Document Intelligence (RAG)</li>
+          <li>Multi-Model Access</li>
+          <li>Study &amp; Developer Tools</li>
+          <li>Token Compression Engine</li>
+          <li>Workspace Memory System</li>
+          <li>Productivity &amp; Organization</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">↑ User Provides</div>
+        <ul class="flist">
+          <li>Groq API Key (free to get at console.groq.com)</li>
+        </ul>
+        <div style="height:14px"></div>
+        <div class="card-title">⚡ Groq Handles</div>
+        <ul class="flist">
+          <li>All AI inference</li>
+          <li>Model hosting</li>
+          <li>Token billing (direct)</li>
+          <li>Rate limits &amp; usage</li>
+        </ul>
+      </div>
+      <div class="card green">
+        <div class="card-title" style="color:#22c55e">⊘ Zero Restrictions</div>
+        <ul class="flist">
+          <li>No subscriptions</li>
+          <li>No premium plans</li>
+          <li>No locked models</li>
+          <li>No feature gates</li>
+          <li>No API billing from ORYGYNS</li>
+          <li>No token limits imposed</li>
+          <li>Free forever</li>
+        </ul>
+      </div>
     </div>
   </div>
-  <p style="font-size:12px; margin-bottom:24px;"><span style="color:var(--sky)">─</span> Sky = you host &nbsp;|&nbsp; <span style="color:var(--muted)">─</span> Grey = Groq Cloud (student's API key pays). No fallback providers.</p>
 
-  <div class="eyebrow">PDF Intelligence Pipeline</div>
-  <table class="tbl">
-    <thead><tr><th>Stage</th><th>What happens</th><th>Tool</th></tr></thead>
-    <tbody>
-      <tr><td class="tc">Upload</td><td>Student uploads PDF (notes, textbook, PPT export, lab manual)</td><td class="tm">FastAPI multipart</td></tr>
-      <tr><td class="tc">Parse</td><td>Extract raw text, preserve page structure and section headers</td><td class="tm">PyMuPDF (fitz)</td></tr>
-      <tr><td class="tc">Chunk</td><td>Split into ~400-token overlapping chunks. Preserves semantic boundaries.</td><td class="tm">LangChain TextSplitter</td></tr>
-      <tr><td class="tc">Embed</td><td>Each chunk embedded via all-MiniLM-L6-v2 and stored in pgvector</td><td class="tm">sentence-transformers</td></tr>
-      <tr><td class="tc">Retrieve</td><td>At query time, top-5 relevant chunks retrieved via cosine similarity</td><td class="tm">pgvector + Supabase</td></tr>
-      <tr><td class="tc">Inject</td><td>Only retrieved chunks sent to Groq — never the full document</td><td class="tm">Context assembly</td></tr>
-    </tbody>
-  </table>
+  <!-- ══ 02 · DESIGN SYSTEM ══ -->
+  <div class="section" id="design">
+    <div class="section-label">02 — Design System</div>
 
-  <div class="eyebrow">Tech Stack</div>
-  <table class="tbl">
-    <thead><tr><th>Layer</th><th>Tool</th><th>Hosting</th><th>Cost</th></tr></thead>
-    <tbody>
-      <tr><td class="tc">Frontend</td><td>Next.js + Tailwind CSS</td><td>Vercel</td><td class="tg">$0/mo</td></tr>
-      <tr><td class="tc">PWA</td><td>next-pwa (manifest + service worker)</td><td>Same as frontend</td><td class="tg">$0/mo</td></tr>
-      <tr><td class="tc">Backend API</td><td>FastAPI + Uvicorn (Python)</td><td>Render (free tier)</td><td class="tg">$0 → $7/mo</td></tr>
-      <tr><td class="tc">Database</td><td>PostgreSQL + pgvector extension</td><td>Supabase (free)</td><td class="tg">$0/mo</td></tr>
-      <tr><td class="tc">Hot Cache</td><td>Redis (serverless)</td><td>Upstash (free)</td><td class="tg">$0/mo</td></tr>
-      <tr><td class="tc">Embeddings</td><td>all-MiniLM-L6-v2 (22MB, CPU)</td><td>Runs on Render</td><td class="tg">$0/mo</td></tr>
-      <tr><td class="tc">Compression</td><td>LLMLingua-2 (Microsoft open-source)</td><td>Runs on Render</td><td class="tg">$0/mo</td></tr>
-      <tr><td class="tc">Inference</td><td>Groq Cloud — 8B + 70B Llama models</td><td>Groq (student key)</td><td class="tm">Student pays ~$0.006/mo</td></tr>
-      <tr><td class="tc">PDF parsing</td><td>PyMuPDF</td><td>Runs on Render</td><td class="tg">$0/mo</td></tr>
-    </tbody>
-  </table>
+    <div class="g2">
+      <!-- Colors -->
+      <div class="card">
+        <div class="card-title">Color Palette</div>
+        <div class="swatch-row">
+          <div class="swatch" style="background:#6EC6E6"></div>
+          <div><div class="swatch-name">Primary — Sky Blue</div><div class="swatch-hex">#6EC6E6</div></div>
+          <div class="swatch-role">CTA · Links · Active</div>
+        </div>
+        <div class="swatch-row">
+          <div class="swatch" style="background:#38BDF8"></div>
+          <div><div class="swatch-name">Secondary Blue</div><div class="swatch-hex">#38BDF8</div></div>
+          <div class="swatch-role">Accents · Hover</div>
+        </div>
+        <div class="swatch-row">
+          <div class="swatch" style="background:#7DD3FC"></div>
+          <div><div class="swatch-name">Accent Light</div><div class="swatch-hex">#7DD3FC</div></div>
+          <div class="swatch-role">Highlights · Selected</div>
+        </div>
+        <div class="swatch-row">
+          <div class="swatch" style="background:#000;border:1px solid #333"></div>
+          <div><div class="swatch-name">Background</div><div class="swatch-hex">#000000</div></div>
+          <div class="swatch-role">Base / Page</div>
+        </div>
+        <div class="swatch-row">
+          <div class="swatch" style="background:#0C0C0C"></div>
+          <div><div class="swatch-name">Panels</div><div class="swatch-hex">#0C0C0C</div></div>
+          <div class="swatch-role">Sidebar · Nav</div>
+        </div>
+        <div class="swatch-row">
+          <div class="swatch" style="background:#111"></div>
+          <div><div class="swatch-name">Cards</div><div class="swatch-hex">#111111</div></div>
+          <div class="swatch-role">Content cards</div>
+        </div>
+        <div class="swatch-row">
+          <div class="swatch" style="background:#1E1E1E"></div>
+          <div><div class="swatch-name">Borders</div><div class="swatch-hex">#1E1E1E</div></div>
+          <div class="swatch-role">Dividers · Lines</div>
+        </div>
+        <div class="swatch-row">
+          <div class="swatch" style="background:#F2F2F2"></div>
+          <div><div class="swatch-name">Text Primary</div><div class="swatch-hex">#F2F2F2</div></div>
+          <div class="swatch-role">Main content</div>
+        </div>
+        <div class="swatch-row">
+          <div class="swatch" style="background:#888"></div>
+          <div><div class="swatch-name">Text Muted</div><div class="swatch-hex">#888888</div></div>
+          <div class="swatch-role">Secondary text</div>
+        </div>
+      </div>
 
-</section>
+      <!-- Typography + principles -->
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="card">
+          <div class="card-title">Typography Stack</div>
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:14px">
+            <div>
+              <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#F2F2F2;line-height:1">Syne</div>
+              <div style="font-size:11px;color:#555;margin-top:4px">Headings · Logo · Buttons · Section Labels</div>
+              <div style="font-size:11px;color:#444;margin-top:2px;font-family:'JetBrains Mono',monospace">weight: 600, 700, 800</div>
+            </div>
+            <div>
+              <div style="font-size:15px;color:#aaa;line-height:1">Inter Regular &amp; Medium</div>
+              <div style="font-size:11px;color:#555;margin-top:4px">Body text · Descriptions · UI labels · Nav items</div>
+              <div style="font-size:11px;color:#444;margin-top:2px;font-family:'JetBrains Mono',monospace">weight: 400, 500</div>
+            </div>
+            <div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#6EC6E6;line-height:1">JetBrains Mono</div>
+              <div style="font-size:11px;color:#555;margin-top:4px">Code blocks · API keys · Token values · Hex codes</div>
+              <div style="font-size:11px;color:#444;margin-top:2px;font-family:'JetBrains Mono',monospace">weight: 400, 500</div>
+            </div>
+          </div>
+        </div>
 
-<!-- ═══════════════════════ ECONOMICS ═════════════════════ -->
-<section id="economics" class="panel">
+        <div class="card">
+          <div class="card-title">Design Principles</div>
+          <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px">
+            <span class="tag b">Pure Black Canvas</span>
+            <span class="tag b">Sky Blue Only Accent</span>
+            <span class="tag b">30-sec Onboarding</span>
+            <span class="tag b">Claude-Inspired</span>
+            <span class="tag b">No Gray Backgrounds</span>
+            <span class="tag b">Mobile-First</span>
+            <span class="tag b">No UI Gradients</span>
+            <span class="tag b">Glassmorphism Overlays</span>
+          </div>
+        </div>
 
-  <div class="eyebrow">Token Optimization — Cumulative Effect</div>
-  <table class="tbl">
-    <thead><tr><th>Optimization Layer</th><th>Avg tokens/query</th><th>Cost / 1K queries</th><th>Saving</th></tr></thead>
-    <tbody>
-      <tr><td class="tc">Baseline (no optimization)</td><td class="ts">500</td><td class="tm">$0.033</td><td class="tm">—</td></tr>
-      <tr><td class="tc">+ Semantic cache (40% hit rate)</td><td class="ts">300</td><td class="tm">$0.020</td><td class="tg">↓ 40%</td></tr>
-      <tr><td class="tc">+ LLMLingua-2 (5× compression)</td><td class="ts">60</td><td class="tm">$0.004</td><td class="tg">↓ 88%</td></tr>
-      <tr><td class="tc">+ History compaction</td><td class="ts">40</td><td class="tm">$0.0027</td><td class="tg">↓ 92%</td></tr>
-      <tr><td class="tc">+ max_tokens=200 + stop sequences</td><td class="ts">30</td><td class="tm">$0.0020</td><td class="tg">↓ 94%</td></tr>
-    </tbody>
-  </table>
+        <div class="card">
+          <div class="card-title">Key Effects</div>
+          <ul class="flist">
+            <li><span class="mono" style="font-size:11px">Logo Glow</span> — <span class="mono" style="font-size:10px;color:#6EC6E6">box-shadow:0 0 24px rgba(110,198,230,0.4)</span>, 300ms ease on press</li>
+            <li><span class="mono" style="font-size:11px">Glassmorphism</span> — <span class="mono" style="font-size:10px;color:#6EC6E6">backdrop-filter:blur(20px)</span> + <span class="mono" style="font-size:10px;color:#6EC6E6">rgba(0,0,0,0.85)</span> for overlays</li>
+            <li><span class="mono" style="font-size:11px">Card Hover</span> — border-color shifts to <span class="mono" style="font-size:10px;color:#6EC6E6">rgba(110,198,230,0.2)</span></li>
+            <li><span class="mono" style="font-size:11px">Active Sidebar</span> — sky-blue left border (3px solid #6EC6E6)</li>
+            <li><span class="mono" style="font-size:11px">Streaming Cursor</span> — blinking 2px sky-blue bar during response</li>
+          </ul>
+        </div>
 
-  <div class="block-sky">
-    <strong>Student cost reality:</strong> 100 queries/day × $0.0020/1K = $0.0002/day = <strong>~₹0.50/month</strong> in Groq credits. For most students on Groq's free tier (30 RPM), cost is literally zero until heavy usage.
-  </div>
-
-  <div class="eyebrow">Monthly Infrastructure Cost</div>
-  <table class="tbl">
-    <thead><tr><th>Service</th><th>Role</th><th>Who pays</th><th>Cost</th></tr></thead>
-    <tbody>
-      <tr><td class="tc">Vercel</td><td>Frontend + PWA hosting</td><td>You</td><td class="tg">$0/mo</td></tr>
-      <tr><td class="tc">Render (free tier)</td><td>FastAPI backend + all CPU models</td><td>You</td><td class="tg">$0/mo</td></tr>
-      <tr><td class="tc">Supabase (free tier)</td><td>PostgreSQL + pgvector cache</td><td>You</td><td class="tg">$0/mo</td></tr>
-      <tr><td class="tc">Upstash (free tier)</td><td>Redis hot cache (10K cmd/day)</td><td>You</td><td class="tg">$0/mo</td></tr>
-      <tr><td class="tc">Groq Cloud</td><td>All LLM inference</td><td>Student (BYOK)</td><td class="tm">~₹0.50/student/mo</td></tr>
-      <tr style="border-top: 1px solid var(--b2)"><td class="tc" style="color:var(--pure); font-weight:700; font-family:var(--disp); font-size:14px;">YOUR TOTAL</td><td></td><td></td><td class="ts" style="font-size:16px; text-align:left; padding-left:12px;">$0 / month</td></tr>
-    </tbody>
-  </table>
-
-  <div class="eyebrow">BYOK Model — How It Works</div>
-  <div class="spec">
-    <div class="spec-r"><span class="spec-k">Student signs up</span><span class="spec-v">Creates a Groq account at console.groq.com — free, no credit card, 30 RPM.<small>Takes 2 minutes. You link to Groq's key page in your onboarding flow.</small></span></div>
-    <div class="spec-r"><span class="spec-k">Key storage</span><span class="spec-v">Student pastes Groq key once. Stored AES-256-GCM encrypted in Supabase. Never logged in plaintext. Displayed masked.</span></div>
-    <div class="spec-r"><span class="spec-k">Inference billing</span><span class="spec-v">Every Groq API call uses the student's own key. Groq bills the student directly. You are never in the billing chain.</span></div>
-    <div class="spec-r"><span class="spec-k">Your exposure</span><span class="spec-v">Zero. If Groq pricing changes or a student runs out of credits — nothing changes for you. You still pay $0.</span></div>
-  </div>
-
-  <div class="gap"></div>
-  <div class="eyebrow">Monetization Path (V2 Onward)</div>
-  <table class="tbl">
-    <thead><tr><th>Tier</th><th>Price</th><th>What they get</th></tr></thead>
-    <tbody>
-      <tr><td class="tc">Free</td><td class="tm">₹0</td><td>BYOK Groq key, all V1 features, basic PDF (5 uploads/mo), semantic cache</td></tr>
-      <tr><td class="tc">Student Pro</td><td class="tm">₹99–149/mo</td><td>Managed key (no setup), unlimited PDFs, extended history, priority routing, PYQ analytics</td></tr>
-      <tr><td class="tc">College License</td><td class="tm">₹50K–2L/yr</td><td>Deployed for entire department or university — custom PYQ repository, admin dashboard, branded UI</td></tr>
-    </tbody>
-  </table>
-
-</section>
-
-<!-- ═══════════════════════ ROADMAP ═════════════════════ -->
-<section id="roadmap" class="panel">
-
-  <div class="eyebrow">Build Phases — V1 to V2</div>
-
-  <div class="phase cur">
-    <div class="phase-head">
-      <span class="phase-tag sky">Month 1–2</span>
-      <span class="phase-title">Core Foundation</span>
-      <span class="phase-time">Current priority</span>
+        <div class="card">
+          <div class="card-title">Spacing &amp; Radii</div>
+          <ul class="flist">
+            <li>Base unit: <span class="mono" style="font-size:11px">4px</span></li>
+            <li>Card padding: <span class="mono" style="font-size:11px">20px</span></li>
+            <li>Section gap: <span class="mono" style="font-size:11px">48px</span></li>
+            <li>Border radius — small: <span class="mono" style="font-size:11px">6px</span></li>
+            <li>Border radius — card: <span class="mono" style="font-size:11px">10px</span></li>
+            <li>Border radius — modal: <span class="mono" style="font-size:11px">14px</span></li>
+          </ul>
+        </div>
+      </div>
     </div>
-    <ul>
-      <li>FastAPI backend on Render — BYOK Groq key flow with AES-256 encryption</li>
-      <li>AI Study Chat with 8B/70B routing, max_tokens cap, stop sequences</li>
-      <li>Next.js frontend on Vercel — dark UI, mobile responsive, Claude-inspired layout</li>
-      <li>Semantic cache layer — FAISS + pgvector, 0.92 cosine threshold</li>
-      <li>LLMLingua-2 prompt compression integrated in middleware pipeline</li>
-      <li>Token usage dashboard — live meter, warnings at 25/50/75/90/95/99/100%</li>
-    </ul>
   </div>
 
-  <div class="phase cur">
-    <div class="phase-head">
-      <span class="phase-tag sky">Month 2–3</span>
-      <span class="phase-title">PDF Intelligence</span>
+  <!-- ══ 03 · TECH STACK ══ -->
+  <div class="section" id="tech">
+    <div class="section-label">03 — Tech Stack</div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="card-title">Frontend</div>
+        <div class="tech-item">
+          <div class="tech-layer">Framework</div>
+          <div><div class="tech-tools">Next.js 14+ (App Router, RSC)</div><div class="tech-host">TypeScript · ESLint · Prettier</div></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-layer">Styling</div>
+          <div><div class="tech-tools">Tailwind CSS + custom CSS vars</div><div class="tech-host">Framer Motion for animations</div></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-layer">State</div>
+          <div><div class="tech-tools">Zustand (global) · React Query</div><div class="tech-host">SWR for real-time server data</div></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-layer">Chat UI</div>
+          <div><div class="tech-tools">Custom streaming hook + WebSocket</div><div class="tech-host">react-markdown · KaTeX · highlight.js</div></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-layer">Markdown</div>
+          <div><div class="tech-tools">react-markdown + remark-gfm</div><div class="tech-host">rehype-highlight for code blocks</div></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-layer">Host</div>
+          <div><div class="tech-tools">Vercel (free tier → Pro)</div><div class="tech-host">Edge runtime for streaming</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Backend &amp; AI</div>
+        <div class="tech-item">
+          <div class="tech-layer">API</div>
+          <div><div class="tech-tools">FastAPI + Uvicorn (Python 3.12)</div><div class="tech-host">WebSocket streaming · JWT auth</div></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-layer">Auth</div>
+          <div><div class="tech-tools">JWT (access + refresh tokens)</div><div class="tech-host">Google + GitHub OAuth via authlib</div></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-layer">Database</div>
+          <div><div class="tech-tools">PostgreSQL + pgvector extension</div><div class="tech-host">Supabase (free tier) — db + storage</div></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-layer">Cache</div>
+          <div><div class="tech-tools">Redis — Upstash (serverless)</div><div class="tech-host">Session caching · Rate limiting</div></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-layer">AI Inference</div>
+          <div><div class="tech-tools">Groq Cloud API (user's BYOK)</div><div class="tech-host">All models — no restrictions</div></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-layer">Compression</div>
+          <div><div class="tech-tools">LLMLingua-2 (Microsoft OSS)</div><div class="tech-host">Runs on Render backend server</div></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-layer">Embeddings</div>
+          <div><div class="tech-tools">all-MiniLM-L6-v2 (22MB, CPU)</div><div class="tech-host">RAG pipeline · pgvector search</div></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-layer">Storage</div>
+          <div><div class="tech-tools">Supabase Storage (S3-compatible)</div><div class="tech-host">PDF, DOCX, PPTX, images</div></div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-layer">Host</div>
+          <div><div class="tech-tools">Render (free → $7/mo)</div><div class="tech-host">AES-256-GCM key encryption</div></div>
+        </div>
+      </div>
     </div>
-    <ul>
-      <li>PDF upload endpoint — PyMuPDF parsing, chunk splitting, pgvector embedding</li>
-      <li>Chat-with-PDF — RAG retrieval, top-5 chunks injected into context</li>
-      <li>Summarize PDF, extract key points, generate revision notes from document</li>
-      <li>History compactor — 5-turn summarization to compressed context digest</li>
-      <li>Prompt Assistant — 5 one-click ready-made academic prompt templates</li>
-    </ul>
   </div>
 
-  <div class="phase">
-    <div class="phase-head">
-      <span class="phase-tag">Month 3–4</span>
-      <span class="phase-title">Exam Tools + PYQ</span>
+  <!-- ══ 04 · LANDING EXPERIENCE ══ -->
+  <div class="section">
+    <div class="section-label">04 — Landing Experience</div>
+    <div class="callout" style="font-size:15px;font-family:'Syne',sans-serif;font-weight:600;text-align:center;padding:22px">
+      🎯 &nbsp;orygyns.ai opens <em>directly</em> as the AI Workspace — NOT a home page, NOT a marketing page. The AI IS the product.
     </div>
-    <ul>
-      <li>PYQ Repository — admin upload UI, subject/topic tagging, verified question bank</li>
-      <li>PYQ search — topic-wise, subject-wise, pattern frequency analysis</li>
-      <li>Exam prep tools — 2-mark, 5-mark, 10-mark question generation from material</li>
-      <li>Flashcard generator — Question → Answer pairs from notes or chat context</li>
-      <li>Quiz generator — MCQ + short-answer at Easy/Medium/Hard difficulty</li>
-    </ul>
-  </div>
-
-  <div class="phase">
-    <div class="phase-head">
-      <span class="phase-tag">Month 5–6</span>
-      <span class="phase-title">Polish + SRM Launch</span>
+    <div class="g2">
+      <div class="card">
+        <div class="card-title">New User Flow (under 30 seconds)</div>
+        <div class="step-row">
+          <div class="step-num">1</div>
+          <div class="step-content"><div class="step-title">Visit orygyns.ai</div><div class="step-desc">Full chat interface appears immediately. No splash screen.</div></div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">2</div>
+          <div class="step-content"><div class="step-title">Inline auth prompt</div><div class="step-desc">Quick email/password form appears inline — no page redirect.</div></div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">3</div>
+          <div class="step-content"><div class="step-title">Soft overlay: "Paste your Groq key"</div><div class="step-desc">Single input field inline. Not a separate page. Not a modal barrier.</div></div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">4</div>
+          <div class="step-content"><div class="step-title">Key validates instantly</div><div class="step-desc">Test call to Groq /models. ✓ Connected shown in under 2 seconds.</div></div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">5</div>
+          <div class="step-content"><div class="step-title">Start chatting</div><div class="step-desc">Workspace is live. Zero extra steps.</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Returning User Experience</div>
+        <ul class="flist">
+          <li>Opens directly to last open chat</li>
+          <li>Model pre-selected from user memory</li>
+          <li>Workspaces pre-loaded in sidebar</li>
+          <li>Quality setting remembered</li>
+          <li>Zero friction — instant AI access</li>
+          <li>No loading screens, no re-auth nagging</li>
+        </ul>
+        <div style="margin-top:14px;background:#111;border-radius:8px;padding:12px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#555;margin-bottom:8px">AUTH STATE FLOW</div>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+            <span class="tag">No account</span>
+            <span style="color:#333">→</span>
+            <span class="tag">Inline register</span>
+            <span style="color:#333">→</span>
+            <span class="tag b">Key prompt</span>
+            <span style="color:#333">→</span>
+            <span class="tag g">Chat</span>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:6px">
+            <span class="tag">Has account</span>
+            <span style="color:#333">→</span>
+            <span class="tag">Inline login</span>
+            <span style="color:#333">→</span>
+            <span class="tag g">Chat (instant)</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <ul>
-      <li>PWA configuration — manifest.json + next-pwa service worker, installable on iOS/Android</li>
-      <li>AI Quality Mode selector — Low / Medium / High / Max in UI</li>
-      <li>SRM campus launch — student community rollout, feedback collection</li>
-      <li>DistilBERT fine-tuned complexity classifier to replace rule-based router</li>
-      <li>PYQ-based mock test mode — timed, scored, with answer explanations</li>
-    </ul>
   </div>
 
-  <div class="phase">
-    <div class="phase-head">
-      <span class="phase-tag">V2 · 12–18 months</span>
-      <span class="phase-title">Coding Mode + Expansion</span>
+  <!-- ══ 05 · APP LAYOUT ══ -->
+  <div class="section" id="features">
+    <div class="section-label">05 — Application Layout</div>
+
+    <div class="g2" style="margin-bottom:10px">
+      <!-- Sidebar mockup -->
+      <div>
+        <div class="card-title" style="margin-bottom:10px">Left Sidebar (Collapsible · 280px default)</div>
+        <div class="sidebar-mock">
+          <div class="sidebar-item active" style="margin-bottom:6px">
+            <span class="sidebar-icon">◈</span>
+            <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px">ORYGYNS</span>
+            <span style="font-size:9px;color:#444;margin-left:auto;font-family:'JetBrains Mono',monospace">click = toggle</span>
+          </div>
+          <hr class="sidebar-divider">
+          <div class="sidebar-item new-item"><span class="sidebar-icon">＋</span> New Chat</div>
+          <div class="sidebar-item new-item"><span class="sidebar-icon">＋</span> New Workspace</div>
+          <hr class="sidebar-divider">
+          <div class="sidebar-group">Recent Chats</div>
+          <div class="sidebar-item"><span class="sidebar-icon">◦</span> Explain quantum entanglement</div>
+          <div class="sidebar-item"><span class="sidebar-icon">◦</span> Debug my FastAPI route</div>
+          <div class="sidebar-item"><span class="sidebar-icon">◦</span> Summarize this PDF...</div>
+          <hr class="sidebar-divider">
+          <div class="sidebar-group">Workspaces</div>
+          <div class="sidebar-item active"><span class="sidebar-icon">⬡</span> Programming</div>
+          <div class="sidebar-item"><span class="sidebar-icon">⬡</span> Research</div>
+          <div class="sidebar-item"><span class="sidebar-icon">⬡</span> Semester 1</div>
+          <div class="sidebar-item"><span class="sidebar-icon">⬡</span> Semester 2</div>
+          <div class="sidebar-item"><span class="sidebar-icon">⬡</span> Business</div>
+          <hr class="sidebar-divider">
+          <div class="sidebar-item"><span class="sidebar-icon">◎</span> View Profile</div>
+          <div class="sidebar-item" style="color:#6EC6E6"><span class="sidebar-icon">✦</span> Explore Orygyns</div>
+          <div class="sidebar-item"><span class="sidebar-icon">⚙</span> Settings</div>
+          <hr class="sidebar-divider">
+          <div class="sidebar-item" style="color:#666"><span class="sidebar-icon">→</span> Logout</div>
+        </div>
+      </div>
+
+      <!-- Chat area + input -->
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="card" style="flex:1">
+          <div class="card-title">Main Chat Area (Claude-Style)</div>
+          <ul class="flist" style="margin-top:8px">
+            <li>Centered conversation column (max-width: 680px)</li>
+            <li>Streaming Markdown — live render as tokens arrive</li>
+            <li>Code syntax highlighting + one-click copy button</li>
+            <li>Math rendering via KaTeX</li>
+            <li>Drag &amp; drop file upload anywhere on chat area</li>
+            <li>Edit previous user messages (inline edit mode)</li>
+            <li>Regenerate last AI response</li>
+            <li>Chat search (Cmd/Ctrl+F)</li>
+            <li>Message actions: copy · edit · regenerate · 👍 👎</li>
+            <li>Token counter subtly shown in footer area</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Prompt Input Bar (Bottom Fixed)</div>
+          <div class="input-mock">
+            <div class="input-mock-action" style="color:#555">📎</div>
+            <div class="input-mock-placeholder">Message ORYGYNS AI...</div>
+            <div class="input-mock-action">Model ▾</div>
+            <div class="input-mock-action">Quality ▾</div>
+            <div class="input-mock-send">↑ Send</div>
+          </div>
+          <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+            <span class="tag">📎 Attachment (left)</span>
+            <span class="tag b">Prompt box (center, auto-resize 6 lines max)</span>
+            <span class="tag">Model selector (dropdown + speed indicator)</span>
+            <span class="tag">Quality selector (LOW/MEDIUM/HIGH/MAX)</span>
+            <span class="tag b">↑ Send button (right)</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <ul>
-      <li>Coding Mode — dedicated DSA, debugging, code explanation interface</li>
-      <li>Larger reasoning model integration (120B class or equivalent at Groq speeds)</li>
-      <li>Multi-university expansion — VIT, BITS, Anna University affiliates</li>
-      <li>Student Pro tier launch — managed Groq keys, unlimited PDFs, priority routing</li>
-      <li>College License product — institution-level deployment, custom PYQ banks</li>
-    </ul>
+
+    <div class="card accent">
+      <div class="card-title">Logo Behaviour (Header Left)</div>
+      <div class="card-body">
+        Single click → open sidebar &nbsp;|&nbsp; Second click → close sidebar &nbsp;|&nbsp; Pressed state: emits soft sky-blue glow (<span class="mono" style="font-size:11px">box-shadow: 0 0 24px rgba(110,198,230,0.4)</span>) with 300ms ease transition. Sidebar collapses to 0 width when closed (not hidden off-screen).
+      </div>
+    </div>
   </div>
 
-  <hr class="rule">
-
-  <div class="eyebrow">Long-Term Vision</div>
-  <div class="block-sky">
-    <strong>ORYGYNS AI becomes the primary AI study companion for India's engineering students</strong> — not by being a better general-purpose chatbot, but by being the only AI that understands their exact syllabus, their university's PYQ history, and the structure of their semester exams. The moat compounds: every student interaction improves the cache, every admin-uploaded PYQ deepens the repository, and every campus launch expands the network. General AI cannot replicate a specialized, compounding, domain-specific product.
+  <!-- ══ 06 · MODEL SYSTEM ══ -->
+  <div class="section">
+    <div class="section-label">06 — Model System</div>
+    <div class="callout">All models are available to every user. No locked models. No tier restrictions. Models are fetched dynamically from the Groq <span class="mono" style="font-size:11px">/models</span> endpoint — new models appear automatically without any code changes.</div>
+    <div class="g4">
+      <div class="card center" style="padding:16px">
+        <div class="mono" style="font-size:10px;color:#6EC6E6;margin-bottom:8px">OpenAI OSS</div>
+        <div style="font-size:12px;color:#888;line-height:1.8">GPT OSS 120B<br>GPT OSS 20B</div>
+        <div style="margin-top:8px"><span class="tag y">Powerful</span></div>
+      </div>
+      <div class="card center" style="padding:16px">
+        <div class="mono" style="font-size:10px;color:#6EC6E6;margin-bottom:8px">Meta Llama</div>
+        <div style="font-size:12px;color:#888;line-height:1.8">Llama 3.3 70B<br>Llama 3.1 8B</div>
+        <div style="margin-top:8px"><span class="tag g">Fast</span></div>
+      </div>
+      <div class="card center" style="padding:16px">
+        <div class="mono" style="font-size:10px;color:#6EC6E6;margin-bottom:8px">Alibaba / Labs</div>
+        <div style="font-size:12px;color:#888;line-height:1.8">Qwen 3 32B<br>DeepSeek R1</div>
+        <div style="margin-top:8px"><span class="tag b">Balanced</span></div>
+      </div>
+      <div class="card center" style="padding:16px">
+        <div class="mono" style="font-size:10px;color:#6EC6E6;margin-bottom:8px">More + Future</div>
+        <div style="font-size:12px;color:#888;line-height:1.8">Kimi<br>Compound Beta<br>+ Auto-added</div>
+        <div style="margin-top:8px"><span class="tag b">Auto-sync</span></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:10px">
+      <div class="card-title">Model Selector Dropdown Shows</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+        <span class="tag b">Model name</span>
+        <span class="tag b">Speed indicator (Fast / Balanced / Powerful)</span>
+        <span class="tag b">Context window size</span>
+        <span class="tag b">Active checkmark on selected</span>
+      </div>
+    </div>
   </div>
 
-  <table class="tbl" style="margin-top:20px;">
-    <thead><tr><th>Milestone</th><th>Target</th><th>Signal</th></tr></thead>
-    <tbody>
-      <tr><td class="tc">MVP live</td><td class="tm">Month 2</td><td>Study Chat + BYOK + Cache running at a real URL</td></tr>
-      <tr><td class="tc">100 active users</td><td class="tm">Month 3–4</td><td>PDF + PYQ shipped, word-of-mouth at SRM</td></tr>
-      <tr><td class="tc">1,000 active users</td><td class="tm">Month 6–8</td><td>Campus launch, PWA installed on phones</td></tr>
-      <tr><td class="tc">First revenue</td><td class="tm">Month 8–10</td><td>Student Pro tier, managed key offering</td></tr>
-      <tr><td class="tc">10,000 active users</td><td class="tm">Month 12–18</td><td>Multi-university, first College License deal</td></tr>
-    </tbody>
-  </table>
+  <!-- ══ 07 · QUALITY SYSTEM ══ -->
+  <div class="section">
+    <div class="section-label">07 — Quality System (Token Compression)</div>
+    <div class="callout">Quality controls <strong style="color:#F2F2F2">prompt compression ratio</strong>, NOT model selection. Same model. Same intelligence. Fewer tokens used. Engine: <strong style="color:#F2F2F2">LLMLingua-2</strong> (Microsoft OSS) running on the FastAPI backend — users get cost savings automatically.</div>
+    <div class="g4">
+      <div class="qtier">
+        <div class="qtier-label">LOW</div>
+        <div class="qtier-value">10×</div>
+        <div class="qtier-sub">Fastest response<br>Minimum token use<br>Quick lookups</div>
+      </div>
+      <div class="qtier default">
+        <div class="qtier-label" style="color:#6EC6E6">MEDIUM ★</div>
+        <div class="qtier-value">5×</div>
+        <div class="qtier-sub">Balanced compression<br><strong style="color:#6EC6E6">Default for all users</strong><br>Most use cases</div>
+      </div>
+      <div class="qtier">
+        <div class="qtier-label">HIGH</div>
+        <div class="qtier-value">2×</div>
+        <div class="qtier-sub">Near-full context<br>Complex reasoning<br>Long documents</div>
+      </div>
+      <div class="qtier">
+        <div class="qtier-label">MAX</div>
+        <div class="qtier-value">1×</div>
+        <div class="qtier-sub">No compression<br>Full token usage<br>Maximum quality</div>
+      </div>
+    </div>
+  </div>
 
-</section>
+  <!-- ══ 08 · WORKSPACES ══ -->
+  <div class="section">
+    <div class="section-label">08 — Workspace &amp; Memory System</div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-title">Unlimited Workspaces (NotebookLM-Inspired)</div>
+        <div class="card-body" style="margin-bottom:12px">Each workspace is an isolated knowledge environment with a 3-panel layout: <strong style="color:#aaa">Sources (L 280px) | AI Chat (C flex) | Notes (R 240px)</strong>. All panels resizable.</div>
+        <div class="card-title">Each Workspace Stores</div>
+        <ul class="flist">
+          <li>All chats and conversation history</li>
+          <li>Uploaded documents (PDF/DOCX/PPTX/TXT/CSV)</li>
+          <li>AI-generated notes, flashcards, MCQs</li>
+          <li>References and citations</li>
+          <li>Workspace-scoped memory context</li>
+        </ul>
+        <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:5px">
+          <span class="tag">Programming</span>
+          <span class="tag">Physics</span>
+          <span class="tag">Research</span>
+          <span class="tag">Semester 1 &amp; 2</span>
+          <span class="tag">Startups</span>
+          <span class="tag">Business</span>
+          <span class="tag b">+ Unlimited custom</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">User Memory System</div>
+        <ul class="flist">
+          <li>Preferred Groq model — remembered across sessions</li>
+          <li>Quality preference (LOW/MEDIUM/HIGH/MAX) saved</li>
+          <li>Name + academic background stored</li>
+          <li>Most-frequently-used workspace remembered</li>
+          <li>Custom instructions persisted</li>
+        </ul>
+        <div style="margin-top:14px">
+          <div class="card-title">Memory Controls (Full User Ownership)</div>
+          <ul class="flist">
+            <li>Disable memory entirely (toggle)</li>
+            <li>View all stored memory items</li>
+            <li>Edit individual memory entries</li>
+            <li>Delete specific memory items</li>
+            <li>Clear all memory at once</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<!-- ═══════════════════════ FOOTER ═════════════════════════ -->
-<footer class="foot">
-  <span>ORYGYNS AI · Product Blueprint V1.0 · Confidential</span>
-  <span>Built on Groq · Deployed free · Scales without funding</span>
-</footer>
+  <!-- ══ 09 · DOCUMENT INTELLIGENCE ══ -->
+  <div class="section">
+    <div class="section-label">09 — Document Intelligence</div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-title">Supported Formats</div>
+        <div style="margin-top:8px">
+          <span class="tag b">PDF</span><span class="tag b">DOCX</span><span class="tag b">TXT</span>
+          <span class="tag b">PPTX</span><span class="tag b">Markdown</span><span class="tag b">CSV</span>
+        </div>
+        <div class="card-title" style="margin-top:14px">RAG Pipeline</div>
+        <ul class="flist">
+          <li>Upload → extract text (PyMuPDF / python-docx)</li>
+          <li>Chunk into 512-token segments, 50-token overlap</li>
+          <li>Embed with all-MiniLM-L6-v2</li>
+          <li>Store vectors in pgvector (PostgreSQL)</li>
+          <li>On query: semantic search → top-k chunks</li>
+          <li>Inject into prompt → compress with LLMLingua-2</li>
+          <li>Send to Groq — response streamed back</li>
+        </ul>
+        <div class="card-title" style="margin-top:14px">Study Tools Generated</div>
+        <div style="margin-top:8px">
+          <span class="tag b">Study Notes</span><span class="tag b">Flashcards (Q&amp;A)</span>
+          <span class="tag b">MCQs + Answer Keys</span><span class="tag b">Auto Summary</span>
+          <span class="tag b">Topic Extraction</span><span class="tag b">Knowledge Base</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Developer Tools</div>
+        <div style="margin-top:8px">
+          <span class="tag b">Code Generation</span><span class="tag b">Code Review</span>
+          <span class="tag b">Debugging</span><span class="tag b">Documentation</span>
+          <span class="tag b">API Design</span><span class="tag b">System Design</span>
+          <span class="tag b">Architecture Planning</span>
+        </div>
+        <div class="card-title" style="margin-top:14px">Document Chat UI</div>
+        <ul class="flist">
+          <li>Drag-and-drop upload zone on chat area</li>
+          <li>Processing indicator — extracting + embedding</li>
+          <li>Chat with document (RAG-powered, with citation chips)</li>
+          <li>Toolbar: [Notes] [Flashcards] [MCQs] [Summary]</li>
+          <li>Generated content appears as downloadable cards</li>
+        </ul>
+        <div class="card-title" style="margin-top:14px">3-Panel Workspace Layout</div>
+        <div style="background:#111;border-radius:8px;display:flex;height:50px;overflow:hidden;margin-top:8px;font-size:10px">
+          <div style="width:90px;border-right:1px solid #1E1E1E;padding:6px;color:#555;flex-shrink:0">📄 Sources<br><span style="color:#333;font-size:9px">280px</span></div>
+          <div style="flex:1;padding:6px;color:#6EC6E6;text-align:center;display:flex;align-items:center;justify-content:center">AI Chat (flex)</div>
+          <div style="width:70px;border-left:1px solid #1E1E1E;padding:6px;color:#555;flex-shrink:0">📝 Notes<br><span style="color:#333;font-size:9px">240px</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 10 · BYOK SYSTEM ══ -->
+  <div class="section" id="byok">
+    <div class="section-label">10 — BYOK System (Bring Your Own Key)</div>
+    <div class="callout">
+      <strong style="color:#F2F2F2">ORYGYNS never handles billing.</strong> Users paste their own Groq API key (<span class="mono" style="font-size:11px">gsk_...</span>), which is encrypted and stored. All AI calls are proxied through the user's own key server-side. ORYGYNS displays usage; users pay Groq directly.
+    </div>
+
+    <div class="byok-flow">
+      <div class="byok-step">User visits orygyns.ai</div>
+      <span class="byok-arrow">→</span>
+      <div class="byok-step">Paste gsk_... key</div>
+      <span class="byok-arrow">→</span>
+      <div class="byok-step hi">Test call to Groq /models</div>
+      <span class="byok-arrow">→</span>
+      <div class="byok-step hi">Key encrypted (AES-256-GCM)</div>
+      <span class="byok-arrow">→</span>
+      <div class="byok-step hi">Stored in PostgreSQL</div>
+      <span class="byok-arrow">→</span>
+      <div class="byok-step">All AI calls proxy via key</div>
+      <span class="byok-arrow">→</span>
+      <div class="byok-step hi">User billed by Groq directly</div>
+    </div>
+
+    <div class="g2" style="margin-top:10px">
+      <div class="card">
+        <div class="card-title">Key Security Rules</div>
+        <ul class="flist">
+          <li>Raw key NEVER stored — encrypted immediately on receipt</li>
+          <li>AES-256-GCM encryption (at rest in PostgreSQL)</li>
+          <li>HTTPS everywhere — TLS in transit</li>
+          <li>Audit logs for all key access and modifications</li>
+          <li>Key never appears in server logs</li>
+          <li>Profile displays: <span class="mono" style="font-size:11px;color:#6EC6E6">gsk_********************</span></li>
+          <li>[Unhide] reveals full key for 30 seconds, then re-masks</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">User Key Management UI</div>
+        <ul class="flist">
+          <li>Validate key: instant test call on paste</li>
+          <li>Status badge: <span class="tag g">Connected</span> or <span class="tag r">Invalid</span></li>
+          <li>Last updated timestamp shown</li>
+          <li>Update key: replace with new key anytime</li>
+          <li>Delete key: removes from system entirely</li>
+          <li>Usage stats: linked to Groq Console (external)</li>
+          <li>CTA: [Open Groq Console →] — for direct top-up</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 11 · SCREENS ══ -->
+  <div class="section" id="screens">
+    <div class="section-label">11 — Screen Inventory &amp; Wireframes</div>
+
+    <!-- AUTH-01 Login -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title" style="margin-bottom:4px;color:#888;font-size:11px;letter-spacing:0.06em;text-transform:uppercase">Authentication</div>
+      <div class="screen-item">
+        <span class="screen-id">AUTH-01</span>
+        <div>
+          <div class="screen-name">Login</div>
+          <div class="screen-desc">Centered card on #000. Email + password fields. Google OAuth + GitHub OAuth buttons. Clean, minimal — no distractions. Links: "Create account" and "Forgot password".</div>
+        </div>
+      </div>
+      <!-- Wireframe -->
+      <div class="auth-mock" style="margin-top:14px">
+        <div class="auth-card">
+          <div class="auth-logo">ORYGYNS</div>
+          <div class="auth-sub">Sign in to your workspace</div>
+          <div class="oauth-row">
+            <div class="oauth-btn">🔵 Google</div>
+            <div class="oauth-btn">⚫ GitHub</div>
+          </div>
+          <div class="auth-divider"><span>or</span></div>
+          <input class="auth-input" placeholder="Email address" style="font-family:'Inter',sans-serif" readonly>
+          <input class="auth-input" placeholder="Password" style="font-family:'Inter',sans-serif" readonly>
+          <div class="auth-btn">Sign In</div>
+          <div class="auth-link">No account? <span>Create one free</span> · <span>Forgot password?</span></div>
+        </div>
+      </div>
+
+      <div class="screen-item" style="margin-top:14px">
+        <span class="screen-id">AUTH-02</span>
+        <div>
+          <div class="screen-name">Register</div>
+          <div class="screen-desc">Full name + email + password. Same visual language as login. No plan selection — everyone gets the same free product. Redirect to chat on success.</div>
+        </div>
+      </div>
+
+      <div class="screen-item">
+        <span class="screen-id">AUTH-03</span>
+        <div>
+          <div class="screen-name">Forgot Password</div>
+          <div class="screen-desc">Email input → "reset link sent" confirmation screen. Single-purpose, minimal. Auto-redirect to login after reset.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- APP-01 New User -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title" style="margin-bottom:4px;color:#888;font-size:11px;letter-spacing:0.06em;text-transform:uppercase">Core Application</div>
+      <div class="screen-item">
+        <span class="screen-id">APP-01</span>
+        <div>
+          <div class="screen-name">Main Chat — New User (No API Key)</div>
+          <div class="screen-desc">Full chat interface visible but softly locked. Elegant glassmorphism overlay: "Paste your free Groq API key to unlock." Single inline input + validate button. Sidebar present in empty state. No separate onboarding page.</div>
+        </div>
+      </div>
+      <!-- Wireframe: APP-01 -->
+      <div class="wireframe relative" style="margin-top:14px">
+        <div class="wf-topbar">
+          <div class="wf-logo">ORYGYNS</div>
+          <div style="font-size:9px;color:#444;margin-left:8px">New Chat</div>
+          <div style="margin-left:auto;display:flex;gap:6px">
+            <div style="font-size:9px;color:#333;background:#111;border:1px solid #1A1A1A;padding:3px 8px;border-radius:4px">Model ▾</div>
+            <div style="font-size:9px;color:#333;background:#111;border:1px solid #1A1A1A;padding:3px 8px;border-radius:4px">Quality ▾</div>
+          </div>
+        </div>
+        <div class="wf-body">
+          <div class="wf-sidebar">
+            <div class="wf-sidebar-item" style="color:#6EC6E6;font-size:9px">＋ New Chat</div>
+            <div class="wf-sidebar-item" style="color:#6EC6E6;font-size:9px">＋ New Workspace</div>
+            <div class="wf-group">Recent</div>
+            <div class="wf-sidebar-item muted">No chats yet</div>
+            <div class="wf-group">Workspaces</div>
+            <div class="wf-sidebar-item muted">No workspaces</div>
+          </div>
+          <div class="wf-main" style="justify-content:center;align-items:center;position:relative">
+            <div style="font-size:10px;color:#2a2a2a;text-align:center">Chat area visible<br>but blurred</div>
+            <!-- Overlay -->
+            <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(3px);border-radius:0;display:flex;align-items:center;justify-content:center">
+              <div style="background:#0C0C0C;border:1px solid rgba(110,198,230,0.25);border-radius:10px;padding:18px 20px;width:220px;text-align:center">
+                <div style="font-size:10px;color:#6EC6E6;font-family:'Syne',sans-serif;font-weight:700;margin-bottom:6px">🔑 Get Started</div>
+                <div style="font-size:9px;color:#555;margin-bottom:12px">Paste your free Groq API key to unlock ORYGYNS AI</div>
+                <div style="background:#111;border:1px solid #1E1E1E;border-radius:5px;padding:6px 8px;font-size:9px;color:#444;margin-bottom:8px;font-family:'JetBrains Mono',monospace">gsk_...</div>
+                <div style="background:#6EC6E6;color:#000;border-radius:5px;padding:5px;font-size:9px;font-weight:700;font-family:'Syne',sans-serif">Validate Key →</div>
+                <div style="font-size:8px;color:#333;margin-top:8px">Get a free key at console.groq.com</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="wf-input-bar">
+          <span style="font-size:10px;color:#444">📎</span>
+          <div class="wf-input">Message ORYGYNS AI...</div>
+          <div class="wf-send" style="opacity:0.3">↑</div>
+        </div>
+      </div>
+
+      <!-- APP-02 Active Chat -->
+      <div class="screen-item" style="margin-top:14px">
+        <span class="screen-id">APP-02</span>
+        <div>
+          <div class="screen-name">Main Chat — Active</div>
+          <div class="screen-desc">Claude-style centered conversation (max-width 680px). Streaming markdown with blinking cursor. Code blocks with syntax highlight + copy. User messages right-aligned, AI responses left-aligned. Message actions: copy, edit, regenerate, 👍👎. Token counter in footer.</div>
+        </div>
+      </div>
+      <!-- Wireframe: APP-02 -->
+      <div class="wireframe" style="margin-top:10px">
+        <div class="wf-topbar">
+          <div class="wf-logo">ORYGYNS</div>
+          <div style="font-size:9px;color:#555;margin-left:8px">Debug my FastAPI route</div>
+          <div style="margin-left:auto;display:flex;gap:6px">
+            <div style="font-size:9px;color:#6EC6E6;background:rgba(110,198,230,0.07);border:1px solid rgba(110,198,230,0.15);padding:3px 8px;border-radius:4px">Llama 3.3 70B ▾</div>
+            <div style="font-size:9px;color:#555;background:#111;border:1px solid #1A1A1A;padding:3px 8px;border-radius:4px">MEDIUM ▾</div>
+          </div>
+        </div>
+        <div class="wf-body">
+          <div class="wf-sidebar">
+            <div class="wf-sidebar-item a">◈ ORYGYNS</div>
+            <div class="wf-sidebar-item" style="font-size:9px;color:#6EC6E6">＋ New Chat</div>
+            <div class="wf-group">Recent</div>
+            <div class="wf-sidebar-item a">◦ Debug my FastAPI</div>
+            <div class="wf-sidebar-item">◦ Explain quantum...</div>
+            <div class="wf-group">Workspaces</div>
+            <div class="wf-sidebar-item a">⬡ Programming</div>
+            <div class="wf-sidebar-item">⬡ Research</div>
+          </div>
+          <div class="wf-main" style="max-width:none;align-items:stretch">
+            <div style="flex:1;display:flex;flex-direction:column;gap:8px;padding:8px 20px">
+              <div class="wf-msg-user">How do I fix a 422 error in FastAPI?</div>
+              <div class="wf-msg-ai">
+                A 422 Unprocessable Entity usually means Pydantic validation failed. Check your request body schema matches your model.<div class="wf-cursor"></div>
+                <div style="margin-top:6px;background:#111;border:1px solid #1A1A1A;border-radius:4px;padding:6px;font-family:'JetBrains Mono',monospace;font-size:9px;color:#6EC6E6">class Item(BaseModel):<br>&nbsp;&nbsp;name: str<br>&nbsp;&nbsp;price: float</div>
+              </div>
+              <div style="display:flex;gap:6px;margin-left:4px">
+                <span style="font-size:9px;color:#333;cursor:pointer">⊕ Copy</span>
+                <span style="font-size:9px;color:#333;cursor:pointer">↺ Regen</span>
+                <span style="font-size:9px;color:#333;cursor:pointer">👍</span>
+                <span style="font-size:9px;color:#333;cursor:pointer">👎</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="wf-input-bar">
+          <span style="font-size:10px;color:#555">📎</span>
+          <div class="wf-input">Message ORYGYNS AI...</div>
+          <div class="wf-btn">Model ▾</div>
+          <div class="wf-btn">Quality ▾</div>
+          <div class="wf-send">↑</div>
+        </div>
+        <div style="text-align:center;padding:4px;font-family:'JetBrains Mono',monospace;font-size:9px;color:#2a2a2a">1,240 tokens used this session</div>
+      </div>
+
+      <!-- APP-03 Workspace -->
+      <div class="screen-item" style="margin-top:14px">
+        <span class="screen-id">APP-03</span>
+        <div>
+          <div class="screen-name">Workspace View (3-Panel)</div>
+          <div class="screen-desc">NotebookLM-inspired: Sources panel (L 280px) | AI Chat (C, flex) | Notes panel (R 240px). Workspace title editable at top. All panels resizable. Chat is context-aware of all sources. Notes auto-saved as chat progresses.</div>
+        </div>
+      </div>
+      <!-- Wireframe: APP-03 -->
+      <div class="wireframe" style="margin-top:10px">
+        <div class="wf-topbar">
+          <div class="wf-logo">ORYGYNS</div>
+          <div style="font-size:10px;font-family:'Syne',sans-serif;font-weight:700;color:#F2F2F2;margin-left:8px;border-bottom:1px dashed #333;padding-bottom:1px">⬡ Programming Workspace</div>
+          <div style="margin-left:auto;font-size:9px;color:#555">editable title ✏</div>
+        </div>
+        <div class="wf-three-panel">
+          <!-- Sources -->
+          <div class="wf-panel-sources" style="width:110px">
+            <div class="wf-panel-title">Sources</div>
+            <div class="wf-source-card">📄 FastAPI Docs.pdf<div style="font-size:8px;color:#444">12 chunks</div></div>
+            <div class="wf-source-card">📄 Python Guide.txt<div style="font-size:8px;color:#444">8 chunks</div></div>
+            <div style="margin-top:6px;background:rgba(110,198,230,0.07);border:1px dashed rgba(110,198,230,0.2);border-radius:4px;padding:5px;font-size:9px;color:#6EC6E6;text-align:center">+ Add Source</div>
+          </div>
+          <!-- Chat center -->
+          <div class="wf-main" style="padding:10px 14px">
+            <div class="wf-msg-user">Summarize the FastAPI docs</div>
+            <div class="wf-msg-ai">
+              Based on <span style="background:rgba(110,198,230,0.1);color:#6EC6E6;border-radius:3px;padding:1px 5px;font-size:9px">FastAPI Docs.pdf p.3</span> FastAPI uses Pydantic for validation...<div class="wf-cursor"></div>
+            </div>
+          </div>
+          <!-- Notes -->
+          <div class="wf-panel-notes" style="width:100px">
+            <div class="wf-panel-title">Notes</div>
+            <div class="wf-note-item">FastAPI uses Pydantic for data validation</div>
+            <div class="wf-note-item">Dependency injection built in</div>
+            <div class="wf-note-item">Async support via async def</div>
+          </div>
+        </div>
+        <div class="wf-input-bar">
+          <span style="font-size:10px;color:#555">📎</span>
+          <div class="wf-input">Ask about your sources...</div>
+          <div class="wf-send">↑</div>
+        </div>
+      </div>
+
+      <!-- APP-04 Doc Chat -->
+      <div class="screen-item" style="margin-top:14px">
+        <span class="screen-id">APP-04</span>
+        <div>
+          <div class="screen-name">Document Chat &amp; Tools</div>
+          <div class="screen-desc">Drag-and-drop upload zone. Processing indicator (extracting + embedding). Chat with document RAG. Toolbar: [Generate Notes] [Flashcards] [MCQs] [Summary]. Generated content appears as downloadable cards.</div>
+        </div>
+      </div>
+
+      <!-- APP-05 Explore -->
+      <div class="screen-item" style="margin-top:4px">
+        <span class="screen-id">APP-05</span>
+        <div>
+          <div class="screen-name">Explore Orygyns (In-App Section)</div>
+          <div class="screen-desc">Sidebar → "Explore Orygyns" → opens orygyns.in services styled inside the ORYGYNS AI theme (NOT a plain redirect). Shows all 6 services as cards with CTA buttons. Contact form at bottom captures leads to admin table. See Section 13 for full spec.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Screens -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title" style="margin-bottom:14px;color:#888;font-size:11px;letter-spacing:0.06em;text-transform:uppercase">Profile &amp; Settings</div>
+      <div class="screen-item">
+        <span class="screen-id">PROF-01</span>
+        <div>
+          <div class="screen-name">View Profile</div>
+          <div class="screen-desc">Avatar + name + email (editable). Groq API key displayed as <span class="mono" style="font-size:11px">gsk_***************</span> + [Unhide] button (reveals 30s then re-masks). Security status: Key Connected / Encrypted / Last Updated. Account stats: joined, chats, workspaces, docs. Action buttons: Edit name · Edit email · Reset password · Update API key · Delete API key.</div>
+        </div>
+      </div>
+
+      <!-- Profile wireframe -->
+      <div class="prof-mock" style="margin-top:10px">
+        <div class="prof-avatar-row">
+          <div class="prof-avatar">U</div>
+          <div>
+            <div class="prof-name">User Name</div>
+            <div class="prof-email">user@email.com</div>
+          </div>
+          <div style="margin-left:auto"><span class="tag b">Key Connected</span></div>
+        </div>
+        <div class="prof-stat-row">
+          <div class="prof-stat"><div class="prof-stat-val">47</div><div class="prof-stat-lbl">Chats</div></div>
+          <div class="prof-stat"><div class="prof-stat-val">3</div><div class="prof-stat-lbl">Workspaces</div></div>
+          <div class="prof-stat"><div class="prof-stat-val">12</div><div class="prof-stat-lbl">Documents</div></div>
+          <div class="prof-stat"><div class="prof-stat-val">Feb '25</div><div class="prof-stat-lbl">Joined</div></div>
+        </div>
+        <div class="key-row">
+          <div class="key-label">Groq Key</div>
+          <div class="key-val">gsk_********************</div>
+          <div class="key-unhide">Unhide</div>
+        </div>
+        <div class="sec-row">
+          <div class="sec-pill ok">✓ Encrypted</div>
+          <div class="sec-pill ok">✓ AES-256-GCM</div>
+          <div class="sec-pill ok">✓ Key Valid</div>
+          <div class="sec-pill ok">✓ Updated 2d ago</div>
+        </div>
+        <div class="prof-btn-row">
+          <div class="prof-btn primary">Edit Name</div>
+          <div class="prof-btn">Edit Email</div>
+          <div class="prof-btn">Reset Password</div>
+          <div class="prof-btn primary">Update API Key</div>
+          <div class="prof-btn danger">Delete Key</div>
+        </div>
+      </div>
+
+      <div class="screen-item" style="margin-top:14px">
+        <span class="screen-id">PROF-02</span>
+        <div>
+          <div class="screen-name">Usage &amp; Limits</div>
+          <div class="screen-desc">Live Groq limits for the user's key: requests used today / remaining · tokens used today / remaining · rate limits (RPM/TPM per model) · current API key status. Big CTA: [Open Groq Console →]. ORYGYNS displays limits only — never handles billing.</div>
+        </div>
+      </div>
+
+      <div class="screen-item">
+        <span class="screen-id">PROF-03</span>
+        <div>
+          <div class="screen-name">Settings</div>
+          <div class="screen-desc">Theme (Dark / System) · Memory on/off toggle · Notifications · Response language · Default model · Default quality level · Privacy controls · Export all data (JSON) · Delete account (requires typed confirmation "DELETE").</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin -->
+    <div class="card red">
+      <div class="card-title" style="margin-bottom:14px;color:#f87171;font-size:11px;letter-spacing:0.06em;text-transform:uppercase">Admin Panel (Internal Only — /admin route, admin-only JWT claim)</div>
+      <div class="screen-item">
+        <span class="screen-id">ADM-01</span>
+        <div>
+          <div class="screen-name">Admin Dashboard</div>
+          <div class="screen-desc">Stats: total users · active users · new registrations · total chats · workspaces · docs uploaded. Charts: model popularity (bar) · daily traffic (line) · error rate (line). Table: recent registrations. System health pings: API / DB / Redis / Groq. Service leads table: contacts from "Explore Orygyns".</div>
+        </div>
+      </div>
+      <!-- Admin wireframe -->
+      <div class="admin-mock" style="margin-top:10px">
+        <div class="admin-topbar">
+          <div class="wf-logo">ORYGYNS</div>
+          <div style="font-size:9px;color:#f87171;font-family:'JetBrains Mono',monospace;margin-left:8px;background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.15);border-radius:4px;padding:2px 8px">ADMIN</div>
+          <div class="health-row" style="margin-left:auto;margin-top:0">
+            <div class="h-pill ok">API ✓</div>
+            <div class="h-pill ok">DB ✓</div>
+            <div class="h-pill ok">Redis ✓</div>
+            <div class="h-pill warn">Groq ~</div>
+          </div>
+        </div>
+        <div class="admin-content">
+          <div class="stat-card"><div class="stat-num">1,240</div><div class="stat-lbl">Total Users</div></div>
+          <div class="stat-card"><div class="stat-num">318</div><div class="stat-lbl">Active Today</div></div>
+          <div class="stat-card">
+            <div style="font-size:10px;color:#555;margin-bottom:6px">Model Popularity</div>
+            <div class="chart-bar">
+              <div class="bar hi" style="height:90%"></div>
+              <div class="bar" style="height:60%"></div>
+              <div class="bar" style="height:45%"></div>
+              <div class="bar" style="height:75%"></div>
+              <div class="bar" style="height:30%"></div>
+            </div>
+          </div>
+          <div class="stat-card"><div class="stat-num">47</div><div class="stat-lbl">Service Leads</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 12 · SECURITY ══ -->
+  <div class="section">
+    <div class="section-label">12 — Security Requirements</div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-title">Transport &amp; Auth</div>
+        <ul class="flist">
+          <li>HTTPS everywhere — forced redirect (no HTTP)</li>
+          <li>AES-256-GCM for Groq key encryption at rest</li>
+          <li>JWT auth — short-lived access + refresh tokens</li>
+          <li>Rate limiting per user per endpoint (Redis)</li>
+          <li>XSS protection via Content Security Policy headers</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Data &amp; Session</div>
+        <ul class="flist">
+          <li>CSRF protection (SameSite cookies)</li>
+          <li>Audit logs for all key access and modifications</li>
+          <li>Encrypted storage — at rest and in transit</li>
+          <li>Secure session management</li>
+          <li>Auto-logout with configurable timeout</li>
+          <li>Raw Groq key never appears in logs or responses</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 13 · EXPLORE ORYGYNS ══ -->
+  <div class="section" id="explore">
+    <div class="section-label">13 — Explore Orygyns (Cross-Promotion)</div>
+    <div class="callout">
+      Sidebar → "Explore Orygyns" → opens orygyns.in services styled <strong style="color:#F2F2F2">inside</strong> the ORYGYNS AI theme. NOT a plain external redirect. Captures leads in the admin leads table. Purpose: cross-promote the orygyns.in ecosystem without disrupting the AI workspace UX.
+    </div>
+
+    <div class="explore-grid">
+      <div class="service-card">
+        <div class="service-icon">🌐</div>
+        <div class="service-name">Website Development</div>
+        <div class="service-desc">Custom websites built with modern frameworks — fast, responsive, and designed to convert.</div>
+        <div class="service-btns">
+          <button class="service-btn-p">Get a Quote</button>
+          <button class="service-btn-s">Learn More</button>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🤖</div>
+        <div class="service-name">AI Development</div>
+        <div class="service-desc">Custom AI systems, LLM integrations, RAG pipelines, and intelligent automation for your business.</div>
+        <div class="service-btns">
+          <button class="service-btn-p">Get a Quote</button>
+          <button class="service-btn-s">Learn More</button>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🚀</div>
+        <div class="service-name">SaaS Development</div>
+        <div class="service-desc">End-to-end SaaS products — from MVP to production-ready platforms with auth, billing, and scale.</div>
+        <div class="service-btns">
+          <button class="service-btn-p">Get a Quote</button>
+          <button class="service-btn-s">Learn More</button>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">⚙️</div>
+        <div class="service-name">Business Automation</div>
+        <div class="service-desc">Workflow automation, API integrations, and process optimization to eliminate manual bottlenecks.</div>
+        <div class="service-btns">
+          <button class="service-btn-p">Get a Quote</button>
+          <button class="service-btn-s">Learn More</button>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🏢</div>
+        <div class="service-name">Enterprise Solutions</div>
+        <div class="service-desc">Scalable enterprise software, internal tools, and digital transformation for large organizations.</div>
+        <div class="service-btns">
+          <button class="service-btn-p">Get a Quote</button>
+          <button class="service-btn-s">Learn More</button>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">💡</div>
+        <div class="service-name">Technology Consulting</div>
+        <div class="service-desc">Strategic tech advice, architecture reviews, and roadmap planning for startups and enterprises alike.</div>
+        <div class="service-btns">
+          <button class="service-btn-p">Get a Quote</button>
+          <button class="service-btn-s">Learn More</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lead capture form mockup -->
+    <div class="lead-form">
+      <div class="card-title" style="margin-bottom:14px">Lead Capture Form (bottom of Explore page → stored in ADM-01 leads table)</div>
+      <div class="g3" style="gap:8px;margin-bottom:8px">
+        <div style="background:#111;border:1px solid #1E1E1E;border-radius:6px;padding:9px 12px;font-size:11px;color:#444;font-style:italic">Full Name</div>
+        <div style="background:#111;border:1px solid #1E1E1E;border-radius:6px;padding:9px 12px;font-size:11px;color:#444;font-style:italic">Email Address</div>
+        <div style="background:#111;border:1px solid #1E1E1E;border-radius:6px;padding:9px 12px;font-size:11px;color:#444;font-style:italic">Service Interest ▾</div>
+      </div>
+      <div style="background:#111;border:1px solid #1E1E1E;border-radius:6px;padding:9px 12px;font-size:11px;color:#444;font-style:italic;margin-bottom:8px">Message (optional)</div>
+      <button style="background:#6EC6E6;color:#000;border:none;border-radius:6px;padding:9px 20px;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer">Send Message → orygyns.in</button>
+    </div>
+  </div>
+
+  <!-- ══ 14 · DOMAIN & INTEGRATION ══ -->
+  <div class="section">
+    <div class="section-label">14 — Domain &amp; Integration</div>
+    <div class="domain-row" style="border-left:3px solid #6EC6E6">
+      <div class="domain-url">orygyns.ai</div>
+      <div class="domain-role">AI Workspace App (Primary)</div>
+      <div class="domain-note">Opens directly as the chat interface. Auth-gated. Next.js on Vercel. This is the main product.</div>
+    </div>
+    <div class="domain-row" style="border-left:3px solid rgba(34,197,94,0.4)">
+      <div class="domain-url">api.orygyns.ai</div>
+      <div class="domain-role">FastAPI Backend (Internal)</div>
+      <div class="domain-note">JWT-protected. Handles BYOK routing, RAG pipeline, LLMLingua-2 compression, WebSocket streaming. Hosted on Render.</div>
+    </div>
+    <div class="domain-row">
+      <div class="domain-url">orygyns.in</div>
+      <div class="domain-role">Company Website (Existing)</div>
+      <div class="domain-note">Accessible via "Explore Orygyns" inside the app. Cross-promotes services. Lead generation. NOT modified externally.</div>
+    </div>
+  </div>
+
+  <!-- ══ FINAL ══ -->
+  <div class="section">
+    <div class="final-card">
+      <div class="final-title">ORYGYNS AI</div>
+      <div class="final-tagline">A Claude-style AI workspace powered entirely by Groq.</div>
+      <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-bottom:8px">
+        <span class="tag b">Bring your Groq key</span>
+        <span class="tag b">Choose any model</span>
+        <span class="tag b">Choose quality level</span>
+        <span class="tag b">Chat · Study · Research · Code · Build</span>
+        <span class="tag g">No subscriptions</span>
+        <span class="tag g">No locked models</span>
+        <span class="tag g">No feature restrictions</span>
+        <span class="tag g">Free forever</span>
+      </div>
+      <div class="final-desc">Beautiful, fast, and premium. Connect your free Groq key and the full ORYGYNS AI workspace is yours — with complete model freedom, document intelligence, workspaces, and the entire Orygyns ecosystem at your fingertips.</div>
+    </div>
+  </div>
+
+</div><!-- /container -->
 
 <script>
-  function show(id, btn) {
-    document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
-    document.querySelectorAll('nav.tabs button').forEach(b => b.classList.remove('on'));
-    document.getElementById(id).classList.add('on');
-    btn.classList.add('on');
-  }
+function scrollToId(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'})}
+
+// Active nav highlight on scroll
+const sections=['vision','design','tech','features','byok','screens','explore'];
+const tabs=document.querySelectorAll('.nav-tab');
+window.addEventListener('scroll',()=>{
+  let current='';
+  sections.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&window.scrollY>=el.offsetTop-80)current=id;
+  });
+  tabs.forEach(t=>{
+    t.classList.remove('active');
+    if(t.getAttribute('onclick')&&t.getAttribute('onclick').includes("'"+current+"'"))t.classList.add('active');
+  });
+  if(!current)tabs[0].classList.add('active');
+});
+
+const PROMPT=`MASTER BUILD PROMPT — ORYGYNS AI V3.0
+"The Free AI Operating System Powered by Groq"
+
+Reference UI: https://orygyns.github.io/ai/AI.html
+Company site: https://orygyns.in/
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PRODUCT OVERVIEW
+━━━━━━━━━━━━━━━━
+
+Build ORYGYNS AI — a Claude-inspired, premium AI workspace powered entirely by Groq.
+The deal: ORYGYNS provides the interface and workspace system. Users bring their own
+free Groq API key. ORYGYNS is permanently free. Users pay Groq directly for usage.
+No subscriptions. No locked models. No billing. No feature gates. Ever.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DESIGN SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Colors:
+  Primary (Sky Blue):  #6EC6E6  — CTA, links, active states, glow effects
+  Secondary Blue:      #38BDF8  — Hover states, secondary accents
+  Accent Light:        #7DD3FC  — Highlights, selected states
+  Background:          #000000  — Page / app base
+  Panels:              #0C0C0C  — Sidebar, topbar, overlays
+  Cards:               #111111  — Content cards, dropdowns
+  Borders:             #1E1E1E  — All dividers, card borders
+  Text Primary:        #F2F2F2  — Headings, main content
+  Text Muted:          #888888  — Secondary text, descriptions
+
+Typography:
+  Headings/Logo/Buttons: Syne (weight 600, 700, 800)
+  Body/Labels/UI:        Inter (weight 400, 500)
+  Code/Keys/Tokens:      JetBrains Mono (weight 400, 500)
+
+Design Principles:
+  - Pure black canvas — NO gray backgrounds
+  - Sky blue is the ONLY brand color accent
+  - No color gradients in the main UI (only for hero text)
+  - Glassmorphism: backdrop-filter:blur(20px) + rgba(0,0,0,0.85) for overlays
+  - Logo glow on press: box-shadow 0 0 24px rgba(110,198,230,0.4), 300ms ease
+  - Card hover: border-color shifts to rgba(110,198,230,0.2)
+  - Active sidebar items: sky-blue left border (3px)
+  - Users understand the interface within 30 seconds
+  - EXACT reference: https://orygyns.github.io/ai/AI.html
+
+Spacing & Radii:
+  Base unit: 4px
+  Card padding: 20px | Section gap: 48px
+  Border radius small: 6px | Card: 10px | Modal: 14px
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TECH STACK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Frontend:
+  Framework:    Next.js 14+ (App Router, React Server Components)
+  Language:     TypeScript
+  Styling:      Tailwind CSS + custom CSS variables
+  Animations:   Framer Motion
+  State:        Zustand (global), React Query (server state)
+  Chat UI:      Custom streaming hook + WebSocket client
+  Markdown:     react-markdown + remark-gfm + rehype-highlight
+  Math:         KaTeX (react-katex)
+  Host:         Vercel (Edge runtime for streaming)
+
+Backend:
+  Framework:    FastAPI (Python 3.12) + Uvicorn
+  Auth:         JWT (short-lived access + refresh tokens)
+  OAuth:        Google + GitHub (via authlib)
+  Database:     PostgreSQL + pgvector extension
+  Cache:        Redis via Upstash (serverless)
+  Host:         Render (free → $7/mo)
+
+AI & Processing:
+  Inference:    Groq Cloud API (user's own BYOK key)
+  Compression:  LLMLingua-2 (Microsoft OSS, runs on Render)
+  Embeddings:   all-MiniLM-L6-v2 (22MB, CPU-only)
+  RAG:          pgvector similarity search → top-k injection → compress → send
+  Streaming:    WebSocket from backend → SSE to frontend
+
+Security:
+  API key encryption: AES-256-GCM (never store raw key)
+  HTTPS everywhere | XSS/CSRF protection | Rate limiting
+  Audit logs | Secure sessions | Auto-logout
+
+Storage:
+  Files/Documents: Supabase Storage (S3-compatible)
+  All data:         PostgreSQL on Supabase (free tier)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+LANDING EXPERIENCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+orygyns.ai opens DIRECTLY as the AI Workspace.
+NOT a home page. NOT a marketing page. NOT a services page.
+The AI IS the product. The user should start chatting immediately.
+
+New User Flow (target: under 30 seconds total):
+  1. Visit orygyns.ai
+  2. See the full chat interface immediately (Claude-style)
+  3. Soft overlay: "Add your free Groq API key to start"
+  4. Single input field inline (NOT a separate page)
+  5. Paste key → validate → unlocked → start chatting
+  (If not logged in: quick email/password form appears inline first)
+
+Returning User:
+  - Opens directly to last chat
+  - Model pre-selected from memory
+  - Workspaces loaded in sidebar
+  - Zero friction, instant AI access
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+APPLICATION LAYOUT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LEFT SIDEBAR (collapsible, default 280px, collapses to 0):
+  ORYGYNS [Logo — click to open/close sidebar, glow on press]
+  + New Chat
+  + New Workspace
+  [RECENT CHATS section]
+  · Last chat title
+  [WORKSPACES section]
+  ⬡ Programming | ⬡ Research | ⬡ Semester 1 | ⬡ Semester 2 | ⬡ Business
+  ◎ View Profile
+  ✦ Explore Orygyns  ← opens orygyns.in inside app theme
+  ⚙ Settings
+  → Logout
+
+MAIN CHAT AREA (Claude-style):
+  - Centered conversation column (max-width: 680px)
+  - Streaming Markdown rendering (live as tokens arrive)
+  - Code syntax highlighting + copy button
+  - Math rendering via KaTeX
+  - Drag & drop file upload anywhere on chat area
+  - Edit previous user messages (inline edit)
+  - Regenerate last AI response
+  - Chat search (Ctrl/Cmd+F)
+
+PROMPT INPUT BAR (bottom fixed):
+  [📎 Attach] [── Message ORYGYNS AI... ──] [Model ▾] [Quality ▾] [↑ Send]
+  - Attach: opens file picker (PDF, DOCX, TXT, PPTX, images)
+  - Model selector: dropdown with all available Groq models + speed indicator
+  - Quality selector: LOW / MEDIUM / HIGH / MAX
+  - Auto-resize textarea (grows with content, max 6 lines)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MODEL SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+All Groq models available to all users. No restrictions.
+Models fetched dynamically from Groq API (new models auto-appear):
+  - GPT OSS 120B | GPT OSS 20B | Llama 3.3 70B | Llama 3.1 8B
+  - Qwen 3 32B | DeepSeek R1 | Kimi | Compound Beta
+  - All future Groq models (auto via /models endpoint)
+
+Model Selector Dropdown shows: Model name + Speed indicator + Context window size
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+QUALITY SYSTEM (Token Compression Only)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Quality controls PROMPT COMPRESSION RATIO, NOT model selection.
+Engine: LLMLingua-2 (Microsoft OSS) running on FastAPI backend.
+
+  LOW    — 10× compression — Fastest, minimum tokens, quick lookups
+  MEDIUM — 5× compression  — Balanced (DEFAULT for all users)
+  HIGH   — 2× compression  — Near-full context, complex reasoning
+  MAX    — 1× compression  — No compression, full context, max quality
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+BYOK (BRING YOUR OWN KEY) SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  - User pastes Groq API key (format: gsk_...)
+  - Key validated via test call to Groq /models endpoint
+  - Stored in PostgreSQL encrypted with AES-256-GCM
+  - ORYGYNS never stores or logs the raw key
+  - All AI calls are proxied through user's own key server-side
+  - ORYGYNS handles NO billing. User pays Groq directly.
+  - Profile shows: gsk_******************** [Unhide]
+  - Unhide: reveals full key for 30 seconds, then re-masks
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+WORKSPACE SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Unlimited workspaces per user (like Notion databases).
+Layout: Sources (L 280px) | AI Chat (C flex) | Notes (R 240px)
+Inspired by NotebookLM.
+
+Each workspace stores:
+  - All chats and conversation history
+  - Uploaded documents
+  - AI-generated notes, flashcards, MCQs
+  - References and citations
+  - Workspace-scoped memory context
+
+USER MEMORY SYSTEM:
+  Remembers: preferred model, quality, name, academic background,
+  most-used workspace, custom instructions.
+  Controls: disable / edit / delete individual memories / clear all.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DOCUMENT INTELLIGENCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Supported formats: PDF, DOCX, TXT, PPTX, Markdown, CSV
+
+RAG Pipeline:
+  1. Upload → extract text (PyMuPDF/python-docx)
+  2. Chunk into 512-token segments with 50-token overlap
+  3. Embed with all-MiniLM-L6-v2
+  4. Store vectors in pgvector
+  5. On query: semantic search → top-k chunks
+  6. Inject into prompt → compress with LLMLingua-2 → send to Groq
+
+AI Generation Features:
+  - Chat with documents (RAG-powered)
+  - Auto-generate study notes
+  - Generate flashcards (Q&A format)
+  - Generate MCQs with answer keys
+  - Auto summaries
+  - Topic/concept extraction
+  - Build knowledge base per workspace
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SCREENS TO BUILD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+AUTH-01: Login
+  Centered card on #000. Email + password. Google + GitHub OAuth.
+  Link to register and forgot password. No distractions.
+
+AUTH-02: Register
+  Full name + email + password. Same visual as login.
+  No plan selection — everyone is on the same free product.
+  Redirect to chat on success.
+
+AUTH-03: Forgot Password
+  Email input → "reset link sent" confirmation screen.
+
+APP-01: Main Chat — New User (No API Key)
+  Full chat interface visible. Soft centered glassmorphism overlay:
+  "Paste your free Groq API key to unlock."
+  Inline input + [Validate] button. No separate onboarding page.
+  Sidebar with empty state (no chats, no workspaces yet).
+
+APP-02: Main Chat — Active
+  Claude-style centered conversation (max-width 680px).
+  Streaming markdown responses with blinking cursor.
+  Code blocks with syntax highlight + copy button.
+  User messages right-aligned, AI responses left-aligned.
+  Message actions: copy, edit, regenerate, thumbs up/down.
+  Token counter subtly shown in footer.
+
+APP-03: Workspace View (3-Panel)
+  Left (280px): Sources list — uploaded doc cards + [+ Add Source] button.
+  Center (flex): AI chat, context-aware of all sources, with citation chips.
+  Right (240px): Notes panel — auto-captured insights, rich text mini editor.
+  Workspace title editable at top. All panels resizable.
+
+APP-04: Document Chat & Tools
+  Drag-and-drop upload zone. Processing indicator (extracting + embedding).
+  Chat with document RAG. Toolbar: [Generate Notes] [Flashcards] [MCQs] [Summary].
+  Generated content appears as downloadable cards.
+
+APP-05: Explore Orygyns (In-App)
+  Sidebar → "Explore Orygyns" → opens orygyns.in services styled INSIDE the app.
+  NOT a plain external redirect. Rendered in ORYGYNS dark theme.
+  Shows: Website Dev / AI Dev / SaaS Dev / Business Automation / Enterprise / Consulting.
+  Each service has: title + description + [Get a Quote] / [Learn More] CTA.
+  Contact form at bottom: name + email + service interest → stored in admin leads table.
+  Purpose: cross-promote ecosystem + capture service leads for orygyns.in.
+
+PROF-01: View Profile
+  Avatar (upload). Name + email (editable).
+  Groq API key: shown as gsk_******************** [Unhide]
+  Unhide reveals for 30 seconds, then auto-re-masks.
+  Security status: Key Connected / Encrypted / Last Updated.
+  Account stats: Joined date / Chats created / Workspaces / Docs uploaded.
+  Buttons: Edit Name · Edit Email · Reset Password · Update API Key · Delete Key.
+
+PROF-02: Usage & Limits
+  Live data from Groq API for user's key:
+  Requests used today / remaining | Tokens used today / remaining
+  Rate limits (RPM, TPM per model) | Current API key status.
+  CTA: [Open Groq Console →] — user buys credits directly from Groq.
+  ORYGYNS displays limits only. Never handles money.
+
+PROF-03: Settings
+  Theme: Dark / System | Memory: On/Off toggle
+  Notifications | Response language | Default model | Default quality
+  Privacy controls | Export all data (JSON) | Delete account (with typed confirmation).
+
+ADM-01: Admin Dashboard (Internal — /admin, admin-only JWT claim)
+  Stats: total users / active / new registrations / total chats / workspaces / docs.
+  Charts: model popularity (bar), daily traffic (line), error rate (line).
+  Table: recent registrations.
+  System health: API / DB / Redis / Groq status pings.
+  Service leads table: contacts captured via Explore Orygyns section.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EXPLORE ORYGYNS — CROSS-PROMOTION SPEC
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+When user clicks "Explore Orygyns" in sidebar:
+  Opens an in-app page (not external redirect) styled in ORYGYNS dark theme.
+  Displays orygyns.in services:
+    - Website Development
+    - AI Development
+    - SaaS Development
+    - Business Automation
+    - Enterprise Solutions
+    - Technology Consulting
+  Each card: service name + short description + [Get a Quote] / [Learn More] buttons.
+  Contact form at bottom: name + email + service interest → stored in admin leads table.
+  Purpose: generate leads for orygyns.in without disrupting the AI workspace UX.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DOMAIN STRUCTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  orygyns.ai        → Main AI workspace app (Next.js on Vercel)
+  api.orygyns.ai    → FastAPI backend (Render)
+  orygyns.in        → Existing company site (untouched, cross-promoted in-app)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FINAL POSITIONING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ORYGYNS AI: A Claude-style AI workspace powered entirely by Groq.
+Bring your Groq key. Choose any model. Choose quality. Chat, study, research, code, build.
+No subscriptions. No premium plans. No locked models. No feature restrictions.
+Beautiful, fast, premium. Free forever.
+The complete Orygyns ecosystem in one workspace.`;
+
+function copyPrompt(){
+  navigator.clipboard.writeText(PROMPT).then(()=>{
+    const b=document.getElementById('copyBtn');
+    b.innerHTML='<span class="copy-icon">✓</span> Copied!';
+    b.classList.add('done');
+    setTimeout(()=>{
+      b.innerHTML='<span class="copy-icon">⊕</span> Copy Build Prompt';
+      b.classList.remove('done');
+    },2800);
+  }).catch(()=>{
+    const ta=document.createElement('textarea');
+    ta.value=PROMPT;ta.style.position='fixed';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.select();
+    document.execCommand('copy');document.body.removeChild(ta);
+    const b=document.getElementById('copyBtn');
+    b.textContent='✓ Copied!';b.classList.add('done');
+    setTimeout(()=>{b.innerHTML='<span class="copy-icon">⊕</span> Copy Build Prompt';b.classList.remove('done');},2800);
+  });
+}
 </script>
 </body>
 </html>
